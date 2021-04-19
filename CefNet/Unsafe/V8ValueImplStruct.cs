@@ -12,7 +12,7 @@ namespace CefNet.Unsafe
 #endif
 	unsafe struct V8ValueImplLayout
 	{
-		private static int MacOSV8LayoutFix = PlatformInfo.IsMacOS ? IntPtr.Size : 0;
+		private static int LayoutOffset = PlatformInfo.IsWindows ? 0 : IntPtr.Size;
 
 		public IntPtr v8value_vtable;
 		public IntPtr refcounted_vtable;
@@ -29,8 +29,8 @@ namespace CefNet.Unsafe
 
 		public static V8ValueImplLayout* FromCppObject(IntPtr cppObj)
 		{
-			// v8value_vtable or refcounted_vtable does not exists on MacOS
-			return (V8ValueImplLayout*)IntPtr.Subtract(cppObj, MacOSV8LayoutFix);
+			// v8value_vtable or refcounted_vtable does not exist on non-Windows platforms.
+			return (V8ValueImplLayout*)IntPtr.Subtract(cppObj, LayoutOffset);
 		}
 	}
 
