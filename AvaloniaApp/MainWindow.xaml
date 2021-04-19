@@ -41,6 +41,8 @@
         <MenuItem Header="Find i" Click="Find_Click" />
         <MenuItem Header="Tests">
           <MenuItem Header="Open unhandled popup" Click="OpenPopup_Click" />
+          <MenuItem Header="Test CefV8Value types" Click="TestV8ValueTypes_Click" />
+          <MenuItem Header="Alert" Click="Alert_Click" />
         </MenuItem>
       </MenuItem>
     </Menu>

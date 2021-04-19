@@ -509,28 +509,27 @@ namespace CefNet
 				if (CefApi.UseUnsafeImplementation)
 				{
 					RefCountedWrapperStruct* ws = RefCountedWrapperStruct.FromRefCounted(this.NativeInstance);
-					return SafeCall(((V8ValueImplLayout*)(ws->cppObject))->Type);
+					return SafeCall(V8ValueImplLayout.FromCppObject(RefCountedWrapperStruct.FromRefCounted(this.NativeInstance)->cppObject)->Type);
 				}
 
-				if (NativeInstance->IsUndefined() != 0) // TYPE_UNDEFINED
+				if (SafeCall(NativeInstance->IsUndefined()) != 0) // TYPE_UNDEFINED
 					return CefV8ValueType.Undefined;
-				if (NativeInstance->IsNull() != 0)
+				if (SafeCall(NativeInstance->IsNull()) != 0)
 					return CefV8ValueType.Null;
-				if (NativeInstance->IsBool() != 0)
+				if (SafeCall(NativeInstance->IsBool()) != 0)
 					return CefV8ValueType.Bool;
-				if (NativeInstance->IsInt() != 0) // TYPE_INT, TYPE_UINT 
+				if (SafeCall(NativeInstance->IsInt()) != 0) // TYPE_INT, TYPE_UINT 
 					return CefV8ValueType.Int;
-				if (NativeInstance->IsDouble() != 0)  // TYPE_INT, TYPE_UINT, TYPE_DOUBLE
+				if (SafeCall(NativeInstance->IsDouble()) != 0)  // TYPE_INT, TYPE_UINT, TYPE_DOUBLE
 					return CefV8ValueType.Double;
-				if (NativeInstance->IsDate() != 0)
+				if (SafeCall(NativeInstance->IsDate()) != 0)
 					return CefV8ValueType.Date;
-				if (NativeInstance->IsString() != 0) //TYPE_STRING
+				if (SafeCall(NativeInstance->IsString()) != 0) //TYPE_STRING
 					return CefV8ValueType.String;
-				if (NativeInstance->IsObject() != 0) //TYPE_OBJECT
+				if (SafeCall(NativeInstance->IsObject()) != 0) //TYPE_OBJECT
 					return CefV8ValueType.Object;
-				if (NativeInstance->IsUInt() != 0) // TYPE_INT, TYPE_UINT
+				if (SafeCall(NativeInstance->IsUInt()) != 0) // TYPE_INT, TYPE_UINT
 					return CefV8ValueType.UInt;
-				GC.KeepAlive(this);
 				return CefV8ValueType.Invalid;
 			}
 		}

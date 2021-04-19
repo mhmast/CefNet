@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -51,6 +52,7 @@ namespace AvaloniaApp
 			App.FrameworkShutdown += App_FrameworkShutdown;
 
 			app = new CefAppImpl();
+			app.CefProcessMessageReceived += App_CefProcessMessageReceived;
 			app.ScheduleMessagePumpWorkCallback = OnScheduleMessagePumpWork;
 			app.Initialize(PlatformInfo.IsMacOS ? cefPath : Path.Combine(cefPath, "Release"), settings);
 
@@ -99,5 +101,57 @@ namespace AvaloniaApp
 			}
 			return projectPath;
 		}
+
+		private static void App_CefProcessMessageReceived(object sender, CefProcessMessageReceivedEventArgs e)
+		{
+			if (e.Name == "TestV8ValueTypes")
+			{
+				TestV8ValueTypes(e.Frame);
+				e.Handled = true;
+				return;
+			}
+
+			if (e.Name == "MessageBox.Show")
+			{
+				string message = e.Message.ArgumentList.GetString(0);
+				Dispatcher.UIThread.Post(() =>
+				{
+					var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+						.GetMessageBoxStandardWindow("title", message);
+					messageBoxStandardWindow.Show();
+				});
+				e.Handled = true;
+				return;
+			}
+		}
+
+		private static void TestV8ValueTypes(CefFrame frame)
+		{
+			var sb = new StringBuilder();
+			CefV8Context context = frame.V8Context;
+			if (!context.Enter())
+				return;
+			try
+			{
+				sb.Append("typeof 1 = ").Append(context.Eval("1", null).Type).AppendLine();
+				sb.Append("typeof true = ").Append(context.Eval("true", null).Type).AppendLine();
+				sb.Append("typeof 'string' = ").Append(context.Eval("'string'", null).Type).AppendLine();
+				sb.Append("typeof 2.2 = ").Append(context.Eval("2.2", null).Type).AppendLine();
+				sb.Append("typeof null = ").Append(context.Eval("null", null).Type).AppendLine();
+				sb.Append("typeof new Object() = ").Append(context.Eval("new Object()", null).Type).AppendLine();
+				sb.Append("typeof undefined = ").Append(context.Eval("undefined", null).Type).AppendLine();
+				sb.Append("typeof new Date() = ").Append(context.Eval("new Date()", null).Type).AppendLine();
+				sb.Append("(window == window) = ").Append(context.Eval("window", null) == context.Eval("window", null)).AppendLine();
+			}
+			finally
+			{
+				context.Exit();
+			}
+			var message = new CefProcessMessage("MessageBox.Show");
+			message.ArgumentList.SetString(0, sb.ToString());
+			frame.SendProcessMessage(CefProcessId.Browser, message);
+		}
+
+
 	}
 }

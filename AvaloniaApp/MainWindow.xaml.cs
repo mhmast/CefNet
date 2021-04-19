@@ -7,9 +7,11 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using CefNet;
 using CefNet.Avalonia;
+using CefNet.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace AvaloniaApp
 {
@@ -187,5 +189,25 @@ namespace AvaloniaApp
 			webView.CreateWindow += callback;
 			webView.GetMainFrame().ExecuteJavaScript("window.open('http://example.com')", null, 1);
 		}
+
+		private void TestV8ValueTypes_Click(object sender, RoutedEventArgs e)
+		{
+			IChromiumWebView webView = SelectedView;
+			if (webView == null)
+				return;
+
+			webView.GetMainFrame().SendProcessMessage(CefProcessId.Renderer, new CefProcessMessage("TestV8ValueTypes"));
+		}
+
+		private async void Alert_Click(object sender, RoutedEventArgs e)
+		{
+			IChromiumWebView webView = SelectedView;
+			if (webView == null)
+				return;
+
+			dynamic scriptableObject = await webView.GetMainFrame().GetScriptableObjectAsync(CancellationToken.None).ConfigureAwait(false);
+			scriptableObject.window.alert("hello");
+		}
+
 	}
 }
