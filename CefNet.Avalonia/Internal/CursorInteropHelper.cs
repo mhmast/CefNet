@@ -1,4 +1,5 @@
 ﻿using Avalonia.Input;
+using Avalonia.Platform;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,11 +28,11 @@ namespace CefNet.Internal
 			foreach (StandardCursorType cursorType in Enum.GetValues(typeof(StandardCursorType)))
 			{
 				var cursor = new Cursor(cursorType);
-				var handle = GetPlatformHandle(cursor);
+				IntPtr handle = GetPlatformHandle(cursor);
 				if (handle == default || _Cursors.ContainsKey(handle))
 					continue;
 
-				_Cursors.Add(cursor.PlatformCursor.Handle, cursor);
+				_Cursors.Add(handle, cursor);
 				_StdCursors.Add(cursorType, cursor);
 			}
 		}
