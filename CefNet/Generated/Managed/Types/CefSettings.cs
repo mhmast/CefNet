@@ -380,17 +380,17 @@ namespace CefNet
 		/// Value that will be inserted as the product portion of the default
 		/// User-Agent string. If empty the Chromium product version will be used. If
 		/// |userAgent| is specified this value will be ignored. Also configurable
-		/// using the &quot;product-version&quot; command-line switch.
+		/// using the &quot;user-agent-product&quot; command-line switch.
 		/// </summary>
-		public string ProductVersion
+		public string UserAgentProduct
 		{
 			get
 			{
-				return CefString.Read(&_instance->product_version);
+				return CefString.Read(&_instance->user_agent_product);
 			}
 			set
 			{
-				CefString.Replace(&_instance->product_version, value);
+				CefString.Replace(&_instance->user_agent_product, value);
 			}
 		}
 
@@ -702,7 +702,7 @@ namespace CefNet
 				RootCachePath = null;
 				UserDataPath = null;
 				UserAgent = null;
-				ProductVersion = null;
+				UserAgentProduct = null;
 				Locale = null;
 				LogFile = null;
 				JavascriptFlags = null;

@@ -182,9 +182,9 @@ namespace CefNet.CApi
 		/// Value that will be inserted as the product portion of the default
 		/// User-Agent string. If empty the Chromium product version will be used. If
 		/// |userAgent| is specified this value will be ignored. Also configurable
-		/// using the &quot;product-version&quot; command-line switch.
+		/// using the &quot;user-agent-product&quot; command-line switch.
 		/// </summary>
-		public cef_string_t product_version;
+		public cef_string_t user_agent_product;
 
 		/// <summary>
 		/// The locale string that will be passed to WebKit. If empty the default
