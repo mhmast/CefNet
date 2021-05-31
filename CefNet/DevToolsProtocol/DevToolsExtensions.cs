@@ -59,7 +59,7 @@ namespace CefNet
 			protocolClient.Close();
 		}
 
-		private static async Task<byte[]> ExecuteDevToolsMethodInternalAsync(IChromiumWebView webview, string method, CefDictionaryValue parameters, CancellationToken cancellationToken)
+		private static async Task<string> ExecuteDevToolsMethodInternalAsync(IChromiumWebView webview, string method, CefDictionaryValue parameters, CancellationToken cancellationToken)
 		{
 			CefBrowser browser = webview.BrowserObject;
 			if (browser is null)
@@ -78,19 +78,68 @@ namespace CefNet
 			DevToolsMethodResult r;
 			if (cancellationToken.CanBeCanceled)
 			{
-				Task<DevToolsMethodResult> waitTask = protocolClient.WaitForMessageAsync(messageId);
+				Task<DevToolsMethodResult> waitTask = protocolClient.WaitForMessageAsync(messageId, DevToolsCallCompletionSource.ConvertUtf8BufferToJsonString);
 				await Task.WhenAny(waitTask, Task.Delay(Timeout.Infinite, cancellationToken)).ConfigureAwait(false);
 				cancellationToken.ThrowIfCancellationRequested();
 				r = waitTask.Result;
 			}
 			else
 			{
-				r = await protocolClient.WaitForMessageAsync(messageId).ConfigureAwait(false);
+				r = await protocolClient.WaitForMessageAsync(messageId, DevToolsCallCompletionSource.ConvertUtf8BufferToJsonString).ConfigureAwait(false);
+			}
+			if (r.Success)
+			{
+				if (r.Result is byte[] buff)
+					return Encoding.UTF8.GetString(buff);
+				return r.Result as string;
+			}
+
+			CefValue errorValue;
+			if (r.Result is byte[] buffer)
+				errorValue = CefApi.CefParseJSONBuffer(buffer, CefJsonParserOptions.AllowTrailingCommas);
+			else
+				errorValue = CefApi.CefParseJSON(r.Result as string, CefJsonParserOptions.AllowTrailingCommas);
+			if (errorValue is null)
+				throw new DevToolsProtocolException($"An unknown error occurred while trying to execute the '{method}' method.");
+			throw new DevToolsProtocolException(errorValue.GetDictionary().GetString("message"));
+		}
+
+		private static async Task<object> ExecuteDevToolsMethodInternalAsync(IChromiumWebView webview, string method, CefDictionaryValue parameters, ConvertUtf8BufferToObjectDelegate convert, CancellationToken cancellationToken)
+		{
+			CefBrowser browser = webview.BrowserObject;
+			if (browser is null)
+				throw new InvalidOperationException();
+
+			cancellationToken.ThrowIfCancellationRequested();
+
+			CefBrowserHost browserHost = browser.Host;
+			DevToolsProtocolClient protocolClient = GetProtocolClient(browserHost);
+
+			await CefNetSynchronizationContextAwaiter.GetForThread(CefThreadId.UI);
+			cancellationToken.ThrowIfCancellationRequested();
+
+			int messageId = browserHost.ExecuteDevToolsMethod(protocolClient.IncrementMessageId(), method, parameters);
+			protocolClient.UpdateLastMessageId(messageId);
+			DevToolsMethodResult r;
+			if (cancellationToken.CanBeCanceled)
+			{
+				Task<DevToolsMethodResult> waitTask = protocolClient.WaitForMessageAsync(messageId, convert);
+				await Task.WhenAny(waitTask, Task.Delay(Timeout.Infinite, cancellationToken)).ConfigureAwait(false);
+				cancellationToken.ThrowIfCancellationRequested();
+				r = waitTask.Result;
+			}
+			else
+			{
+				r = await protocolClient.WaitForMessageAsync(messageId, convert).ConfigureAwait(false);
 			}
 			if (r.Success)
 				return r.Result;
 
-			CefValue errorValue = CefApi.CefParseJSONBuffer(r.Result, CefJsonParserOptions.AllowTrailingCommas);
+			CefValue errorValue;
+			if (r.Result is byte[] buffer)
+				errorValue = CefApi.CefParseJSONBuffer(buffer, CefJsonParserOptions.AllowTrailingCommas);
+			else
+				errorValue = CefApi.CefParseJSON(r.Result as string, CefJsonParserOptions.AllowTrailingCommas);
 			if (errorValue is null)
 				throw new DevToolsProtocolException($"An unknown error occurred while trying to execute the '{method}' method.");
 			throw new DevToolsProtocolException(errorValue.GetDictionary().GetString("message"));
@@ -155,7 +204,7 @@ namespace CefNet
 		/// for development purposes by passing the `--devtools-protocol-log-
 		/// file=&lt;path&gt;` command-line flag.
 		/// </remarks>
-		public static async Task<string> ExecuteDevToolsMethodAsync(this IChromiumWebView webview, string method, CefDictionaryValue parameters, CancellationToken cancellationToken)
+		public static Task<string> ExecuteDevToolsMethodAsync(this IChromiumWebView webview, string method, CefDictionaryValue parameters, CancellationToken cancellationToken)
 		{
 			if (webview is null)
 				throw new ArgumentNullException(nameof(webview));
@@ -167,8 +216,56 @@ namespace CefNet
 			if (method.Length == 0)
 				throw new ArgumentOutOfRangeException(nameof(method));
 
-			byte[] rv = await ExecuteDevToolsMethodInternalAsync(webview, method, parameters, cancellationToken).ConfigureAwait(false);
-			return rv is null ? null : Encoding.UTF8.GetString(rv);
+			return ExecuteDevToolsMethodInternalAsync(webview, method, parameters, cancellationToken);
+		}
+
+		/// <summary>
+		/// Executes a method call over the DevTools protocol.
+		/// </summary>
+		/// <typeparam name="T">The type of object to return.</typeparam>
+		/// <param name="webview">The WebView control.</param>
+		/// <param name="method">The method name.</param>
+		/// <param name="parameters">
+		/// The dictionaly with method parameters. May be null.
+		/// See the <see href="https://chromedevtools.github.io/devtools-protocol/">
+		/// DevTools Protocol documentation</see> for details of supported methods
+		/// and the expected parameters.
+		/// </param>
+		/// <param name="convert">
+		/// A callback function that converts the result content into an object of type <see cref="T"/>.
+		/// If null, a byte array containing a UTF-8-encoded copy of the content is returned.
+		/// </param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+		/// <returns>
+		/// The JSON string with the response. Structure of the response varies depending
+		/// on the method name and is defined by the &apos;RETURN OBJECT&apos; section of
+		/// the Chrome DevTools Protocol command description.
+		/// </returns>
+		/// <remarks>
+		/// Usage of the ExecuteDevToolsMethodAsync function does not require an active
+		/// DevTools front-end or remote-debugging session. Other active DevTools sessions
+		/// will continue to function independently. However, any modification of global
+		/// browser state by one session may not be reflected in the UI of other sessions.
+		/// <para/>
+		/// Communication with the DevTools front-end (when displayed) can be logged
+		/// for development purposes by passing the `--devtools-protocol-log-
+		/// file=&lt;path&gt;` command-line flag.
+		/// </remarks>
+		public static async Task<T> ExecuteDevToolsMethodAsync<T>(this IChromiumWebView webview, string method, CefDictionaryValue parameters, ConvertUtf8BufferToTypeDelegate<T> convert, CancellationToken cancellationToken)
+			where T : class
+		{
+			if (webview is null)
+				throw new ArgumentNullException(nameof(webview));
+
+			if (method is null)
+				throw new ArgumentNullException(nameof(method));
+
+			method = method.Trim();
+			if (method.Length == 0)
+				throw new ArgumentOutOfRangeException(nameof(method));
+
+			object result = await ExecuteDevToolsMethodInternalAsync(webview, method, parameters, (buffer, size) => convert(buffer, size), cancellationToken).ConfigureAwait(false);
+			return (T)result;
 		}
 
 		/// <summary>
@@ -239,6 +336,51 @@ namespace CefNet
 					throw new ArgumentOutOfRangeException(nameof(parameters), errorMessage is null ? "An error occurred during JSON parsing." : errorMessage);
 			}
 			return ExecuteDevToolsMethodAsync(webview, method, args is null ? default(CefDictionaryValue) : args.GetDictionary(), cancellationToken);
+		}
+
+		/// <summary>
+		/// Executes a method call over the DevTools protocol.
+		/// </summary>
+		/// <typeparam name="T">The type of object to return.</typeparam>
+		/// <param name="webview">The WebView control.</param>
+		/// <param name="method">The method name.</param>
+		/// <param name="parameters">
+		/// The JSON string with method parameters. May be null.
+		/// See the <see href="https://chromedevtools.github.io/devtools-protocol/">
+		/// DevTools Protocol documentation</see> for details of supported methods
+		/// and the expected parameters.
+		/// </param>
+		/// <param name="convert">
+		/// A callback function that converts the result content into an object of type <see cref="T"/>.
+		/// If null, a byte array containing a UTF-8-encoded copy of the content is returned.
+		/// </param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+		/// <returns>
+		/// The JSON string with the response. Structure of the response varies depending
+		/// on the method name and is defined by the &apos;RETURN OBJECT&apos; section of
+		/// the Chrome DevTools Protocol command description.
+		/// </returns>
+		/// <remarks>
+		/// Usage of the ExecuteDevToolsMethodAsync function does not require an active
+		/// DevTools front-end or remote-debugging session. Other active DevTools sessions
+		/// will continue to function independently. However, any modification of global
+		/// browser state by one session may not be reflected in the UI of other sessions.
+		/// <para/>
+		/// Communication with the DevTools front-end (when displayed) can be logged
+		/// for development purposes by passing the `--devtools-protocol-log-
+		/// file=&lt;path&gt;` command-line flag.
+		/// </remarks>
+		public static Task<T> ExecuteDevToolsMethodAsync<T>(this IChromiumWebView webview, string method, string parameters, ConvertUtf8BufferToTypeDelegate<T> convert, CancellationToken cancellationToken)
+			where T : class
+		{
+			CefValue args = null;
+			if (parameters != null)
+			{
+				args = CefApi.CefParseJSON(parameters, CefJsonParserOptions.AllowTrailingCommas, out string errorMessage);
+				if (args is null)
+					throw new ArgumentOutOfRangeException(nameof(parameters), errorMessage is null ? "An error occurred during JSON parsing." : errorMessage);
+			}
+			return ExecuteDevToolsMethodAsync(webview, method, args is null ? default(CefDictionaryValue) : args.GetDictionary(), convert, cancellationToken);
 		}
 
 		/// <summary>
@@ -345,7 +487,7 @@ namespace CefNet
 					args.SetBool("captureBeyondViewport", true);
 			}
 
-			byte[] rv = await ExecuteDevToolsMethodInternalAsync(webview, "Page.captureScreenshot", args, cancellationToken).ConfigureAwait(false);
+			byte[] rv = (byte[])await ExecuteDevToolsMethodInternalAsync(webview, "Page.captureScreenshot", args, null, cancellationToken).ConfigureAwait(false);
 
 			if (rv != null && rv.Length > 11 && rv[rv.Length - 1] == '}' && rv[rv.Length - 2] == '"'
 				&& "{\"data\":\"".Equals(Encoding.ASCII.GetString(rv, 0, 9), StringComparison.Ordinal))
@@ -470,9 +612,9 @@ namespace CefNet
 
 		#endregion
 
-		private static void ThrowIfNotEmptyResponse(byte[] response)
+		private static void ThrowIfNotEmptyResponse(string response)
 		{
-			if (response is null || response.Length != 2 || response[0] != '{' || response[1] != '}')
+			if (response is null || !"{}".Equals(response, StringComparison.Ordinal))
 				throw new InvalidOperationException();
 		}
 	}

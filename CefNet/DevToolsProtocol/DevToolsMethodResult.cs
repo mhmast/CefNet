@@ -2,7 +2,7 @@
 {
 	internal struct DevToolsMethodResult
 	{
-		internal DevToolsMethodResult(int messageId, byte[] result, bool success)
+		internal DevToolsMethodResult(int messageId, object result, bool success)
 		{
 			this.MessageID = messageId;
 			this.Result = result;
@@ -13,6 +13,6 @@
 
 		public bool Success { get; }
 
-		public byte[] Result { get; }
+		public object Result { get; }
 	}
 }

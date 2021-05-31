@@ -12,7 +12,7 @@ namespace CefNet
 	{
 		private readonly IChromiumWebViewPrivate _webview;
 		private readonly CefRegistration _registration;
-		private Dictionary<int, TaskCompletionSource<DevToolsMethodResult>> _waitTasks = new Dictionary<int, TaskCompletionSource<DevToolsMethodResult>>();
+		private Dictionary<int, DevToolsCallCompletionSource> _waitTasks = new Dictionary<int, DevToolsCallCompletionSource>();
 		private int _lastMessageId;
 
 		public DevToolsProtocolClient(IChromiumWebViewPrivate webview)
@@ -53,23 +53,25 @@ namespace CefNet
 			}
 		}
 
-		public Task<DevToolsMethodResult> WaitForMessageAsync(int id)
+		/// <summary>
+		/// Returns Task.
+		/// </summary>
+		/// <param name="messageId">Message ID.</param>
+		/// <param name="convert">By default, the result is copied to a byte array.</param>
+		/// <returns></returns>
+		public Task<DevToolsMethodResult> WaitForMessageAsync(int messageId, ConvertUtf8BufferToObjectDelegate convert)
 		{
-			return RemoveOrAddTaskSource(id).Task;
+			return RemoveOrAddTaskSource(messageId, convert).Task;
 		}
 
-		private TaskCompletionSource<DevToolsMethodResult> RemoveOrAddTaskSource(int messageId)
+		private DevToolsCallCompletionSource RemoveOrAddTaskSource(int messageId, ConvertUtf8BufferToObjectDelegate convert)
 		{
-			TaskCompletionSource<DevToolsMethodResult> m;
+			DevToolsCallCompletionSource m;
 			lock (SyncRoot)
 			{
 				if (!_waitTasks.Remove(messageId, out m))
 				{
-#if NET45
-					m = new TaskCompletionSource<DevToolsMethodResult>();
-#else
-					m = new TaskCompletionSource<DevToolsMethodResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-#endif
+					m = new DevToolsCallCompletionSource(convert);
 					_waitTasks.Add(messageId, m);
 				}
 			}
@@ -78,22 +80,7 @@ namespace CefNet
 
 		protected internal unsafe override void OnDevToolsEvent(CefBrowser browser, string method, IntPtr @params, long paramsSize)
 		{
-			string args;
-			if (@params == IntPtr.Zero)
-			{
-				args = null;
-			}
-			else
-			{
-#if NET45
-				byte[] buffer = new byte[paramsSize];
-				Marshal.Copy(@params, buffer, 0, (int)paramsSize);
-				args = Encoding.UTF8.GetString(buffer);
-#else
-				args = Encoding.UTF8.GetString((byte*)@params, (int)paramsSize);
-#endif
-			}
-			_webview.RaiseDevToolsEventAvailable(new DevToolsProtocolEventAvailableEventArgs(method, args));
+			_webview.RaiseDevToolsEventAvailable(new DevToolsProtocolEventAvailableEventArgs(method, @params != IntPtr.Zero ? new string((sbyte*)@params, 0, (int)paramsSize, Encoding.UTF8) : null));
 		}
 
 		protected internal override bool OnDevToolsMessage(CefBrowser browser, IntPtr message, long messageSize)
@@ -117,30 +104,8 @@ namespace CefNet
 		/// <param name="resultSize">The size of the <paramref name="result"/> buffer.</param>
 		protected internal override void OnDevToolsMethodResult(CefBrowser browser, int messageId, bool success, IntPtr result, long resultSize)
 		{
-			byte[] buffer;
-			if (result == IntPtr.Zero)
-			{
-				buffer = null;
-			}
-			else
-			{
-				buffer = new byte[resultSize];
-				Marshal.Copy(result, buffer, 0, (int)resultSize);
-			}
-#if NET45
-			ThreadPool.QueueUserWorkItem(CompleteWaitTask, new DevToolsMethodResult(messageId, buffer, success));
-#else
-			RemoveOrAddTaskSource(messageId).SetResult(new DevToolsMethodResult(messageId, buffer, success));
-#endif
+			RemoveOrAddTaskSource(messageId, null).SaveResult(messageId, success, result, (int)resultSize);
 		}
-
-#if NET45
-		private void CompleteWaitTask(object state)
-		{
-			DevToolsMethodResult r = (DevToolsMethodResult)state;
-			RemoveOrAddTaskSource(r.MessageID).SetResult(r);
-		}
-#endif
 
 	}
 }
