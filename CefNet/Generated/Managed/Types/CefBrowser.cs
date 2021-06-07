@@ -21,10 +21,10 @@ using CefNet.Internal;
 namespace CefNet
 {
 	/// <summary>
-	/// Structure used to represent a browser window. When used in the browser
-	/// process the functions of this structure may be called on any thread unless
-	/// otherwise indicated in the comments. When used in the render process the
-	/// functions of this structure may only be called on the main thread.
+	/// Structure used to represent a browser. When used in the browser process the
+	/// functions of this structure may be called on any thread unless otherwise
+	/// indicated in the comments. When used in the render process the functions of
+	/// this structure may only be called on the main thread.
 	/// </summary>
 	/// <remarks>
 	/// Role: Proxy
@@ -39,6 +39,18 @@ namespace CefNet
 		public CefBrowser(cef_browser_t* instance)
 			: base((cef_base_ref_counted_t*)instance)
 		{
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this object is currently valid. This will return false after
+		/// cef_life_span_handler_t::OnBeforeClose is called.
+		/// </summary>
+		public unsafe virtual bool IsValid
+		{
+			get
+			{
+				return SafeCall(NativeInstance->IsValid() != 0);
+			}
 		}
 
 		/// <summary>
@@ -99,7 +111,7 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether the window is a popup window.
+		/// Gets a value indicating whether the browser is a popup.
 		/// </summary>
 		public unsafe virtual bool IsPopup
 		{
@@ -121,11 +133,13 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the main (top-level) frame for the browser window. In the browser
-		/// process this will return a valid object until after
+		/// Gets the main (top-level) frame for the browser. In the browser process
+		/// this will return a valid object until after
 		/// cef_life_span_handler_t::OnBeforeClose is called. In the renderer process
 		/// this will return NULL if the main frame is hosted in a different renderer
-		/// process (e.g. for cross-origin sub-frames).
+		/// process (e.g. for cross-origin sub-frames). The main frame object will
+		/// change during cross-origin navigation or re-navigation after renderer
+		/// process termination (due to crashes, etc).
 		/// </summary>
 		public unsafe virtual CefFrame MainFrame
 		{
@@ -136,7 +150,7 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the focused frame for the browser window.
+		/// Gets the focused frame for the browser.
 		/// </summary>
 		public unsafe virtual CefFrame FocusedFrame
 		{

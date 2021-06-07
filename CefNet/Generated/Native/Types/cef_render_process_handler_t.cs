@@ -56,7 +56,7 @@ namespace CefNet.CApi
 		/// <summary>
 		/// Called after a browser has been created. When browsing cross-origin a new
 		/// browser will be created before the old browser with the same identifier is
-		/// destroyed. |extra_info| is a read-only value originating from
+		/// destroyed. |extra_info| is an optional read-only value originating from
 		/// cef_browser_host_t::cef_browser_host_create_browser(),
 		/// cef_browser_host_t::cef_browser_host_create_browser_sync(),
 		/// cef_life_span_handler_t::on_before_popup() or
@@ -193,8 +193,8 @@ namespace CefNet.CApi
 
 		/// <summary>
 		/// Called when a new message is received from a different process. Return true
-		/// (1) if the message was handled or false (0) otherwise. Do not keep a
-		/// reference to or attempt to access the message outside of this callback.
+		/// (1) if the message was handled or false (0) otherwise. It is safe to keep a
+		/// reference to |message| outside of this callback.
 		/// </summary>
 		[NativeName("on_process_message_received")]
 		public unsafe int OnProcessMessageReceived(cef_browser_t* browser, cef_frame_t* frame, CefProcessId source_process, cef_process_message_t* message)

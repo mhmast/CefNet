@@ -39,6 +39,7 @@ namespace CefNet.Internal
 
 		public CefClient Client { get; private set; }
 		private CefLifeSpanHandlerGlue LifeSpanGlue { get; }
+		private CefFrameHandlerGlue FrameGlue { get; }
 		private CefRenderHandlerGlue RenderGlue { get; }
 		private CefDisplayHandlerGlue DisplayGlue { get; }
 		private CefRequestHandlerGlue RequestGlue { get; }
@@ -55,6 +56,7 @@ namespace CefNet.Internal
 			this.WebView = view;
 			this.Client = new CefClientGlue(this);
 			this.LifeSpanGlue = new CefLifeSpanHandlerGlue(this);
+			this.FrameGlue = new CefFrameHandlerGlue(this);
 			this.RenderGlue = new CefRenderHandlerGlue(this);
 			this.DisplayGlue = new CefDisplayHandlerGlue(this);
 			this.RequestGlue = new CefRequestHandlerGlue(this);

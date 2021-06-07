@@ -169,6 +169,25 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
+		/// _cef_frame_handler_t* (*)(_cef_client_t* self)*
+		/// </summary>
+		public void* get_frame_handler;
+
+		/// <summary>
+		/// Return the handler for events related to cef_frame_t lifespan. This
+		/// function will be called once during cef_browser_t creation and the result
+		/// will be cached for performance reasons.
+		/// </summary>
+		[NativeName("get_frame_handler")]
+		public unsafe cef_frame_handler_t* GetFrameHandler()
+		{
+			fixed (cef_client_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_client_t*, cef_frame_handler_t*>)get_frame_handler)(self);
+			}
+		}
+
+		/// <summary>
 		/// _cef_jsdialog_handler_t* (*)(_cef_client_t* self)*
 		/// </summary>
 		public void* get_jsdialog_handler;
@@ -296,8 +315,8 @@ namespace CefNet.CApi
 
 		/// <summary>
 		/// Called when a new message is received from a different process. Return true
-		/// (1) if the message was handled or false (0) otherwise. Do not keep a
-		/// reference to or attempt to access the message outside of this callback.
+		/// (1) if the message was handled or false (0) otherwise.  It is safe to keep
+		/// a reference to |message| outside of this callback.
 		/// </summary>
 		[NativeName("on_process_message_received")]
 		public unsafe int OnProcessMessageReceived(cef_browser_t* browser, cef_frame_t* frame, CefProcessId source_process, cef_process_message_t* message)

@@ -69,6 +69,11 @@ namespace CefNet.Internal
 			return _implementation.GetFocusHandler();
 		}
 
+		protected internal unsafe override CefFrameHandler GetFrameHandler()
+		{
+			return _implementation.GetFrameHandler();
+		}
+
 		protected internal unsafe override CefJSDialogHandler GetJSDialogHandler()
 		{
 			return _implementation.GetJSDialogHandler();

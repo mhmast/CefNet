@@ -21,10 +21,10 @@ using CefNet.Internal;
 namespace CefNet
 {
 	/// <summary>
-	/// Structure used to represent the browser process aspects of a browser window.
-	/// The functions of this structure can only be called in the browser process.
-	/// They may be called on any thread in that process unless otherwise indicated
-	/// in the comments.
+	/// Structure used to represent the browser process aspects of a browser. The
+	/// functions of this structure can only be called in the browser process. They
+	/// may be called on any thread in that process unless otherwise indicated in the
+	/// comments.
 	/// </summary>
 	/// <remarks>
 	/// Role: Proxy
@@ -53,9 +53,10 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Retrieve the window handle for this browser. If this browser is wrapped in
-		/// a cef_browser_view_t this property should be called on the browser process
-		/// UI thread and it will return the handle for the top-level native window.
+		/// Retrieve the window handle (if any) for this browser. If this browser is
+		/// wrapped in a cef_browser_view_t this property should be called on the
+		/// browser process UI thread and it will return the handle for the top-level
+		/// native window.
 		/// </summary>
 		public unsafe virtual IntPtr WindowHandle
 		{
@@ -66,10 +67,10 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Retrieve the window handle of the browser that opened this browser. Will
-		/// return NULL for non-popup windows or if this browser is wrapped in a
-		/// cef_browser_view_t. This property can be used in combination with custom
-		/// handling of modal windows.
+		/// Retrieve the window handle (if any) of the browser that opened this
+		/// browser. Will return NULL for non-popup browsers or if this browser is
+		/// wrapped in a cef_browser_view_t. This property can be used in combination
+		/// with custom handling of modal windows.
 		/// </summary>
 		public unsafe virtual IntPtr OpenerWindowHandle
 		{
@@ -244,11 +245,12 @@ namespace CefNet
 
 		/// <summary>
 		/// Helper for closing a browser. Call this function from the top-level window
-		/// close handler. Internally this calls CloseBrowser(false (0)) if the close
-		/// has not yet been initiated. This function returns false (0) while the close
-		/// is pending and true (1) after the close has completed. See close_browser()
-		/// and cef_life_span_handler_t::do_close() documentation for additional usage
-		/// information. This function must be called on the browser process UI thread.
+		/// close handler (if any). Internally this calls CloseBrowser(false (0)) if
+		/// the close has not yet been initiated. This function returns false (0) while
+		/// the close is pending and true (1) after the close has completed. See
+		/// close_browser() and cef_life_span_handler_t::do_close() documentation for
+		/// additional usage information. This function must be called on the browser
+		/// process UI thread.
 		/// </summary>
 		public unsafe virtual bool TryCloseBrowser()
 		{

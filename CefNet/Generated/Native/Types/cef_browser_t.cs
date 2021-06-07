@@ -19,10 +19,10 @@ using CefNet.WinApi;
 namespace CefNet.CApi
 {
 	/// <summary>
-	/// Structure used to represent a browser window. When used in the browser
-	/// process the functions of this structure may be called on any thread unless
-	/// otherwise indicated in the comments. When used in the render process the
-	/// functions of this structure may only be called on the main thread.
+	/// Structure used to represent a browser. When used in the browser process the
+	/// functions of this structure may be called on any thread unless otherwise
+	/// indicated in the comments. When used in the render process the functions of
+	/// this structure may only be called on the main thread.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public unsafe partial struct cef_browser_t
@@ -31,6 +31,24 @@ namespace CefNet.CApi
 		/// Base structure.
 		/// </summary>
 		public cef_base_ref_counted_t @base;
+
+		/// <summary>
+		/// int (*)(_cef_browser_t* self)*
+		/// </summary>
+		public void* is_valid;
+
+		/// <summary>
+		/// True if this object is currently valid. This will return false (0) after
+		/// cef_life_span_handler_t::OnBeforeClose is called.
+		/// </summary>
+		[NativeName("is_valid")]
+		public unsafe int IsValid()
+		{
+			fixed (cef_browser_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_browser_t*, int>)is_valid)(self);
+			}
+		}
 
 		/// <summary>
 		/// _cef_browser_host_t* (*)(_cef_browser_t* self)*
@@ -228,7 +246,7 @@ namespace CefNet.CApi
 		public void* is_popup;
 
 		/// <summary>
-		/// Returns true (1) if the window is a popup window.
+		/// Returns true (1) if the browser is a popup.
 		/// </summary>
 		[NativeName("is_popup")]
 		public unsafe int IsPopup()
@@ -262,11 +280,13 @@ namespace CefNet.CApi
 		public void* get_main_frame;
 
 		/// <summary>
-		/// Returns the main (top-level) frame for the browser window. In the browser
-		/// process this will return a valid object until after
+		/// Returns the main (top-level) frame for the browser. In the browser process
+		/// this will return a valid object until after
 		/// cef_life_span_handler_t::OnBeforeClose is called. In the renderer process
 		/// this will return NULL if the main frame is hosted in a different renderer
-		/// process (e.g. for cross-origin sub-frames).
+		/// process (e.g. for cross-origin sub-frames). The main frame object will
+		/// change during cross-origin navigation or re-navigation after renderer
+		/// process termination (due to crashes, etc).
 		/// </summary>
 		[NativeName("get_main_frame")]
 		public unsafe cef_frame_t* GetMainFrame()
@@ -283,7 +303,7 @@ namespace CefNet.CApi
 		public void* get_focused_frame;
 
 		/// <summary>
-		/// Returns the focused frame for the browser window.
+		/// Returns the focused frame for the browser.
 		/// </summary>
 		[NativeName("get_focused_frame")]
 		public unsafe cef_frame_t* GetFocusedFrame()

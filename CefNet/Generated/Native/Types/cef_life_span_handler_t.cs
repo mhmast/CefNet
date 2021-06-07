@@ -76,8 +76,10 @@ namespace CefNet.CApi
 		public void* on_after_created;
 
 		/// <summary>
-		/// Called after a new browser is created. This callback will be the first
-		/// notification that references |browser|.
+		/// Called after a new browser is created. It is now safe to begin performing
+		/// actions with |browser|. cef_frame_handler_t callbacks related to initial
+		/// main frame creation will arrive before this callback. See
+		/// cef_frame_handler_t documentation for additional usage information.
 		/// </summary>
 		[NativeName("on_after_created")]
 		public unsafe void OnAfterCreated(cef_browser_t* browser)
@@ -191,13 +193,14 @@ namespace CefNet.CApi
 		/// <summary>
 		/// Called just before a browser is destroyed. Release all references to the
 		/// browser object and do not attempt to execute any functions on the browser
-		/// object (other than GetIdentifier or IsSame) after this callback returns.
-		/// This callback will be the last notification that references |browser| on
-		/// the UI thread. Any in-progress network requests associated with |browser|
-		/// will be aborted when the browser is destroyed, and
+		/// object (other than IsValid, GetIdentifier or IsSame) after this callback
+		/// returns. cef_frame_handler_t callbacks related to final main frame
+		/// destruction will arrive after this callback and cef_browser_t::IsValid will
+		/// return false (0) at that time. Any in-progress network requests associated
+		/// with |browser| will be aborted when the browser is destroyed, and
 		/// cef_resource_request_handler_t callbacks related to those requests may
-		/// still arrive on the IO thread after this function is called. See do_close()
-		/// documentation for additional usage information.
+		/// still arrive on the IO thread after this callback. See cef_frame_handler_t
+		/// and do_close() documentation for additional usage information.
 		/// </summary>
 		[NativeName("on_before_close")]
 		public unsafe void OnBeforeClose(cef_browser_t* browser)

@@ -652,8 +652,7 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Called when a new message is received from a different process. Do not keep a
-		/// reference to or attempt to access the message outside of this callback.
+		/// Called when a new message is received from a different process.
 		/// </summary>
 		protected internal virtual void OnCefProcessMessageReceived(CefProcessMessageReceivedEventArgs e)
 		{

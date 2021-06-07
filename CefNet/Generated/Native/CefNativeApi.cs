@@ -20,7 +20,7 @@ namespace CefNet.CApi
 {
 	public static partial class CefNativeApi
 	{
-		public static readonly string ApiHash = "d026196d35d8894a836ab3a3d033b84195cdb835";
+		public static readonly string ApiHash = "7fb6a7510f39c359767b3a893c9ebfb5fb5973d7";
 
 		/// <summary>
 		/// Add an entry to the cross-origin access whitelist.
@@ -129,9 +129,9 @@ namespace CefNet.CApi
 		public static unsafe extern cef_binary_value_t* cef_binary_value_create(void* data, UIntPtr data_size);
 
 		/// <summary>
-		/// Create a new browser window using the window parameters specified by
-		/// |windowInfo|. All values will be copied internally and the actual window will
-		/// be created on the UI thread. If |request_context| is NULL the global request
+		/// Create a new browser using the window parameters specified by |windowInfo|.
+		/// All values will be copied internally and the actual window (if any) will be
+		/// created on the UI thread. If |request_context| is NULL the global request
 		/// context will be used. This function can be called on any browser process
 		/// thread and will not block. The optional |extra_info| parameter provides an
 		/// opportunity to specify extra information specific to the created browser that
@@ -146,11 +146,11 @@ namespace CefNet.CApi
 		public static unsafe extern int cef_browser_host_create_browser(cef_window_info_t* windowInfo, cef_client_t* client, cef_string_t* url, cef_browser_settings_t* settings, cef_dictionary_value_t* extra_info, cef_request_context_t* request_context);
 
 		/// <summary>
-		/// Create a new browser window using the window parameters specified by
-		/// |windowInfo|. If |request_context| is NULL the global request context will be
-		/// used. This function can only be called on the browser process UI thread. The
-		/// optional |extra_info| parameter provides an opportunity to specify extra
-		/// information specific to the created browser that will be passed to
+		/// Create a new browser using the window parameters specified by |windowInfo|.
+		/// If |request_context| is NULL the global request context will be used. This
+		/// function can only be called on the browser process UI thread. The optional
+		/// |extra_info| parameter provides an opportunity to specify extra information
+		/// specific to the created browser that will be passed to
 		/// cef_render_process_handler_t::on_browser_created() in the render process.
 		/// </summary>
 		/// <remarks>

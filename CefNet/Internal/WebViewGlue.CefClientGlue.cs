@@ -46,6 +46,11 @@ namespace CefNet.Internal
 			return FocusGlue;
 		}
 
+		internal CefFrameHandler GetFrameHandler()
+		{
+			return FrameGlue;
+		}
+
 		internal CefJSDialogHandler GetJSDialogHandler()
 		{
 			return JSDialogGlue;

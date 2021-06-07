@@ -42,14 +42,6 @@ namespace CefNet
 		FileBackground = 1,
 
 		/// <summary>
-		/// Used for blocking tasks (e.g. file system access) where the user won&apos;t
-		/// notice if the task takes an arbitrarily long time to complete. All tasks
-		/// posted after CefBrowserProcessHandler::OnContextInitialized() and before
-		/// CefShutdown() are guaranteed to run.
-		/// </summary>
-		File = FileBackground,
-
-		/// <summary>
 		/// Used for blocking tasks (e.g. file system access) that affect UI or
 		/// responsiveness of future user interactions. Do not use if an immediate
 		/// response to a user interaction is expected. All tasks posted after

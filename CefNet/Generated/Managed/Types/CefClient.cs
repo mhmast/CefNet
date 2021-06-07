@@ -45,6 +45,8 @@ namespace CefNet
 
 		private static readonly GetFocusHandlerDelegate fnGetFocusHandler = GetFocusHandlerImpl;
 
+		private static readonly GetFrameHandlerDelegate fnGetFrameHandler = GetFrameHandlerImpl;
+
 		private static readonly GetJSDialogHandlerDelegate fnGetJSDialogHandler = GetJSDialogHandlerImpl;
 
 		private static readonly GetKeyboardHandlerDelegate fnGetKeyboardHandler = GetKeyboardHandlerImpl;
@@ -79,6 +81,7 @@ namespace CefNet
 			self->get_drag_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetDragHandler);
 			self->get_find_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetFindHandler);
 			self->get_focus_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetFocusHandler);
+			self->get_frame_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetFrameHandler);
 			self->get_jsdialog_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetJSDialogHandler);
 			self->get_keyboard_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetKeyboardHandler);
 			self->get_life_span_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetLifeSpanHandler);
@@ -96,6 +99,7 @@ namespace CefNet
 			self->get_drag_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_drag_handler_t*>)&GetDragHandlerImpl;
 			self->get_find_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_find_handler_t*>)&GetFindHandlerImpl;
 			self->get_focus_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_focus_handler_t*>)&GetFocusHandlerImpl;
+			self->get_frame_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_frame_handler_t*>)&GetFrameHandlerImpl;
 			self->get_jsdialog_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_jsdialog_handler_t*>)&GetJSDialogHandlerImpl;
 			self->get_keyboard_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_keyboard_handler_t*>)&GetKeyboardHandlerImpl;
 			self->get_life_span_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_life_span_handler_t*>)&GetLifeSpanHandlerImpl;
@@ -356,6 +360,38 @@ namespace CefNet
 		}
 
 		/// <summary>
+		/// Return the handler for events related to cef_frame_t lifespan. This
+		/// function will be called once during cef_browser_t creation and the result
+		/// will be cached for performance reasons.
+		/// </summary>
+		protected internal unsafe virtual CefFrameHandler GetFrameHandler()
+		{
+			return default;
+		}
+
+#if NET_LESS_5_0
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		private unsafe delegate cef_frame_handler_t* GetFrameHandlerDelegate(cef_client_t* self);
+
+#endif // NET_LESS_5_0
+		// _cef_frame_handler_t* (*)(_cef_client_t* self)*
+#if !NET_LESS_5_0
+		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+#endif
+		private static unsafe cef_frame_handler_t* GetFrameHandlerImpl(cef_client_t* self)
+		{
+			var instance = GetInstance((IntPtr)self) as CefClient;
+			if (instance == null)
+			{
+				return default;
+			}
+			CefFrameHandler rv = instance.GetFrameHandler();
+			if (rv == null)
+				return null;
+			return (rv != null) ? rv.GetNativeInstance() : null;
+		}
+
+		/// <summary>
 		/// Return the handler for JavaScript dialogs. If no handler is provided the
 		/// default implementation will be used.
 		/// </summary>
@@ -572,8 +608,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Called when a new message is received from a different process. Return true
-		/// (1) if the message was handled or false (0) otherwise. Do not keep a
-		/// reference to or attempt to access the message outside of this callback.
+		/// (1) if the message was handled or false (0) otherwise.  It is safe to keep
+		/// a reference to |message| outside of this callback.
 		/// </summary>
 		protected internal unsafe virtual bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
 		{

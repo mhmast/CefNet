@@ -29,10 +29,11 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Create a new browser window using the window parameters specified by
+		/// Create a new browser using the window parameters specified by
 		/// <paramref name="windowInfo"/>.<para/>
-		/// All values will be copied internally and the actual window will be created on the UI thread.
-		/// This function can be called on any browser process thread and will not block.
+		/// All values will be copied internally and the actual window (if any) will be
+		/// created on the UI thread. This function can be called on any browser process
+		/// thread and will not block.
 		/// </summary>
 		/// <param name="windowInfo">The CefWindowInfo instance.</param>
 		/// <param name="client">The CefClient instance.</param>
@@ -73,7 +74,7 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Create a new browser window using the window parameters specified by
+		/// Create a new browser using the window parameters specified by
 		/// <paramref name="windowInfo"/>.<para/>
 		/// This function can only be called on the browser process UI thread.
 		/// </summary>
