@@ -337,13 +337,17 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Quit the CEF message loop that was started by calling <see cref="Run"/>.<para/>
-		/// This function should only be called on the main application thread and only
-		/// if <see cref="Run"/> was used.
+		/// Quit the CEF message loop that was started by calling <see cref="Run"/>.
 		/// </summary>
+		/// <remarks>
+		/// This function should only be called if <see cref="Run"/> was used.
+		/// </remarks>
 		public static void Exit()
 		{
-			CefApi.QuitMessageLoop();
+			if (CefApi.CurrentlyOn(CefThreadId.UI))
+				CefApi.QuitMessageLoop();
+			else
+				CefNetApi.Post(CefThreadId.UI, CefApi.QuitMessageLoop);
 		}
 
 		/// <summary>
