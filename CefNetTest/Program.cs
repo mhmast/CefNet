@@ -141,6 +141,10 @@ namespace CefNetTest
 			Console.WriteLine("cef_run_message_loop\n");
 			CefApi.RunMessageLoop();
 
+			// Release references to CefBrowser's (if any)
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
 			// Shutdown CEF
 			Console.WriteLine("cef_shutdown\n");
 			CefApi.Shutdown();
