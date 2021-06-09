@@ -655,7 +655,7 @@ namespace CefNet
 			{
 				if (value < 1 || value > 60)
 					throw new ArgumentOutOfRangeException(nameof(value));
-				WindowlessFrameRate = value;
+				AliveBrowserHost.WindowlessFrameRate = value;
 			}
 		}
 
