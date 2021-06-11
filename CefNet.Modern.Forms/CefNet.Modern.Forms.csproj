@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\CefNet.Avalonia\CustomCursor.cs" Link="CustomCursor.cs" />
     <Compile Include="..\CefNet.Avalonia\WinApi\NativeMethods.cs" Link="WinApi\NativeMethods.cs" />
     <Compile Include="..\CefNet.Windows.Forms\CursorChangeEventArgs.cs" Link="CursorChangeEventArgs.cs" />
     <Compile Include="..\CefNet.Windows.Forms\Internal\IWinFormsWebViewPrivate.cs" Link="Internal\IWinFormsWebViewPrivate.cs" />
