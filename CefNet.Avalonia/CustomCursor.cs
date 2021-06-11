@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -11,12 +12,21 @@ namespace CefNet.Avalonia
 		public unsafe static Cursor Create(ref CefCursorInfo cursorInfo)
 		{
 			CefSize size = cursorInfo.Size;
-			CefPoint hotSpot = cursorInfo.Hotspot;
-			using (var bitmap = new Bitmap(PixelFormat.Bgra8888, AlphaFormat.Premul, cursorInfo.Buffer,
-				new PixelSize(size.Width, size.Height), OffscreenGraphics.DpiScale.Dpi, size.Width * 4))
+			if (size.Width > 0 && size.Height > 0 && cursorInfo.Buffer != IntPtr.Zero)
 			{
-				return new Cursor(bitmap, new PixelPoint(hotSpot.X, hotSpot.Y));
+				try
+				{
+					CefPoint hotSpot = cursorInfo.Hotspot;
+					using (var bitmap = new Bitmap(PixelFormat.Bgra8888, AlphaFormat.Premul, cursorInfo.Buffer,
+						new PixelSize(size.Width, size.Height), OffscreenGraphics.DpiScale.Dpi, size.Width * 4))
+					{
+						return new Cursor(bitmap, new PixelPoint(hotSpot.X, hotSpot.Y));
+					}
+				}
+				catch (AccessViolationException) { throw; }
+				catch { }
 			}
+			return Cursor.Default;
 		}
 	}
 }
