@@ -262,7 +262,11 @@ namespace CefNet.CApi
 		public void* get_main_frame;
 
 		/// <summary>
-		/// Returns the main (top-level) frame for the browser window.
+		/// Returns the main (top-level) frame for the browser window. In the browser
+		/// process this will return a valid object until after
+		/// cef_life_span_handler_t::OnBeforeClose is called. In the renderer process
+		/// this will return NULL if the main frame is hosted in a different renderer
+		/// process (e.g. for cross-origin sub-frames).
 		/// </summary>
 		[NativeName("get_main_frame")]
 		public unsafe cef_frame_t* GetMainFrame()
