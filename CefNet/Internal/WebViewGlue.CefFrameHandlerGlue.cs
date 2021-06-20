@@ -8,22 +8,6 @@ namespace CefNet.Internal
 		public static object FrameAttachedEvent = new object();
 		public static object FrameDetachedEvent = new object();
 
-		public void CreateOrDestroyFrameGlue()
-		{
-			lock (Events)
-			{
-				if (AvoidOnFrameCreated() && AvoidOnFrameDetached()
-					&& AvoidOnFrameAttached() && AvoidOnFrameAttached())
-				{
-					this.FrameGlue = null;
-				}
-				else if(this.FrameGlue is null)
-				{
-					this.FrameGlue = new CefFrameHandlerGlue(this);
-				}
-			}
-		}
-
 		[MethodImpl(MethodImplOptions.ForwardRef)]
 		private extern bool AvoidOnFrameCreatedImpl();
 

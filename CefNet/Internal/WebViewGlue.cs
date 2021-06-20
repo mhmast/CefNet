@@ -27,6 +27,7 @@ namespace CefNet.Internal
 		private CefLoadHandlerGlue LoadGlue { get; }
 		private CefResourceRequestHandler ResourceRequestGlue { get; }
 		private CefCookieAccessFilter CookieAccessFilterGlue { get; }
+		private CefFrameHandlerGlue FrameGlue { get; }
 
 		// optional
 		private CefDownloadHandlerGlue DownloadGlue { get; set; }
@@ -35,7 +36,6 @@ namespace CefNet.Internal
 		private CefKeyboardHandlerGlue KeyboardGlue { get; set; }
 		private CefDragHandlerGlue DragGlue { get; set; }
 		private CefFocusHandlerGlue FocusGlue { get; set; }
-		private CefFrameHandlerGlue FrameGlue { get; set; }
 		private CefDialogHandlerGlue DialogGlue { get; set; }
 
 		public WebViewGlue(IChromiumWebViewPrivate view)
@@ -49,7 +49,7 @@ namespace CefNet.Internal
 			this.RequestGlue = new CefRequestHandlerGlue(this);
 			this.DownloadGlue = new CefDownloadHandlerGlue(this);
 			this.FindGlue = new CefFindHandlerGlue(this);
-
+			this.FrameGlue = new CefFrameHandlerGlue(this);
 			this.ContextMenuGlue = new CefContextMenuHandlerGlue(this);
 			this.LoadGlue = new CefLoadHandlerGlue(this);
 			this.PrintGlue = new CefPrintHandlerGlue(this);
@@ -57,7 +57,6 @@ namespace CefNet.Internal
 			this.CookieAccessFilterGlue = new CefCookieAccessFilterGlue(this);
 			this.ResourceRequestGlue = new CefResourceRequestHandlerGlue(this);
 
-			CreateOrDestroyFrameGlue();
 			CreateOrDestroyAudioGlue();
 			CreateOrDestroyJSDialogGlue();
 			CreateOrDestroyKeyboardGlue();

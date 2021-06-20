@@ -845,16 +845,8 @@ namespace CefNet
 		[Browsable(false)]
 		public event EventHandler<FrameEventArgs> CefFrameCreated
 		{
-			add
-			{
-				ViewGlue.AddEventHandler(WebViewGlue.FrameCreatedEvent, value);
-				ViewGlue.CreateOrDestroyFrameGlue();
-			}
-			remove
-			{
-				ViewGlue.RemoveEventHandler(WebViewGlue.FrameCreatedEvent, value);
-				ViewGlue.CreateOrDestroyFrameGlue();
-			}
+			add { ViewGlue.AddEventHandler(WebViewGlue.FrameCreatedEvent, value); }
+			remove { ViewGlue.RemoveEventHandler(WebViewGlue.FrameCreatedEvent, value); }
 		}
 
 		/// <summary>
@@ -875,16 +867,8 @@ namespace CefNet
 		[Browsable(false)]
 		public event EventHandler<FrameEventArgs> CefFrameAttached
 		{
-			add
-			{
-				ViewGlue.AddEventHandler(WebViewGlue.FrameAttachedEvent, value);
-				ViewGlue.CreateOrDestroyFrameGlue();
-			}
-			remove
-			{
-				ViewGlue.RemoveEventHandler(WebViewGlue.FrameDetachedEvent, value);
-				ViewGlue.CreateOrDestroyFrameGlue();
-			}
+			add { ViewGlue.AddEventHandler(WebViewGlue.FrameAttachedEvent, value); }
+			remove { ViewGlue.RemoveEventHandler(WebViewGlue.FrameDetachedEvent, value); }
 		}
 
 		/// <summary>
@@ -905,16 +889,8 @@ namespace CefNet
 		[Browsable(false)]
 		public event EventHandler<FrameEventArgs> CefFrameDetached
 		{
-			add
-			{
-				ViewGlue.AddEventHandler(WebViewGlue.FrameDetachedEvent, value);
-				ViewGlue.CreateOrDestroyFrameGlue();
-			}
-			remove
-			{
-				ViewGlue.RemoveEventHandler(WebViewGlue.FrameDetachedEvent, value);
-				ViewGlue.CreateOrDestroyFrameGlue();
-			}
+			add { ViewGlue.AddEventHandler(WebViewGlue.FrameDetachedEvent, value); }
+			remove { ViewGlue.RemoveEventHandler(WebViewGlue.FrameDetachedEvent, value); }
 		}
 
 		/// <summary>
