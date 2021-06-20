@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using CefNet.Internal;
 
@@ -6,7 +7,7 @@ namespace CefNet
 {
 	public partial class WindowlessWebView : IDisposable
 	{
-		private object SyncRoot = new object();
+		private object SyncRoot = new Dictionary<InitialPropertyKeys, object>();
 
 		private bool _layoutOff;
 		private CefRect _bounds;
@@ -38,6 +39,7 @@ namespace CefNet
 			{
 				InitializeInternal(windowInfo);
 			}
+			SetState(State.Creating, true);
 		}
 
 		public WindowlessWebView(string url, CefBrowserSettings settings, CefDictionaryValue extraInfo, CefRequestContext requestContext)
@@ -47,7 +49,11 @@ namespace CefNet
 			{
 				windowInfo = new CefWindowInfo();
 				InitializeInternal(windowInfo);
-				if (!CefApi.CreateBrowser(windowInfo, ViewGlue.Client, url ?? "about:blank", settings ?? DefaultBrowserSettings, extraInfo, requestContext))
+				this.BrowserSettings = settings ?? DefaultBrowserSettings;
+				this.ExtraInfo = extraInfo;
+				this.RequestContext = requestContext;
+				SetState(State.Creating, true);
+				if (!CefApi.CreateBrowser(windowInfo, ViewGlue.Client, url ?? "about:blank", this.BrowserSettings, extraInfo, requestContext))
 					throw new InvalidOperationException();
 			}
 			finally
@@ -77,7 +83,10 @@ namespace CefNet
 
 		private void SetInitProperty(InitialPropertyKeys key, object value)
 		{
-			throw new InvalidOperationException("This property must be set before the underlying CEF browser is created.");
+			var propertyBag = SyncRoot as Dictionary<InitialPropertyKeys, object>;
+			if (_state != State.NotInitialized || propertyBag is null)
+				throw new InvalidOperationException("This property must be set before the underlying CEF browser is created.");
+			propertyBag[key] = value;
 		}
 
 		private T GetInitProperty<T>(InitialPropertyKeys key)
@@ -189,6 +198,7 @@ namespace CefNet
 
 		protected virtual void OnBrowserCreated(EventArgs e)
 		{
+			SyncRoot = new object();
 			BrowserCreated?.Invoke(this, e);
 		}
 
