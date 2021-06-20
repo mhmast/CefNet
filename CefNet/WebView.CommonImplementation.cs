@@ -841,6 +841,93 @@ namespace CefNet
 			AddressChange?.Invoke(this, e);
 		}
 
+		/// <inheritdoc />
+		public event EventHandler<FrameEventArgs> CefFrameCreated
+		{
+			add
+			{
+				ViewGlue.AddEventHandler(WebViewGlue.FrameCreatedEvent, value);
+				ViewGlue.CreateOrDestroyCefFrameHandlerGlue();
+			}
+			remove
+			{
+				ViewGlue.RemoveEventHandler(WebViewGlue.FrameCreatedEvent, value);
+				ViewGlue.CreateOrDestroyCefFrameHandlerGlue();
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="CefFrameCreated"/> event.
+		/// </summary>
+		/// <param name="e">A <see cref="FrameEventArgs"/> that contains the event data.</param>
+		protected private virtual void OnCefFrameCreated(FrameEventArgs e)
+		{
+			((EventHandler<FrameEventArgs>)ViewGlue.GetEventHandler(WebViewGlue.FrameCreatedEvent))?.Invoke(this, e);
+		}
+
+		void IChromiumWebViewPrivate.RaiseCefFrameCreated(FrameEventArgs e)
+		{
+			OnCefFrameCreated(e);
+		}
+
+		/// <inheritdoc />
+		public event EventHandler<FrameEventArgs> CefFrameAttached
+		{
+			add
+			{
+				ViewGlue.AddEventHandler(WebViewGlue.FrameAttachedEvent, value);
+				ViewGlue.CreateOrDestroyCefFrameHandlerGlue();
+			}
+			remove
+			{
+				ViewGlue.RemoveEventHandler(WebViewGlue.FrameDetachedEvent, value);
+				ViewGlue.CreateOrDestroyCefFrameHandlerGlue();
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="CefFrameAttached"/> event.
+		/// </summary>
+		/// <param name="e">A <see cref="FrameEventArgs"/> that contains the event data.</param>
+		protected virtual void OnCefFrameAttached(FrameEventArgs e)
+		{
+			((EventHandler<FrameEventArgs>)ViewGlue.GetEventHandler(WebViewGlue.FrameAttachedEvent))?.Invoke(this, e);
+		}
+
+		void IChromiumWebViewPrivate.RaiseCefFrameAttached(FrameEventArgs e)
+		{
+			OnCefFrameAttached(e);
+		}
+
+		/// <inheritdoc />
+		public event EventHandler<FrameEventArgs> CefFrameDetached
+		{
+			add
+			{
+				ViewGlue.AddEventHandler(WebViewGlue.FrameDetachedEvent, value);
+				ViewGlue.CreateOrDestroyCefFrameHandlerGlue();
+			}
+			remove
+			{
+				ViewGlue.RemoveEventHandler(WebViewGlue.FrameDetachedEvent, value);
+				ViewGlue.CreateOrDestroyCefFrameHandlerGlue();
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="CefFrameDetached"/> event.
+		/// </summary>
+		/// <param name="e">A <see cref="FrameEventArgs"/> that contains the event data.</param>
+		protected private virtual void OnCefFrameDetached(FrameEventArgs e)
+		{
+			((EventHandler<FrameEventArgs>)ViewGlue.GetEventHandler(WebViewGlue.FrameDetachedEvent))?.Invoke(this, e);
+		}
+
+		void IChromiumWebViewPrivate.RaiseCefFrameDetached(FrameEventArgs e)
+		{
+			OnCefFrameDetached(e);
+		}
+
 		void IChromiumWebViewPrivate.RaiseTitleChange(DocumentTitleChangedEventArgs e)
 		{
 			RaiseCrossThreadEvent(OnDocumentTitleChanged, e, false);

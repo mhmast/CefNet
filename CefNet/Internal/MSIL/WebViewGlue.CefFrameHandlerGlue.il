@@ -1,6 +1,6 @@
 ﻿.class public auto ansi beforefieldinit CefNet.Internal.WebViewGlue
 {
-	.method assembly hidebysig instance bool AvoidOnFrameCreated()
+	.method private hidebysig instance bool AvoidOnFrameCreatedImpl()
 	{
 		.maxstack 2
 		ldarg.0
@@ -10,7 +10,7 @@
 		ret
 	}
 
-	.method assembly hidebysig instance bool AvoidOnFrameAttached()
+	.method private hidebysig instance bool AvoidOnFrameAttachedImpl()
 	{
 		.maxstack 2
 		ldarg.0
@@ -20,7 +20,7 @@
 		ret
 	}
 
-	.method assembly hidebysig instance bool AvoidOnFrameDetached()
+	.method private hidebysig instance bool AvoidOnFrameDetachedImpl()
 	{
 		.maxstack 2
 		ldarg.0

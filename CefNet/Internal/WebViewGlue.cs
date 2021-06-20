@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Threading;
 
@@ -37,9 +38,11 @@ namespace CefNet.Internal
 
 		public CefBrowser BrowserObject { get; protected set; }
 
+		private EventHandlerList Events { get; }
+
 		public CefClient Client { get; private set; }
 		private CefLifeSpanHandlerGlue LifeSpanGlue { get; }
-		private CefFrameHandlerGlue FrameGlue { get; }
+		private CefFrameHandlerGlue FrameGlue { get; set; }
 		private CefRenderHandlerGlue RenderGlue { get; }
 		private CefDisplayHandlerGlue DisplayGlue { get; }
 		private CefRequestHandlerGlue RequestGlue { get; }
@@ -47,16 +50,17 @@ namespace CefNet.Internal
 		private CefDownloadHandlerGlue DownloadGlue { get; }
 		private CefFindHandlerGlue FindGlue { get; }
 		private CefPrintHandler PrintGlue { get; }
+		
 
 		private CefContextMenuHandlerGlue ContextMenuGlue { get; }
 		private CefLoadHandlerGlue LoadGlue { get; }
 
 		public WebViewGlue(IChromiumWebViewPrivate view)
 		{
+			this.Events = new EventHandlerList();
 			this.WebView = view;
 			this.Client = new CefClientGlue(this);
 			this.LifeSpanGlue = new CefLifeSpanHandlerGlue(this);
-			this.FrameGlue = new CefFrameHandlerGlue(this);
 			this.RenderGlue = new CefRenderHandlerGlue(this);
 			this.DisplayGlue = new CefDisplayHandlerGlue(this);
 			this.RequestGlue = new CefRequestHandlerGlue(this);
@@ -77,6 +81,8 @@ namespace CefNet.Internal
 
 			_avoidAudioGlue = AvoidGetAudioParameters() && AvoidOnAudioStreamStarted() && AvoidOnAudioStreamPacket()
 				&& AvoidOnAudioStreamStopped() && AvoidOnAudioStreamError();
+
+			CreateOrDestroyCefFrameHandlerGlue();
 		}
 
 
@@ -245,6 +251,30 @@ namespace CefNet.Internal
 			var deferral = new ScriptDialogDeferral(this, callback);
 			_scriptDialogDeferral = deferral;
 			return deferral;
+		}
+
+		public void AddEventHandler(object key, Delegate handler)
+		{
+			lock (Events)
+			{
+				Events.AddHandler(key, handler);
+			}
+		}
+
+		public void RemoveEventHandler(object key, Delegate handler)
+		{
+			lock (Events)
+			{
+				Events.RemoveHandler(key, handler);
+			}
+		}
+
+		public Delegate GetEventHandler(object key)
+		{
+			lock (Events)
+			{
+				return Events[key];
+			}
 		}
 
 	}

@@ -4,8 +4,33 @@ namespace CefNet.Internal
 {
 	partial class WebViewGlue
 	{
+		public static object FrameCreatedEvent = new object();
+		public static object FrameAttachedEvent = new object();
+		public static object FrameDetachedEvent = new object();
+
+		public void CreateOrDestroyCefFrameHandlerGlue()
+		{
+			lock (Events)
+			{
+				if (AvoidOnFrameCreated() && AvoidOnFrameDetached()
+					&& AvoidOnFrameAttached() && AvoidOnFrameAttached())
+				{
+					this.FrameGlue = null;
+				}
+				else if(this.FrameGlue is null)
+				{
+					this.FrameGlue = new CefFrameHandlerGlue(this);
+				}
+			}
+		}
+
 		[MethodImpl(MethodImplOptions.ForwardRef)]
-		internal extern bool AvoidOnFrameCreated();
+		private extern bool AvoidOnFrameCreatedImpl();
+
+		internal bool AvoidOnFrameCreated()
+		{
+			return AvoidOnFrameCreatedImpl() && Events[FrameCreatedEvent] == null;
+		}
 
 		/// <summary>
 		/// Called when a new frame is created. This will be the first notification
@@ -17,11 +42,16 @@ namespace CefNet.Internal
 		/// <param name="frame">The newly created frame.</param>
 		internal protected virtual void OnFrameCreated(CefBrowser browser, CefFrame frame)
 		{
-
+			WebView.RaiseCefFrameCreated(new FrameEventArgs(frame));
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]
-		internal extern bool AvoidOnFrameAttached();
+		private extern bool AvoidOnFrameAttachedImpl();
+
+		internal bool AvoidOnFrameAttached()
+		{
+			return AvoidOnFrameAttachedImpl() && Events[FrameAttachedEvent] == null;
+		}
 
 		/// <summary>
 		/// Called when a frame can begin routing commands to/from the associated
@@ -29,11 +59,16 @@ namespace CefNet.Internal
 		/// </summary>
 		internal protected virtual void OnFrameAttached(CefBrowser browser, CefFrame frame)
 		{
-
+			WebView.RaiseCefFrameAttached(new FrameEventArgs(frame));
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]
-		internal extern bool AvoidOnFrameDetached();
+		private extern bool AvoidOnFrameDetachedImpl();
+
+		internal bool AvoidOnFrameDetached()
+		{
+			return AvoidOnFrameDetachedImpl() && Events[FrameDetachedEvent] == null;
+		}
 
 		/// <summary>
 		/// Called when a frame loses its connection to the renderer process and will
@@ -49,7 +84,7 @@ namespace CefNet.Internal
 		/// </remarks>
 		internal protected virtual void OnFrameDetached(CefBrowser browser, CefFrame frame)
 		{
-
+			WebView.RaiseCefFrameDetached(new FrameEventArgs(frame));
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

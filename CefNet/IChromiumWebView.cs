@@ -26,6 +26,36 @@ namespace CefNet
 		event EventHandler<NavigatedEventArgs> Navigated;
 
 		/// <summary>
+		/// Occurs when a new frame is created. This will be the first notification
+		/// that references <paramref name="frame"/>.
+		/// </summary>
+		/// <remarks>
+		/// Any commands that require transport to the
+		/// associated renderer process (LoadRequest, SendProcessMessage, GetSource,
+		/// etc.) will be queued until <see cref="FrameAttached"/> is called for frame.
+		/// </remarks>
+		event EventHandler<FrameEventArgs> CefFrameCreated;
+
+		/// <summary>
+		/// Occurs when a frame can begin routing commands to/from the associated
+		/// renderer process.
+		/// </summary>
+		/// <remarks>
+		/// Any commands that were queued have now been dispatched.
+		/// </remarks>
+		event EventHandler<FrameEventArgs> CefFrameAttached;
+
+		/// <summary>
+		/// Occurs when a frame loses its connection to the renderer process and will
+		/// be destroyed.
+		/// </summary>
+		/// <remarks>
+		/// Any pending or future commands will be discarded and <see cref="CefFrame.IsValid"/>
+		/// will now return false for <paramref name="frame"/>.
+		/// </remarks>
+		event EventHandler<FrameEventArgs> CefFrameDetached;
+
+		/// <summary>
 		/// Occurs before a CefFrame navigates to a new document.
 		/// </summary>
 		event EventHandler<BeforeBrowseEventArgs> BeforeBrowse;

@@ -31,5 +31,8 @@ namespace CefNet.Internal
 		void RaisePdfPrintFinished(IPdfPrintFinishedEventArgs e);
 		void RaiseDevToolsEventAvailable(DevToolsProtocolEventAvailableEventArgs e);
 		void RaiseScriptDialogOpening(IScriptDialogOpeningEventArgs e);
+		void RaiseCefFrameCreated(FrameEventArgs e);
+		void RaiseCefFrameAttached(FrameEventArgs e);
+		void RaiseCefFrameDetached(FrameEventArgs e);
 	}
 }
