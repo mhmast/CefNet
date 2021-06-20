@@ -6,6 +6,14 @@ namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
+		public void CreateOrDestroyDragGlue()
+		{
+			if (AvoidOnDragEnter() && AvoidOnDraggableRegionsChanged())
+				this.DragGlue = null;
+			else if (this.DragGlue is null)
+				this.DragGlue = new CefDragHandlerGlue(this);
+		}
+
 		internal bool AvoidOnDragEnter()
 		{
 			return false;

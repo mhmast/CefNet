@@ -8,7 +8,7 @@ namespace CefNet.Internal
 		public static object FrameAttachedEvent = new object();
 		public static object FrameDetachedEvent = new object();
 
-		public void CreateOrDestroyCefFrameHandlerGlue()
+		public void CreateOrDestroyFrameGlue()
 		{
 			lock (Events)
 			{

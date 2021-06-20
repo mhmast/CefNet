@@ -7,6 +7,19 @@ namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
+		public void CreateOrDestroyDownloadGlue()
+		{
+			if (AvoidOnBeforeDownload()
+				&& AvoidOnDownloadUpdated())
+			{
+				this.DownloadGlue = null;
+			}
+			else if (this.DownloadGlue is null)
+			{
+				this.DownloadGlue = new CefDownloadHandlerGlue(this);
+			}
+		}
+
 		[MethodImpl(MethodImplOptions.ForwardRef)]
 		internal extern bool AvoidOnBeforeDownload();
 

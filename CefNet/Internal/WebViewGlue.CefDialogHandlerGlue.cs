@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
 
 namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
-		internal bool AvoidOnFileDialog()
+		public void CreateOrDestroyDialogGlue()
 		{
-			return false;
+			if (AvoidOnFileDialog())
+				this.DialogGlue = null;
+			else if (this.DialogGlue is null)
+				this.DialogGlue = new CefDialogHandlerGlue(this);
 		}
+
+		[MethodImpl(MethodImplOptions.ForwardRef)]
+		internal extern bool AvoidOnFileDialog();
 
 		/// <summary>
 		/// Called to run a file chooser dialog.

@@ -8,6 +8,14 @@ namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
+		public void CreateOrDestroyKeyboardGlue()
+		{
+			if (AvoidOnPreKeyEvent() && AvoidOnKeyEvent())
+				this.KeyboardGlue = null;
+			else if(this.KeyboardGlue is null)
+				this.KeyboardGlue = new CefKeyboardHandlerGlue(this);
+		}
+
 		[MethodImpl(MethodImplOptions.ForwardRef)]
 		internal extern bool AvoidOnPreKeyEvent();
 

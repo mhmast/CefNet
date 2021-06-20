@@ -7,6 +7,22 @@ namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
+		public void CreateOrDestroyAudioGlue()
+		{
+			if (AvoidGetAudioParameters()
+				&& AvoidOnAudioStreamStarted()
+				&& AvoidOnAudioStreamPacket()
+				&& AvoidOnAudioStreamStopped()
+				&& AvoidOnAudioStreamError())
+			{
+				this.AudioGlue = null;
+			}
+			else if (this.AudioGlue is null)
+			{
+				this.AudioGlue = new CefAudioHandlerGlue(this);
+			}
+		}
+
 		[MethodImpl(MethodImplOptions.ForwardRef)]
 		internal extern bool AvoidGetAudioParameters();
 

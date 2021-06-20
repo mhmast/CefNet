@@ -7,6 +7,20 @@ namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
+		public void CreateOrDestroyFocusGlue()
+		{
+			if (AvoidOnTakeFocus()
+				&& AvoidOnSetFocus()
+				&& AvoidOnGotFocus())
+			{
+				this.FocusGlue = null;
+			}
+			else if (this.FocusGlue is null)
+			{
+				this.FocusGlue = new CefFocusHandlerGlue(this);
+			}
+		}
+
 		[MethodImpl(MethodImplOptions.ForwardRef)]
 		internal extern bool AvoidOnTakeFocus();
 

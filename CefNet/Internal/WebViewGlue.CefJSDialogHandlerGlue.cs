@@ -8,6 +8,12 @@ namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
+		public void CreateOrDestroyJSDialogGlue()
+		{
+			if (this.JSDialogGlue is null)
+				this.JSDialogGlue = new CefJSDialogHandlerGlue(this);
+		}
+
 		internal bool AvoidOnJSDialog()
 		{
 			return false;
