@@ -868,7 +868,7 @@ namespace CefNet
 		public event EventHandler<FrameEventArgs> CefFrameAttached
 		{
 			add { ViewGlue.AddEventHandler(WebViewGlue.FrameAttachedEvent, value); }
-			remove { ViewGlue.RemoveEventHandler(WebViewGlue.FrameDetachedEvent, value); }
+			remove { ViewGlue.RemoveEventHandler(WebViewGlue.FrameAttachedEvent, value); }
 		}
 
 		/// <summary>
