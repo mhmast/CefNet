@@ -285,12 +285,16 @@ namespace CefNet
 		{
 			if (array is null)
 				throw new ArgumentNullException(nameof(array));
-			uint count = (uint)this.Count;
-			if (array.GetLowerBound(0) < arrayIndex || arrayIndex + (int)count > array.GetUpperBound(0))
+			if (arrayIndex < 0)
 				throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-			for (uint i = 0; i < count; i++)
+
+			int count = this.Count;
+			if (array.Length < arrayIndex + count)
+				throw new ArgumentException("The number of elements in this map is greater than the available space from arrayIndex to the end of the destination array.");
+
+			for (int i = 0; i < count; i++)
 			{
-				array[arrayIndex + (int)i] = GetInternal(i);
+				array[arrayIndex + i] = GetInternal((uint)i);
 			}
 		}
 
