@@ -1,5 +1,6 @@
 ﻿using CefNet.CApi;
 using System;
+using System.Collections.Generic;
 
 namespace CefNet
 {
@@ -36,6 +37,26 @@ namespace CefNet
 			: this(CefNativeApi.cef_command_line_create())
 		{
 
+		}
+
+		/// <summary>
+		/// Gets an IEnumerable&lt;T&gt; view of switch names and values.
+		/// </summary>
+		/// <returns>An enumerable view of switches.</returns>
+		public IEnumerable<KeyValuePair<string, string>> GetSwitches()
+		{
+			List<KeyValuePair<string, string>> items;
+			using (var map = new CefStringMap())
+			{
+				this.GetSwitches(map);
+				int count = map.Count;
+				items = new List<KeyValuePair<string, string>>(count);
+				for (int i = 0; i < count; i++)
+				{
+					items.Add(map.Get(i));
+				}
+			}
+			return items;
 		}
 
 	}
