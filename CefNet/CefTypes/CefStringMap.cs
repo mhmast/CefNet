@@ -286,7 +286,7 @@ namespace CefNet
 			if (array is null)
 				throw new ArgumentNullException(nameof(array));
 			uint count = (uint)this.Count;
-			if (array.GetLowerBound(0) < arrayIndex || arrayIndex + (int)count >= array.GetUpperBound(0))
+			if (array.GetLowerBound(0) < arrayIndex || arrayIndex + (int)count > array.GetUpperBound(0))
 				throw new ArgumentOutOfRangeException(nameof(arrayIndex));
 			for (uint i = 0; i < count; i++)
 			{
