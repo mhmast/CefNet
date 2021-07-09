@@ -102,6 +102,8 @@ namespace CefNet.Net
 
 			int offset = _offset;
 			bytesRead = Math.Min(_data.Length - offset, bytesToRead);
+			if (bytesRead == 0)
+				return false;
 			Marshal.Copy(_data, offset, dataOut, bytesRead);
 			_offset = offset + bytesRead;
 			return true;
