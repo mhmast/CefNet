@@ -48,7 +48,8 @@ namespace WinFormsCoreApp
 				new ToolStripMenuItem("Add Tab (new context)", null, HandleAddTab) { Tag = false },
 				new ToolStripMenuItem("Show Device Simulator", null, HandleShowSimulator),
 				new ToolStripMenuItem("Print to PDF", null, HandlePrintToPdf),
-				new ToolStripMenuItem("Load from String", null, HandleLoadFromString),
+				new ToolStripMenuItem("Load from String", null, HandleLoadFromString) { Tag = true },
+				new ToolStripMenuItem("Load from Stream", null, HandleLoadFromString) { Tag = false },
 				new ToolStripMenuItem("Load to file", null, HandleLoadToFile),
 				new ToolStripMenuItem("Capture screenshot", null, HandleCaptureScreenshot),
 				new ToolStripMenuItem("Test2", null, Button2_Click),
@@ -146,6 +147,7 @@ namespace WinFormsCoreApp
 				// https://magpcss.org/ceforum/viewtopic.php?f=6&t=17176&p=43706
 				// https://bitbucket.org/chromiumembedded/cef/issues/2586
 				MessageBox.Show("This test only works with --disable-site-isolation-trials.");
+				return;
 			}
 
 			var view = SelectedView as CustomWebView;
@@ -153,7 +155,12 @@ namespace WinFormsCoreApp
 				return;
 
 			Guid sourceKey = Guid.NewGuid();
-			view.AddSource(sourceKey, new StringSource("Hello, world!", "text/html"));
+
+			if (sender is ToolStripMenuItem m && false.Equals(m.Tag))
+				view.AddSource(sourceKey, new StreamSource(new MemoryStream(Encoding.UTF8.GetBytes("Hello, world (stream)!")), "text/html", "utf-8", false));
+			else
+				view.AddSource(sourceKey, new StringSource("Hello, world (string)!", "text/html"));
+
 			var request = new CefRequest();
 			request.Url = "http://example.com";
 			request.SetReferrer("https://www.google.com/", CefReferrerPolicy.NeverClearReferrer);

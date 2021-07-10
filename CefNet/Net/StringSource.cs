@@ -117,6 +117,8 @@ namespace CefNet.Net
 				return false;
 			}
 			bytesSkipped = Math.Min(_data.Length - _offset, bytesToSkip);
+			if (bytesSkipped == 0)
+				return false;
 			_offset += (int)bytesSkipped;
 			return true;
 		}
