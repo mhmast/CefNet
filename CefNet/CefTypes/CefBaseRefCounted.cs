@@ -503,6 +503,7 @@ namespace CefNet
 			if (instance == null)
 				throw new ObjectDisposedException(this.GetType().Name);
 			instance->AddRef();
+			GC.KeepAlive(this);
 			return instance;
 		}
 
@@ -521,6 +522,7 @@ namespace CefNet
 		public void AddRef()
 		{
 			NativeInstance->AddRef();
+			GC.KeepAlive(this);
 		}
 
 		/// <summary>
