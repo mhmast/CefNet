@@ -23,6 +23,7 @@ namespace CefNet
 	/// for more information. CERT_STATUS_NONE is new in CEF because we use an
 	/// enum while cert_status_flags.h uses a typedef and static const variables.
 	/// </summary>
+	[Flags]
 	public enum CefCertStatus
 	{
 		None = 0,

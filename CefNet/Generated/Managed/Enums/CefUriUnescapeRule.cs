@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// URI unescape rules passed to CefURIDecode().
 	/// </summary>
+	[Flags]
 	public enum CefUriUnescapeRule
 	{
 		/// <summary>

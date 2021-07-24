@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// Flags used to customize the behavior of CefURLRequest.
 	/// </summary>
+	[Flags]
 	public enum CefUrlRequestFlags
 	{
 		/// <summary>

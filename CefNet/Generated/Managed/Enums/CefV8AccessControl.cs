@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// V8 access control values.
 	/// </summary>
+	[Flags]
 	public enum CefV8AccessControl
 	{
 		Default = 0,

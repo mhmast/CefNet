@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// Options that can be passed to CefWriteJSON.
 	/// </summary>
+	[Flags]
 	public enum CefJsonWriterOptions
 	{
 		/// <summary>

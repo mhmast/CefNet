@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// Supported event bit flags.
 	/// </summary>
+	[Flags]
 	public enum CefEventFlags
 	{
 		None = 0,

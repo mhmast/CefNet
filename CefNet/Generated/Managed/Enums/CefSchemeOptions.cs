@@ -22,6 +22,7 @@ namespace CefNet
 	/// Configuration options for registering a custom scheme.
 	/// These values are used when calling AddCustomScheme.
 	/// </summary>
+	[Flags]
 	public enum CefSchemeOptions
 	{
 		None = 0,

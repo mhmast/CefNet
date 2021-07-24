@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// V8 property attribute values.
 	/// </summary>
+	[Flags]
 	public enum CefV8PropertyAttribute
 	{
 		/// <summary>

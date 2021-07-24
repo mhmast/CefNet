@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// Supported context menu edit state bit flags.
 	/// </summary>
+	[Flags]
 	public enum CefContextMenuEditStateFlags
 	{
 		None = 0,

@@ -62,6 +62,7 @@ namespace CefGen
 
 		protected override void BuildEnum(CodeNamespace ns, CppEnum @enum)
 		{
+			bool flags = false;
 			var decl = new CodeEnum(GetClassName(@enum.Name));
 			decl.Type = @enum.IntegerType.GetDisplayName();
 			if (decl.Type != "int" && decl.Type != "unsigned int")
@@ -136,9 +137,14 @@ namespace CefGen
 				}
 				if (Regex.IsMatch(value, @"\d<<\d"))
 					value = value.Replace("<<", " << ");
+				flags |= value.Contains("<<");
 				var itemDecl = new CodeEnumItem(name, value);
 				itemDecl.Comments.AddVSDocComment(item.Comment, "summary");
 				decl.Members.Add(itemDecl);
+			}
+			if (flags)
+			{
+				decl.CustomAttributes.Add(new CustomCodeAttribute(typeof(FlagsAttribute)));
 			}
 			ns.Types.Add(decl);
 		}

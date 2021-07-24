@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// Supported context menu type flags.
 	/// </summary>
+	[Flags]
 	public enum CefContextMenuTypeFlags
 	{
 		/// <summary>

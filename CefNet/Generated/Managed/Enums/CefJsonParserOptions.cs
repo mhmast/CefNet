@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// Options that can be passed to CefParseJSON.
 	/// </summary>
+	[Flags]
 	public enum CefJsonParserOptions
 	{
 		/// <summary>

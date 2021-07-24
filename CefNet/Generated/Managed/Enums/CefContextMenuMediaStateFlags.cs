@@ -21,6 +21,7 @@ namespace CefNet
 	/// <summary>
 	/// Supported context menu media state bit flags.
 	/// </summary>
+	[Flags]
 	public enum CefContextMenuMediaStateFlags
 	{
 		None = 0,
