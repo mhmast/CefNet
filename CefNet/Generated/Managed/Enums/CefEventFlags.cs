@@ -69,6 +69,11 @@ namespace CefNet
 		/// Mac OS-X command key.
 		/// </summary>
 		AltgrDown = 1 << 12,
+
+		/// <summary>
+		/// Mac OS-X command key.
+		/// </summary>
+		IsRepeat = 1 << 13,
 	}
 }
 
