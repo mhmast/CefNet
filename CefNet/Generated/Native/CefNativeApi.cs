@@ -973,7 +973,7 @@ namespace CefNet.CApi
 		/// D. &quot;x-cdm-interface-versions&quot;: Interface API version (e.g. &quot;8&quot;).
 		/// E. &quot;x-cdm-host-versions&quot;: Host API version (e.g. &quot;8&quot;).
 		/// F. &quot;version&quot;: CDM version (e.g. &quot;1.4.8.903&quot;).
-		/// G. &quot;x-cdm-codecs&quot;: List of supported codecs (e.g. &quot;vp8,vp9.0,avc1&quot;).
+		/// G. &quot;x-cdm-codecs&quot;: List of supported codecs (e.g. &quot;vp8,vp09,avc1&quot;).
 		/// A through E are used to verify compatibility with the current Chromium
 		/// version. If the CDM is not compatible the registration will fail and
 		/// |callback| will receive a |result| value of
