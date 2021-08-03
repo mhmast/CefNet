@@ -21,6 +21,7 @@ namespace CefNet.Avalonia
 	{
 		private CefRect _windowBounds;
 		private IntPtr _keyboardLayout;
+		private int _lastKey = -1;
 		private bool _allowResizeNotifications = true;
 		private int _suppressLostFocusEvent = 0;
 		private PointerPressedEventArgs _lastPointerPressedEventArgs;
@@ -852,6 +853,17 @@ namespace CefNet.Avalonia
 			
 			VirtualKeys virtualKey = key.ToVirtualKey();
 			bool isSystemKey = (e.KeyModifiers.HasFlag(KeyModifiers.Alt) || key == Key.LeftAlt || key == Key.RightAlt);
+
+			if (eventType == CefKeyEventType.RawKeyDown)
+			{
+				if ((int)virtualKey == _lastKey)
+					modifiers |= CefEventFlags.IsRepeat;
+				_lastKey = (int)virtualKey;
+			}
+			else
+			{
+				_lastKey = -1;
+			}
 
 			CefBrowserHost browserHost = this.BrowserObject?.Host;
 			if (browserHost != null)

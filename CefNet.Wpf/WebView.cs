@@ -723,6 +723,8 @@ namespace CefNet.Wpf
 			Key key = e.Key;
 			VirtualKeys virtualKey = (key == Key.System ? e.SystemKey.ToVirtualKey() : key.ToVirtualKey());
 			CefEventFlags modifiers = GetCefKeyboardModifiers(e);
+			if (e.IsRepeat)
+				modifiers |= CefEventFlags.IsRepeat;
 			_lastKeydownIsExtendedKey = e.IsExtendedKey();
 
 			var k = new CefKeyEvent();

@@ -849,6 +849,7 @@ namespace CefNet.Windows.Forms
 			const int WM_SYSKEYDOWN = 0x0104;
 			const int WM_SYSKEYUP = 0x0105;
 			const int WM_SYSCHAR = 0x0106;
+			const int KF_REPEAT = 0x4000;
 
 			if (WindowlessRenderingEnabled)
 			{
@@ -861,6 +862,8 @@ namespace CefNet.Windows.Forms
 				if (m.Msg == WM_KEYDOWN || m.Msg == WM_SYSKEYDOWN)
 				{
 					modifiers = GetCefKeyboardModifiers((Keys)m.WParam.ToInt64(), m.LParam);
+					if ((((uint)m.LParam.ToPointer() >> 16) & KF_REPEAT) != 0)
+						modifiers |= CefEventFlags.IsRepeat;
 					_keydownModifiers = modifiers;
 					k.Type = CefKeyEventType.RawKeyDown;
 					SetKeyboardLayoutForCefUIThreadIfNeeded();
