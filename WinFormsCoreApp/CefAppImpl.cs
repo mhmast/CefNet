@@ -32,6 +32,8 @@ namespace WinFormsCoreApp
 			commandLine.AppendSwitch("enable-begin-frame-scheduling");
 			commandLine.AppendSwitch("enable-media-stream");
 
+			commandLine.AppendSwitchWithValue("enable-blink-features", "CSSPseudoHas");
+
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			{
 				commandLine.AppendSwitch("no-zygote");
