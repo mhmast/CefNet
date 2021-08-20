@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
+using Avalonia.Platform;
 using Avalonia.Threading;
 
 namespace CefNet
@@ -40,6 +43,9 @@ namespace CefNet
 
 		/// <inheritdoc />
 		public event EventHandler<ControlledApplicationLifetimeExitEventArgs> Exit;
+
+		/// <inheritdoc />
+		public event EventHandler<ShutdownRequestedEventArgs> ShutdownRequested;
 
 		static CefNetApplicationLifetime()
 		{
@@ -87,6 +93,23 @@ namespace CefNet
 			}
 		}
 
+		private void OnShutdownRequested(object sender, ShutdownRequestedEventArgs e)
+		{
+			ShutdownRequested?.Invoke(this, e);
+
+			if (e.Cancel)
+				return;
+
+			// When an OS shutdown request is received, try to close all non-owned windows. Windows can cancel
+			// shutdown by setting e.Cancel = true in the Closing event. Owned windows will be shutdown by their
+			// owners.
+			foreach (var w in Windows)
+				if (w.Owner is null)
+					w.Close();
+			if (Windows.Count > 0)
+				e.Cancel = true;
+		}
+
 		public void Shutdown(int exitCode = 0)
 		{
 			if (_isShuttingDown)
@@ -122,6 +145,12 @@ namespace CefNet
 			try
 			{
 				this.Startup?.Invoke(this, new ControlledApplicationLifetimeStartupEventArgs(args));
+
+				var lifetimeEvents = AvaloniaLocator.Current.GetService<IPlatformLifetimeEventsImpl>();
+
+				if (lifetimeEvents != null)
+					lifetimeEvents.ShutdownRequested += OnShutdownRequested;
+
 				_cts = new CancellationTokenSource();
 				MainWindow?.Show();
 
