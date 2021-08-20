@@ -62,7 +62,7 @@ namespace CefNet
 
 		/// <summary>
 		/// &quot;Application Data&quot; directory under the user profile directory on Windows
-		/// and &quot;~/Library/Application Support&quot; directory on Mac OS X.
+		/// and &quot;~/Library/Application Support&quot; directory on MacOS.
 		/// </summary>
 		UserData = 7,
 

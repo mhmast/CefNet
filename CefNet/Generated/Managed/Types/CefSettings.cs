@@ -296,14 +296,14 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// The location where user data such as spell checking dictionary files will
-		/// be stored on disk. If this value is empty then the default
-		/// platform-specific user data directory will be used (&quot;~/.cef_user_data&quot;
-		/// directory on Linux, &quot;~/Library/Application Support/CEF/User Data&quot; directory
-		/// on Mac OS X, &quot;Local Settings@Application Data@CEF @User Data&quot; directory
-		/// under the user profile directory on Windows). If this value is non-empty
-		/// then it must be an absolute path. When using the Chrome runtime this value
-		/// will be ignored in favor of the |root_cache_path| value.
+		/// The location where user data such as the Widevine CDM module and spell
+		/// checking dictionary files will be stored on disk. If this value is empty
+		/// then the default platform-specific user data directory will be used
+		/// (&quot;~/.config/cef_user_data&quot; directory on Linux, &quot;~/Library/Application
+		/// Support/CEF/User Data&quot; directory on MacOS, &quot;AppData@Local @CEF @User Data&quot;
+		/// directory under the user profile directory on Windows). If this value is
+		/// non-empty then it must be an absolute path. When using the Chrome runtime
+		/// this value will be ignored in favor of the |root_cache_path| value.
 		/// </summary>
 		public string UserDataPath
 		{
@@ -416,7 +416,7 @@ namespace CefNet
 		/// <summary>
 		/// The directory and file name to use for the debug log. If empty a default
 		/// log file name and location will be used. On Windows and Linux a &quot;debug.log&quot;
-		/// file will be written in the main executable directory. On Mac OS X a
+		/// file will be written in the main executable directory. On MacOS a
 		/// &quot;~/Library/Logs/
 		/// &lt;app
 		/// name&gt;_debug.log&quot; file will be written where
@@ -476,7 +476,7 @@ namespace CefNet
 		/// <summary>
 		/// The fully qualified path for the resources directory. If this value is
 		/// empty the *.pak files must be located in the module directory on
-		/// Windows/Linux or the app bundle Resources directory on Mac OS X. If this
+		/// Windows/Linux or the app bundle Resources directory on MacOS. If this
 		/// value is non-empty then it must be an absolute path. Also configurable
 		/// using the &quot;resources-dir-path&quot; command-line switch.
 		/// </summary>
@@ -496,9 +496,9 @@ namespace CefNet
 		/// The fully qualified path for the locales directory. If this value is empty
 		/// the locales directory must be located in the module directory. If this
 		/// value is non-empty then it must be an absolute path. This value is ignored
-		/// on Mac OS X where pack files are always loaded from the app bundle
-		/// Resources directory. Also configurable using the &quot;locales-dir-path&quot;
-		/// command-line switch.
+		/// on MacOS where pack files are always loaded from the app bundle Resources
+		/// directory. Also configurable using the &quot;locales-dir-path&quot; command-line
+		/// switch.
 		/// </summary>
 		public string LocalesDirPath
 		{

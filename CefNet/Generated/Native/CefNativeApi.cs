@@ -20,7 +20,7 @@ namespace CefNet.CApi
 {
 	public static partial class CefNativeApi
 	{
-		public static readonly string ApiHash = "6498b029e847331e85f7fa7a8fe82434e016e316";
+		public static readonly string ApiHash = "5625e3ce80d2bbf5b5a39f8655d96c215f7685ee";
 
 		/// <summary>
 		/// Add an entry to the cross-origin access whitelist.
@@ -949,48 +949,6 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern void cef_register_web_plugin_crash(cef_string_t* path);
-
-		/// <summary>
-		/// Register the Widevine CDM plugin.
-		/// The client application is responsible for downloading an appropriate
-		/// platform-specific CDM binary distribution from Google, extracting the
-		/// contents, and building the required directory structure on the local machine.
-		/// The cef_browser_host_t::StartDownload function and CefZipArchive structure
-		/// can be used to implement this functionality in CEF. Contact Google via
-		/// https://www.widevine.com/contact.html for details on CDM download.
-		/// |path| is a directory that must contain the following files:
-		/// 1. manifest.json file from the CDM binary distribution (see below).
-		/// 2. widevinecdm file from the CDM binary distribution (e.g.
-		/// widevinecdm.dll on on Windows, libwidevinecdm.dylib on OS X,
-		/// libwidevinecdm.so on Linux).
-		/// If any of these files are missing or if the manifest file has incorrect
-		/// contents the registration will fail and |callback| will receive a |result|
-		/// value of CEF_CDM_REGISTRATION_ERROR_INCORRECT_CONTENTS.
-		/// The manifest.json file must contain the following keys:
-		/// A. &quot;os&quot;: Supported OS (e.g. &quot;mac&quot;, &quot;win&quot; or &quot;linux&quot;).
-		/// B. &quot;arch&quot;: Supported architecture (e.g. &quot;ia32&quot; or &quot;x64&quot;).
-		/// C. &quot;x-cdm-module-versions&quot;: Module API version (e.g. &quot;4&quot;).
-		/// D. &quot;x-cdm-interface-versions&quot;: Interface API version (e.g. &quot;8&quot;).
-		/// E. &quot;x-cdm-host-versions&quot;: Host API version (e.g. &quot;8&quot;).
-		/// F. &quot;version&quot;: CDM version (e.g. &quot;1.4.8.903&quot;).
-		/// G. &quot;x-cdm-codecs&quot;: List of supported codecs (e.g. &quot;vp8,vp09,avc1&quot;).
-		/// A through E are used to verify compatibility with the current Chromium
-		/// version. If the CDM is not compatible the registration will fail and
-		/// |callback| will receive a |result| value of
-		/// CEF_CDM_REGISTRATION_ERROR_INCOMPATIBLE.
-		/// |callback| will be executed asynchronously once registration is complete.
-		/// On Linux this function must be called before cef_initialize() and the
-		/// registration cannot be changed during runtime. If registration is not
-		/// supported at the time that cef_register_widevine_cdm() is called then
-		/// |callback| will receive a |result| value of
-		/// CEF_CDM_REGISTRATION_ERROR_NOT_SUPPORTED.
-		/// </summary>
-		/// <remarks>
-		/// Defined in include/capi/cef_web_plugin_capi.h as
-		/// void cef_register_widevine_cdm(const cef_string_t* path, cef_register_cdm_callback_t* callback)
-		/// </remarks>
-		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
-		public static unsafe extern void cef_register_widevine_cdm(cef_string_t* path, cef_register_cdm_callback_t* callback);
 
 		/// <summary>
 		/// Remove an entry from the cross-origin access whitelist. Returns false (0) if

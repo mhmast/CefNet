@@ -1076,50 +1076,6 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Register the Widevine CDM plugin.<para/>
-		/// On Linux this function must be called before <see cref="Initialize"/> and
-		/// the registration cannot be changed during runtime.
-		/// </summary>
-		/// <param name="path">
-		/// Is a directory that must contain the following files:
-		/// <list type="number">
-		/// <item><description>manifest.json file from the CDM binary distribution.</description></item>
-		/// <item><description>widevinecdm file from the CDM binary distribution (e.g.
-		/// widevinecdm.dll on on Windows, libwidevinecdm.dylib on OS X,
-		/// libwidevinecdm.so on Linux).</description></item>
-		/// </list>
-		/// If any of these files are missing or if the manifest file has incorrect
-		/// contents the registration will fail and <paramref name="callback"/> will receive
-		/// a result value of <see cref="CefCDMRegistrationError.IncorrectContents"/>.
-		/// </param>
-		/// <param name="callback">
-		/// Will be executed asynchronously once registration is complete.<para/>
-		///  If registration is not
-		/// supported at the time that <see cref="RegisterWidevineCDM"/> is called then
-		/// <paramref name="callback"/> will receive a result value of
-		/// <see cref="CefCDMRegistrationError.NotSupported"/>.
-		/// </param>
-		/// <remarks>
-		/// The client application is responsible for downloading an appropriate
-		/// platform-specific CDM binary distribution from Google, extracting the
-		/// contents, and building the required directory structure on the local machine.
-		/// The <see cref="CefBrowserHost.StartDownload"/> function and CefZipArchive structure
-		/// can be used to implement this functionality in CEF. Contact Google via
-		/// <see href="https://www.widevine.com/contact.html"/> for details on CDM download.
-		/// </remarks>
-		public static void RegisterWidevineCDM(string path, CefRegisterCDMCallback callback)
-		{
-			if (path == null)
-				throw new ArgumentNullException(nameof(path));
-
-			fixed (char* s0 = path)
-			{
-				var cstr0 = new cef_string_t { Str = s0, Length = path.Length };
-				CefNativeApi.cef_register_widevine_cdm(&cstr0, callback.GetNativeInstance());
-			}
-		}
-
-		/// <summary>
 		/// Returns the current platform thread ID.
 		/// </summary>
 		/// <returns>Returns the current platform thread ID.</returns>
