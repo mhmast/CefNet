@@ -70,10 +70,10 @@ namespace CefNet.Avalonia
 
 			AddHandler(InputElement.KeyDownEvent, HandlePreviewKeyDown, RoutingStrategies.Tunnel, true);
 			AddHandler(InputElement.KeyUpEvent, HandlePreviewKeyUp, RoutingStrategies.Tunnel, true);
-			AddHandler(DragDrop.DragEnterEvent, HandleDragEnter);
-			AddHandler(DragDrop.DragOverEvent, HandleDragOver);
-			AddHandler(DragDrop.DragLeaveEvent, HandleDragLeave);
-			AddHandler(DragDrop.DropEvent, HandleDrop);
+			AddHandler<DragEventArgs>(DragDrop.DragEnterEvent, HandleDragEnter);
+			AddHandler<DragEventArgs>(DragDrop.DragOverEvent, HandleDragOver);
+			AddHandler<RoutedEventArgs>(DragDrop.DragLeaveEvent, HandleDragLeave);
+			AddHandler<DragEventArgs>(DragDrop.DropEvent, HandleDrop);
 		}
 
 		/// <summary>
