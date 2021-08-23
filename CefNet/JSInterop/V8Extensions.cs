@@ -16,9 +16,11 @@ namespace CefNet.JSInterop
 			if (self is null)
 				throw new ArgumentNullException(nameof(self));
 
-			if (CefApi.CurrentlyOn(CefThreadId.Renderer))
-				return Task.FromResult(GetScriptableObject(self));
-
+			if (CefNetApplication.ProcessType == ProcessType.Renderer)
+			{
+				if (CefApi.CurrentlyOn(CefThreadId.Renderer))
+					return Task.FromResult(GetScriptableObject(self));
+			}
 			return Task.Run(() => GetScriptableObject(self));
 		}
 
