@@ -510,16 +510,16 @@ namespace CefNet.JSInterop
 				throw new MissingMethodException();
 			}
 
-			int size = (int)(args.GetSize() - 4);
+			const int FIRST_ARG_OFFSET = 4;
+			int size = (int)(args.GetSize() - FIRST_ARG_OFFSET);
 			var xraylist = new List<int>(size);
 			var fnArgs = new CefV8Value[size];
 			try
 			{
 				for (int i = 0; i < fnArgs.Length; i++)
 				{
-					int index = (i + 4);
-					fnArgs[i] = CastCefValueToCefV8Value(context, args.GetValue(index), out bool isNew);
-					if (!isNew) xraylist.Add(index);
+					fnArgs[i] = CastCefValueToCefV8Value(context, args.GetValue(i + FIRST_ARG_OFFSET), out bool isNew);
+					if (!isNew) xraylist.Add(i);
 				}
 				return func.ExecuteFunction(thisArg, fnArgs);
 			}
@@ -600,16 +600,16 @@ namespace CefNet.JSInterop
 			CefV8Value func = target.Value;
 			CefV8Value thisArg = CastCefValueToCefV8Value(context, args.GetValue(3), out bool isNewThisArg);
 
-			int size = (int)(args.GetSize() - 4);
+			const int FIRST_ARG_OFFSET = 4;
+			int size = (int)(args.GetSize() - FIRST_ARG_OFFSET);
 			var xraylist = new List<int>(size);
 			var fnArgs = new CefV8Value[size];
 			try
 			{
 				for (int i = 0; i < fnArgs.Length; i++)
 				{
-					int index = (i + 4);
-					fnArgs[i] = CastCefValueToCefV8Value(context, args.GetValue(index), out bool isNew);
-					if (!isNew) xraylist.Add(index);
+					fnArgs[i] = CastCefValueToCefV8Value(context, args.GetValue(i + FIRST_ARG_OFFSET), out bool isNew);
+					if (!isNew) xraylist.Add(i);
 				}
 				return func.ExecuteFunction(thisArg, fnArgs);
 			}
@@ -649,16 +649,16 @@ namespace CefNet.JSInterop
 				CefV8Value thisArg = CastDotnetTypeToCefV8Value(target.Context, args[0], out bool isNewThisArg);
 				CefV8Value value;
 
-				int size = args.Length - 1;
+				const int FIRST_ARG_OFFSET = 1;
+				int size = args.Length - FIRST_ARG_OFFSET;
 				var xraylist = new List<int>(size);
 				var fnArgs = new CefV8Value[size];
 				try
 				{
 					for (int i = 0; i < fnArgs.Length; i++)
 					{
-						int index = (i + 1);
-						fnArgs[i] = CastDotnetTypeToCefV8Value(target.Context, args[index], out bool isNew);
-						if (!isNew) xraylist.Add(index);
+						fnArgs[i] = CastDotnetTypeToCefV8Value(target.Context, args[i + FIRST_ARG_OFFSET], out bool isNew);
+						if (!isNew) xraylist.Add(i);
 					}
 					value = func.ExecuteFunction(thisArg, fnArgs);
 				}
