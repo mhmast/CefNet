@@ -118,7 +118,7 @@ namespace CefNet.Net
 		{
 			try
 			{
-				if (_stream is MemoryStream mem && mem.Capacity < total)
+				if (_stream is CefNetMemoryStream mem && mem.Capacity < total)
 				{
 					mem.Capacity = (int)total;
 				}
@@ -151,14 +151,14 @@ namespace CefNet.Net
 					}
 				}
 
-				if (_stream is MemoryStream mem)
+				if (_stream is CefNetMemoryStream mem)
 				{
 					long startPos = _stream.Position;
 					long endPos = startPos + dataLength;
-					if (endPos < mem.Capacity)
+					if (endPos <= mem.Capacity)
 					{
-						Marshal.Copy(data, mem.GetBuffer(), (int)startPos, (int)dataLength);
 						mem.SetLength(endPos);
+						Marshal.Copy(data, mem.GetBuffer(), (int)startPos, (int)dataLength);
 						mem.Position = endPos;
 						return;
 					}
@@ -466,7 +466,7 @@ namespace CefNet.Net
 		/// <returns>The <see cref="Stream"/> in which the response body will be written.</returns>
 		protected virtual Stream CreateResourceStream(int initialCapacity)
 		{
-			return new MemoryStream(initialCapacity);
+			return new CefNetMemoryStream(initialCapacity);
 		}
 
 	}

@@ -292,7 +292,7 @@ namespace CefNet.Net
 		{
 			using (Stream stream = await GetStreamAsync(requestUri, referrerUri, referrerPolicy, headers, cancellationToken).ConfigureAwait(false))
 			{
-				if (stream is MemoryStream mem && mem.Capacity == mem.Length)
+				if (stream is CefNetMemoryStream mem && mem.Capacity == mem.Length)
 				{
 					return mem.GetBuffer();
 				}
@@ -618,7 +618,7 @@ namespace CefNet.Net
 		{
 			using (Stream stream = await PostReadStreamAsync(requestUri, referrerUri, referrerPolicy, content, headers, cancellationToken).ConfigureAwait(false))
 			{
-				if (stream is MemoryStream mem && mem.Capacity == mem.Length)
+				if (stream is CefNetMemoryStream mem && mem.Capacity == mem.Length)
 				{
 					return mem.GetBuffer();
 				}
@@ -643,7 +643,7 @@ namespace CefNet.Net
 		{
 			using (Stream stream = await PostReadStreamAsync(requestUri, content, cancellationToken).ConfigureAwait(false))
 			{
-				if (stream is MemoryStream mem && mem.Capacity == mem.Length)
+				if (stream is CefNetMemoryStream mem && mem.Capacity == mem.Length)
 				{
 					return mem.GetBuffer();
 				}
@@ -668,7 +668,7 @@ namespace CefNet.Net
 		{
 			using (Stream stream = await PostReadStreamAsync(requestUri, content, cancellationToken).ConfigureAwait(false))
 			{
-				if (stream is MemoryStream mem && mem.Capacity == mem.Length)
+				if (stream is CefNetMemoryStream mem && mem.Capacity == mem.Length)
 				{
 					return mem.GetBuffer();
 				}
