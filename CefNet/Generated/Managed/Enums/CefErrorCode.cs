@@ -487,6 +487,8 @@ namespace CefNet
 		DnsSortError = -806,
 
 		DnsSecureResolverHostnameResolutionFailed = -808,
+
+		DnsNameHttpsOnly = 809,
 	}
 }
 
