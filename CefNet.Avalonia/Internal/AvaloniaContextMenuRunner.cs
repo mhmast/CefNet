@@ -105,8 +105,16 @@ namespace CefNet.Internal
 			_completionSource = new TaskCompletionSource<bool>();
 			Dispatcher.UIThread.Post(() =>
 			{
-				Menu.Open(control);
-				_completionSource.TrySetResult(true);
+				try
+				{
+					Menu.PlacementMode = PlacementMode.Pointer;
+					Menu.PlacementRect = new Rect(point.X, point.Y, 1, 1);
+					Menu.Open(control);
+				}
+				finally
+				{
+					_completionSource.TrySetResult(true);
+				}
 			});
 		}
 
