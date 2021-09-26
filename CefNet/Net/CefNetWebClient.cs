@@ -351,6 +351,106 @@ namespace CefNet.Net
 		}
 
 		/// <summary>
+		/// Send a POST request to the specified <see cref="Uri"/> with a cancellation token as an asynchronous operation.
+		/// </summary>
+		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+		/// <param name="referrerUri">
+		/// The <see cref="Uri"/> of the referring site for a request. Can be null.
+		/// </param>
+		/// <param name="referrerPolicy">
+		/// The policy for how the Referrer HTTP header value will be sent during request.
+		/// </param>
+		/// <param name="headers">
+		/// A <see cref="NameValueCollection"/> containing header name/value pairs associated with a request. Can be null.
+		/// </param>
+		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+		/// </param>
+		/// <returns>The task object representing the asynchronous operation.</returns>
+		public async Task<CefNetWebRequest> PostAsync(Uri requestUri, Uri referrerUri, CefReferrerPolicy referrerPolicy, IEnumerable<KeyValuePair<string, string>> content, NameValueCollection headers, CancellationToken cancellationToken)
+		{
+			if (requestUri is null)
+				throw new ArgumentNullException(nameof(requestUri));
+
+			var r = new CefRequest();
+			r.Flags = (int)this.RequestFlags;
+			if (referrerUri != null)
+				r.SetReferrer(referrerUri.AbsoluteUri, referrerPolicy);
+
+			using (var postData = new CefPostData(content))
+			{
+				if (headers != null && headers.Count > 0)
+				{
+					using (var map = new CefStringMultimap())
+					{
+						map.Add(headers);
+						r.Set(requestUri.AbsoluteUri, "POST", postData, map);
+					}
+				}
+				else
+				{
+					r.Url = requestUri.AbsoluteUri;
+					r.Method = "POST";
+					r.PostData = postData;
+				}
+			}
+			var request = new CefNetWebRequest(this);
+			await request.SendAsync(r, _context, cancellationToken);
+			return request;
+		}
+
+		/// <summary>
+		/// Send a POST request to the specified <see cref="Uri"/> with a cancellation token as an asynchronous operation.
+		/// </summary>
+		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+		/// <param name="referrerUri">
+		/// The <see cref="Uri"/> of the referring site for a request. Can be null.
+		/// </param>
+		/// <param name="referrerPolicy">
+		/// The policy for how the Referrer HTTP header value will be sent during request.
+		/// </param>
+		/// <param name="headers">
+		/// A <see cref="NameValueCollection"/> containing header name/value pairs associated with a request. Can be null.
+		/// </param>
+		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+		/// </param>
+		/// <returns>The task object representing the asynchronous operation.</returns>
+		public async Task<CefNetWebRequest> PostAsync(Uri requestUri, Uri referrerUri, CefReferrerPolicy referrerPolicy, NameValueCollection content, NameValueCollection headers, CancellationToken cancellationToken)
+		{
+			if (requestUri is null)
+				throw new ArgumentNullException(nameof(requestUri));
+
+			var r = new CefRequest();
+			r.Flags = (int)this.RequestFlags;
+			if (referrerUri != null)
+				r.SetReferrer(referrerUri.AbsoluteUri, referrerPolicy);
+
+			using (var postData = new CefPostData(content))
+			{
+				if (headers != null && headers.Count > 0)
+				{
+					using (var map = new CefStringMultimap())
+					{
+						map.Add(headers);
+						r.Set(requestUri.AbsoluteUri, "POST", postData, map);
+					}
+				}
+				else
+				{
+					r.Url = requestUri.AbsoluteUri;
+					r.Method = "POST";
+					r.PostData = postData;
+				}
+			}
+			var request = new CefNetWebRequest(this);
+			await request.SendAsync(r, _context, cancellationToken);
+			return request;
+		}
+
+		/// <summary>
 		/// Send a POST request to the specified <see cref="Uri"/>.
 		/// </summary>
 		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
@@ -363,6 +463,23 @@ namespace CefNet.Net
 		/// </param>
 		/// <returns>The task object representing the asynchronous operation.</returns>
 		public Task<CefNetWebRequest> PostAsync(Uri requestUri, CefPostData content, NameValueCollection headers, CancellationToken cancellationToken)
+		{
+			return PostAsync(requestUri, null, CefReferrerPolicy.Default, content, headers, cancellationToken);
+		}
+
+		/// <summary>
+		/// Send a POST request to the specified <see cref="Uri"/>.
+		/// </summary>
+		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+		/// <param name="headers">
+		/// A <see cref="NameValueCollection"/> containing header name/value pairs associated with a request. Can be null.
+		/// </param>
+		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+		/// </param>
+		/// <returns>The task object representing the asynchronous operation.</returns>
+		public Task<CefNetWebRequest> PostAsync(Uri requestUri, IEnumerable<KeyValuePair<string, string>> content, NameValueCollection headers, CancellationToken cancellationToken)
 		{
 			return PostAsync(requestUri, null, CefReferrerPolicy.Default, content, headers, cancellationToken);
 		}
@@ -566,6 +683,58 @@ namespace CefNet.Net
 		/// as a <see cref="Stream"/> in an asynchronous operation.
 		/// </summary>
 		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+		/// <param name="referrerUri">
+		/// The <see cref="Uri"/> of the referring site for a request. Can be null.
+		/// </param>
+		/// <param name="referrerPolicy">
+		/// The policy for how the Referrer HTTP header value will be sent during request.
+		/// </param>
+		/// <param name="headers">
+		/// A <see cref="NameValueCollection"/> containing header name/value pairs associated with a request. Can be null.
+		/// </param>
+		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+		/// </param>
+		/// <returns>The task object representing the asynchronous operation.</returns>
+		public async Task<Stream> PostReadStreamAsync(Uri requestUri, Uri referrerUri, CefReferrerPolicy referrerPolicy, IEnumerable<KeyValuePair<string, string>> content, NameValueCollection headers, CancellationToken cancellationToken)
+		{
+			var request = await PostAsync(requestUri, referrerUri, referrerPolicy, content, headers, cancellationToken).ConfigureAwait(false);
+			AssertSuccess(request);
+			return request.GetResponseStream();
+		}
+
+		/// <summary>
+		/// Send a POST request to the specified <see cref="Uri"/> and return the response body
+		/// as a <see cref="Stream"/> in an asynchronous operation.
+		/// </summary>
+		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+		/// <param name="referrerUri">
+		/// The <see cref="Uri"/> of the referring site for a request. Can be null.
+		/// </param>
+		/// <param name="referrerPolicy">
+		/// The policy for how the Referrer HTTP header value will be sent during request.
+		/// </param>
+		/// <param name="headers">
+		/// A <see cref="NameValueCollection"/> containing header name/value pairs associated with a request. Can be null.
+		/// </param>
+		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+		/// </param>
+		/// <returns>The task object representing the asynchronous operation.</returns>
+		public async Task<Stream> PostReadStreamAsync(Uri requestUri, Uri referrerUri, CefReferrerPolicy referrerPolicy, NameValueCollection content, NameValueCollection headers, CancellationToken cancellationToken)
+		{
+			var request = await PostAsync(requestUri, referrerUri, referrerPolicy, content, headers, cancellationToken).ConfigureAwait(false);
+			AssertSuccess(request);
+			return request.GetResponseStream();
+		}
+
+		/// <summary>
+		/// Send a POST request to the specified <see cref="Uri"/> and return the response body
+		/// as a <see cref="Stream"/> in an asynchronous operation.
+		/// </summary>
+		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
 		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
 		/// <param name="cancellationToken">
 		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
@@ -615,6 +784,74 @@ namespace CefNet.Net
 		/// </param>
 		/// <returns>The task object representing the asynchronous operation.</returns>
 		public async Task<byte[]> PostReadDataAsync(Uri requestUri, Uri referrerUri, CefReferrerPolicy referrerPolicy, CefPostData content, NameValueCollection headers, CancellationToken cancellationToken)
+		{
+			using (Stream stream = await PostReadStreamAsync(requestUri, referrerUri, referrerPolicy, content, headers, cancellationToken).ConfigureAwait(false))
+			{
+				if (stream is CefNetMemoryStream mem && mem.Capacity == mem.Length)
+				{
+					return mem.GetBuffer();
+				}
+				var buffer = new byte[stream.Length];
+				if (buffer.Length != await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false))
+					throw new InvalidOperationException();
+				return buffer;
+			}
+		}
+
+		/// <summary>
+		/// Send a POST request to the specified <see cref="Uri"/> and return the response body
+		/// as a <see cref="Byte"/> array in an asynchronous operation.
+		/// </summary>
+		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+		/// <param name="referrerUri">
+		/// The <see cref="Uri"/> of the referring site for a request. Can be null.
+		/// </param>
+		/// <param name="referrerPolicy">
+		/// The policy for how the Referrer HTTP header value will be sent during request.
+		/// </param>
+		/// <param name="headers">
+		/// A <see cref="NameValueCollection"/> containing header name/value pairs associated with a request. Can be null.
+		/// </param>
+		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+		/// </param>
+		/// <returns>The task object representing the asynchronous operation.</returns>
+		public async Task<byte[]> PostReadDataAsync(Uri requestUri, Uri referrerUri, CefReferrerPolicy referrerPolicy, NameValueCollection content, NameValueCollection headers, CancellationToken cancellationToken)
+		{
+			using (Stream stream = await PostReadStreamAsync(requestUri, referrerUri, referrerPolicy, content, headers, cancellationToken).ConfigureAwait(false))
+			{
+				if (stream is CefNetMemoryStream mem && mem.Capacity == mem.Length)
+				{
+					return mem.GetBuffer();
+				}
+				var buffer = new byte[stream.Length];
+				if (buffer.Length != await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false))
+					throw new InvalidOperationException();
+				return buffer;
+			}
+		}
+
+		/// <summary>
+		/// Send a POST request to the specified <see cref="Uri"/> and return the response body
+		/// as a <see cref="Byte"/> array in an asynchronous operation.
+		/// </summary>
+		/// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+		/// <param name="referrerUri">
+		/// The <see cref="Uri"/> of the referring site for a request. Can be null.
+		/// </param>
+		/// <param name="referrerPolicy">
+		/// The policy for how the Referrer HTTP header value will be sent during request.
+		/// </param>
+		/// <param name="headers">
+		/// A <see cref="NameValueCollection"/> containing header name/value pairs associated with a request. Can be null.
+		/// </param>
+		/// <param name="content">The request content sent to the specified <see cref="Uri"/>.</param>
+		/// <param name="cancellationToken">
+		/// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+		/// </param>
+		/// <returns>The task object representing the asynchronous operation.</returns>
+		public async Task<byte[]> PostReadDataAsync(Uri requestUri, Uri referrerUri, CefReferrerPolicy referrerPolicy, IEnumerable<KeyValuePair<string, string>> content, NameValueCollection headers, CancellationToken cancellationToken)
 		{
 			using (Stream stream = await PostReadStreamAsync(requestUri, referrerUri, referrerPolicy, content, headers, cancellationToken).ConfigureAwait(false))
 			{
