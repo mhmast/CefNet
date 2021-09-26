@@ -51,12 +51,23 @@ namespace CefNet.Internal
 			return false;
 		}
 
+		/// <summary>
+		/// Called when a navigation fails or is canceled. This function may be called
+		/// by itself if before commit or in combination with OnLoadStart/OnLoadEnd if
+		/// after commit.
+		/// </summary>
+		/// <param name="browser">The browser.</param>
+		/// <param name="frame">The frame.</param>
+		/// <param name="errorCode">The error code.</param>
+		/// <param name="errorText">The error text.</param>
+		/// <param name="failedUrl">The URL that failed to load.</param>
 		internal protected virtual void OnLoadError(CefBrowser browser, CefFrame frame, CefErrorCode errorCode, string errorText, string failedUrl)
 		{
 #if DEBUG
 			if (!BrowserObject.IsSame(browser))
 				throw new InvalidOperationException();
 #endif
+			WebView.RaiseLoadError(new LoadErrorEventArgs(frame, errorCode, errorText, failedUrl));
 		}
 	}
 }

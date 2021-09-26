@@ -26,6 +26,7 @@ namespace CefNet.Internal
 		void RaiseBeforeBrowse(BeforeBrowseEventArgs e);
 		void RaiseAddressChange(AddressChangeEventArgs e);
 		void RaiseLoadingStateChange(LoadingStateChangeEventArgs e);
+		void RaiseLoadError(LoadErrorEventArgs e);
 		bool RaiseRunContextMenu(CefFrame frame, CefContextMenuParams menuParams, CefMenuModel model, CefRunContextMenuCallback callback);
 		void RaiseTextFound(ITextFoundEventArgs e);
 		void RaisePdfPrintFinished(IPdfPrintFinishedEventArgs e);

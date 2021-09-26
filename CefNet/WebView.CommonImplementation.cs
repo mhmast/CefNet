@@ -67,6 +67,9 @@ namespace CefNet
 		/// </summary>
 		public event EventHandler<NavigatedEventArgs> Navigated;
 
+		/// <inheritdoc />
+		public event EventHandler<LoadErrorEventArgs> LoadError;
+
 		/// <summary>
 		/// Occurs when a frame&apos;s address has changed.
 		/// </summary>
@@ -839,6 +842,20 @@ namespace CefNet
 				OnNavigated(e);
 			}
 			AddressChange?.Invoke(this, e);
+		}
+
+		void IChromiumWebViewPrivate.RaiseLoadError(LoadErrorEventArgs e)
+		{
+			RaiseCrossThreadEvent(OnLoadError, e, false);
+		}
+
+		/// <summary>
+		/// Raises the <see cref="LoadError"/> event.
+		/// </summary>
+		/// <param name="e">A <see cref="LoadErrorEventArgs"/> that contains the event data.</param>
+		protected virtual void OnLoadError(LoadErrorEventArgs e)
+		{
+			LoadError?.Invoke(this, e);
 		}
 
 		/// <inheritdoc />

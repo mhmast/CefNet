@@ -26,6 +26,11 @@ namespace CefNet
 		event EventHandler<NavigatedEventArgs> Navigated;
 
 		/// <summary>
+		/// Occurs when a navigation fails or is canceled.
+		/// </summary>
+		event EventHandler<LoadErrorEventArgs> LoadError;
+
+		/// <summary>
 		/// Occurs when a new frame is created. This will be the first notification
 		/// that references <paramref name="frame"/>.
 		/// </summary>
