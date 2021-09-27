@@ -41,9 +41,9 @@ namespace CefNet.Internal
 		/// Called when a frame can begin routing commands to/from the associated
 		/// renderer process. Any commands that were queued have now been dispatched.
 		/// </summary>
-		internal protected virtual void OnFrameAttached(CefBrowser browser, CefFrame frame)
+		internal protected virtual void OnFrameAttached(CefBrowser browser, CefFrame frame, bool reattached)
 		{
-			WebView.RaiseCefFrameAttached(new FrameEventArgs(frame));
+			WebView.RaiseCefFrameAttached(new FrameEventArgs(frame, reattached));
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

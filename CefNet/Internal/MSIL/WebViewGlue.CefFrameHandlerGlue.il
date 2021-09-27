@@ -14,8 +14,8 @@
 	{
 		.maxstack 2
 		ldarg.0
-		ldvirtftn instance void CefNet.Internal.WebViewGlue::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame)
-		ldftn instance void CefNet.Internal.WebViewGlue::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame)
+		ldvirtftn instance void CefNet.Internal.WebViewGlue::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame, bool)
+		ldftn instance void CefNet.Internal.WebViewGlue::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame, bool)
 		ceq
 		ret
 	}

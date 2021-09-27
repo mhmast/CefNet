@@ -115,6 +115,16 @@ namespace CefNet
 		/// A resource that a plugin requested.
 		/// </summary>
 		PluginResource = 17,
+
+		/// <summary>
+		/// A main-frame service worker navigation preload request.
+		/// </summary>
+		NavigationPreloadMainFrame = 19,
+
+		/// <summary>
+		/// A sub-frame service worker navigation preload request.
+		/// </summary>
+		NavigationPreloadSubFrame = 20,
 	}
 }
 

@@ -119,20 +119,22 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_frame_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame)*
+		/// void (*)(_cef_frame_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, int reattached)*
 		/// </summary>
 		public void* on_frame_attached;
 
 		/// <summary>
 		/// Called when a frame can begin routing commands to/from the associated
-		/// renderer process. Any commands that were queued have now been dispatched.
+		/// renderer process. |reattached| will be true (1) if the frame was re-
+		/// attached after exiting the BackForwardCache. Any commands that were queued
+		/// have now been dispatched.
 		/// </summary>
 		[NativeName("on_frame_attached")]
-		public unsafe void OnFrameAttached(cef_browser_t* browser, cef_frame_t* frame)
+		public unsafe void OnFrameAttached(cef_browser_t* browser, cef_frame_t* frame, int reattached)
 		{
 			fixed (cef_frame_handler_t* self = &this)
 			{
-				((delegate* unmanaged[Stdcall]<cef_frame_handler_t*, cef_browser_t*, cef_frame_t*, void>)on_frame_attached)(self, browser, frame);
+				((delegate* unmanaged[Stdcall]<cef_frame_handler_t*, cef_browser_t*, cef_frame_t*, int, void>)on_frame_attached)(self, browser, frame, reattached);
 			}
 		}
 

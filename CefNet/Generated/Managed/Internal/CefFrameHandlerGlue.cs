@@ -44,9 +44,9 @@ namespace CefNet.Internal
 			return _implementation.AvoidOnFrameAttached();
 		}
 
-		protected internal unsafe override void OnFrameAttached(CefBrowser browser, CefFrame frame)
+		protected internal unsafe override void OnFrameAttached(CefBrowser browser, CefFrame frame, bool reattached)
 		{
-			_implementation.OnFrameAttached(browser, frame);
+			_implementation.OnFrameAttached(browser, frame, reattached);
 		}
 
 		bool ICefFrameHandlerPrivate.AvoidOnFrameDetached()

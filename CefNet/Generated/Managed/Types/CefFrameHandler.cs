@@ -122,7 +122,7 @@ namespace CefNet
 			self->on_main_frame_changed = (void*)Marshal.GetFunctionPointerForDelegate(fnOnMainFrameChanged);
 			#else
 			self->on_frame_created = (delegate* unmanaged[Stdcall]<cef_frame_handler_t*, cef_browser_t*, cef_frame_t*, void>)&OnFrameCreatedImpl;
-			self->on_frame_attached = (delegate* unmanaged[Stdcall]<cef_frame_handler_t*, cef_browser_t*, cef_frame_t*, void>)&OnFrameAttachedImpl;
+			self->on_frame_attached = (delegate* unmanaged[Stdcall]<cef_frame_handler_t*, cef_browser_t*, cef_frame_t*, int, void>)&OnFrameAttachedImpl;
 			self->on_frame_detached = (delegate* unmanaged[Stdcall]<cef_frame_handler_t*, cef_browser_t*, cef_frame_t*, void>)&OnFrameDetachedImpl;
 			self->on_main_frame_changed = (delegate* unmanaged[Stdcall]<cef_frame_handler_t*, cef_browser_t*, cef_frame_t*, cef_frame_t*, void>)&OnMainFrameChangedImpl;
 			#endif
@@ -172,22 +172,24 @@ namespace CefNet
 
 		/// <summary>
 		/// Called when a frame can begin routing commands to/from the associated
-		/// renderer process. Any commands that were queued have now been dispatched.
+		/// renderer process. |reattached| will be true (1) if the frame was re-
+		/// attached after exiting the BackForwardCache. Any commands that were queued
+		/// have now been dispatched.
 		/// </summary>
-		protected internal unsafe virtual void OnFrameAttached(CefBrowser browser, CefFrame frame)
+		protected internal unsafe virtual void OnFrameAttached(CefBrowser browser, CefFrame frame, bool reattached)
 		{
 		}
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnFrameAttachedDelegate(cef_frame_handler_t* self, cef_browser_t* browser, cef_frame_t* frame);
+		private unsafe delegate void OnFrameAttachedDelegate(cef_frame_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, int reattached);
 
 #endif // NET_LESS_5_0
-		// void (*)(_cef_frame_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame)*
+		// void (*)(_cef_frame_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, int reattached)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe void OnFrameAttachedImpl(cef_frame_handler_t* self, cef_browser_t* browser, cef_frame_t* frame)
+		private static unsafe void OnFrameAttachedImpl(cef_frame_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, int reattached)
 		{
 			var instance = GetInstance((IntPtr)self) as CefFrameHandler;
 			if (instance == null || ((ICefFrameHandlerPrivate)instance).AvoidOnFrameAttached())
@@ -196,7 +198,7 @@ namespace CefNet
 				ReleaseIfNonNull((cef_base_ref_counted_t*)frame);
 				return;
 			}
-			instance.OnFrameAttached(CefBrowser.Wrap(CefBrowser.Create, browser), CefFrame.Wrap(CefFrame.Create, frame));
+			instance.OnFrameAttached(CefBrowser.Wrap(CefBrowser.Create, browser), CefFrame.Wrap(CefFrame.Create, frame), reattached != 0);
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

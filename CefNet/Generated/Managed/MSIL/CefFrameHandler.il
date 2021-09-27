@@ -30,8 +30,8 @@
 			.override method instance bool CefNet.Internal.ICefFrameHandlerPrivate::AvoidOnFrameAttached()
 			.maxstack 2
 			ldarg.0
-			ldvirtftn instance void CefNet.CefFrameHandler::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame)
-			ldftn instance void CefNet.CefFrameHandler::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame)
+			ldvirtftn instance void CefNet.CefFrameHandler::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame, bool)
+			ldftn instance void CefNet.CefFrameHandler::OnFrameAttached(class CefNet.CefBrowser, class CefNet.CefFrame, bool)
 			ceq
 			ret
 		}

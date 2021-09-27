@@ -20,7 +20,7 @@ namespace CefNet.CApi
 {
 	public static partial class CefNativeApi
 	{
-		public static readonly string ApiHash = "5625e3ce80d2bbf5b5a39f8655d96c215f7685ee";
+		public static readonly string ApiHash = "b737ecfff4042edbbcb166d0af38556cb0ab8212";
 
 		/// <summary>
 		/// Add an entry to the cross-origin access whitelist.
@@ -633,6 +633,16 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern int cef_is_cert_status_error(CefCertStatus status);
+
+		/// <summary>
+		/// Returns true (1) if the application text direction is right-to-left.
+		/// </summary>
+		/// <remarks>
+		/// Defined in include/capi/cef_i18n_util_capi.h as
+		/// int cef_is_rtl()
+		/// </remarks>
+		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
+		public static unsafe extern int cef_is_rtl();
 
 		/// <summary>
 		/// Query if a plugin is unstable. Can be called on any thread in the browser
