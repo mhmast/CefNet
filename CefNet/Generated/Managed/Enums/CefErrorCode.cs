@@ -488,7 +488,7 @@ namespace CefNet
 
 		DnsSecureResolverHostnameResolutionFailed = -808,
 
-		DnsNameHttpsOnly = 809,
+		DnsNameHttpsOnly = -809,
 	}
 }
 
