@@ -20,5 +20,8 @@ namespace CefNet.Linux
 
 		[DllImport("X11", CallingConvention = CallingConvention.Cdecl)]
 		public extern static XKeySym XKeycodeToKeysym(IntPtr display, byte keycode, int index);
+
+		[DllImport("X11", CallingConvention = CallingConvention.Cdecl)]
+		public unsafe extern static X11Screen* XDefaultScreenOfDisplay(IntPtr display);
 	}
 }

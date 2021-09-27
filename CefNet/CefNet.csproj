@@ -59,7 +59,6 @@
     <Folder Include="Generated\Native\Types\" />
     <Folder Include="Generated\Native\MSIL\" />
     <Folder Include="Generated\Native\Typedefs\" />
-    <Folder Include="Linux\" />
   </ItemGroup>
 
   <ItemGroup>
