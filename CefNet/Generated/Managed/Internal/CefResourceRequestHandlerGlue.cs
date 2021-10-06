@@ -44,7 +44,7 @@ namespace CefNet.Internal
 			return _implementation.AvoidOnBeforeResourceLoad();
 		}
 
-		protected internal unsafe override CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefRequestCallback callback)
+		protected internal unsafe override CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefCallback callback)
 		{
 			return _implementation.OnBeforeResourceLoad(browser, frame, request, callback);
 		}

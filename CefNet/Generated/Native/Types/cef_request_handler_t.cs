@@ -143,7 +143,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* origin_url, int64 new_size, _cef_request_callback_t* callback)*
+		/// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* origin_url, int64 new_size, _cef_callback_t* callback)*
 		/// </summary>
 		public void* on_quota_request;
 
@@ -152,38 +152,38 @@ namespace CefNet.CApi
 		/// size via the webkitStorageInfo.requestQuota function. |origin_url| is the
 		/// origin of the page making the request. |new_size| is the requested quota
 		/// size in bytes. Return true (1) to continue the request and call
-		/// cef_request_callback_t::cont() either in this function or at a later time
-		/// to grant or deny the request. Return false (0) to cancel the request
+		/// cef_callback_t functions either in this function or at a later time to
+		/// grant or deny the request. Return false (0) to cancel the request
 		/// immediately.
 		/// </summary>
 		[NativeName("on_quota_request")]
-		public unsafe int OnQuotaRequest(cef_browser_t* browser, [Immutable]cef_string_t* origin_url, long new_size, cef_request_callback_t* callback)
+		public unsafe int OnQuotaRequest(cef_browser_t* browser, [Immutable]cef_string_t* origin_url, long new_size, cef_callback_t* callback)
 		{
 			fixed (cef_request_handler_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, long, cef_request_callback_t*, int>)on_quota_request)(self, browser, origin_url, new_size, callback);
+				return ((delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, long, cef_callback_t*, int>)on_quota_request)(self, browser, origin_url, new_size, callback);
 			}
 		}
 
 		/// <summary>
-		/// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, cef_errorcode_t cert_error, const cef_string_t* request_url, _cef_sslinfo_t* ssl_info, _cef_request_callback_t* callback)*
+		/// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, cef_errorcode_t cert_error, const cef_string_t* request_url, _cef_sslinfo_t* ssl_info, _cef_callback_t* callback)*
 		/// </summary>
 		public void* on_certificate_error;
 
 		/// <summary>
 		/// Called on the UI thread to handle requests for URLs with an invalid SSL
-		/// certificate. Return true (1) and call cef_request_callback_t::cont() either
-		/// in this function or at a later time to continue or cancel the request.
-		/// Return false (0) to cancel the request immediately. If
+		/// certificate. Return true (1) and call cef_callback_t functions either in
+		/// this function or at a later time to continue or cancel the request. Return
+		/// false (0) to cancel the request immediately. If
 		/// CefSettings.ignore_certificate_errors is set all invalid certificates will
 		/// be accepted without calling this function.
 		/// </summary>
 		[NativeName("on_certificate_error")]
-		public unsafe int OnCertificateError(cef_browser_t* browser, CefErrorCode cert_error, [Immutable]cef_string_t* request_url, cef_sslinfo_t* ssl_info, cef_request_callback_t* callback)
+		public unsafe int OnCertificateError(cef_browser_t* browser, CefErrorCode cert_error, [Immutable]cef_string_t* request_url, cef_sslinfo_t* ssl_info, cef_callback_t* callback)
 		{
 			fixed (cef_request_handler_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefErrorCode, cef_string_t*, cef_sslinfo_t*, cef_request_callback_t*, int>)on_certificate_error)(self, browser, cert_error, request_url, ssl_info, callback);
+				return ((delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefErrorCode, cef_string_t*, cef_sslinfo_t*, cef_callback_t*, int>)on_certificate_error)(self, browser, cert_error, request_url, ssl_info, callback);
 			}
 		}
 

@@ -619,15 +619,6 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Send a focus event to the browser.
-		/// </summary>
-		public unsafe virtual void SendFocusEvent(bool setFocus)
-		{
-			NativeInstance->SendFocusEvent(setFocus ? 1 : 0);
-			GC.KeepAlive(this);
-		}
-
-		/// <summary>
 		/// Send a capture lost event to the browser.
 		/// </summary>
 		public unsafe virtual void SendCaptureLostEvent()

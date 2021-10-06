@@ -1076,7 +1076,7 @@ namespace CefNet
 				return;
 
 			InitMouseEvent(x, y, modifiers);
-			browserHost.SendFocusEvent(true);
+			browserHost.SetFocus(true);
 			browserHost.SendMouseClickEvent(_mouseEventProxy, button, false, clicks);
 		}
 
@@ -1095,7 +1095,7 @@ namespace CefNet
 				return;
 
 			InitMouseEvent(x, y, modifiers);
-			browserHost.SendFocusEvent(true);
+			browserHost.SetFocus(true);
 			browserHost.SendMouseClickEvent(_mouseEventProxy, button, true, clicks);
 		}
 

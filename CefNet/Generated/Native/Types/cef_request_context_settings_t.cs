@@ -61,16 +61,6 @@ namespace CefNet.CApi
 		public int persist_user_preferences;
 
 		/// <summary>
-		/// Set to true (1) to ignore errors related to invalid SSL certificates.
-		/// Enabling this setting can lead to potential security vulnerabilities like
-		/// &quot;man in the middle&quot; attacks. Applications that load content from the
-		/// internet should not enable this setting. Can be set globally using the
-		/// CefSettings.ignore_certificate_errors value. This value will be ignored if
-		/// |cache_path| matches the CefSettings.cache_path value.
-		/// </summary>
-		public int ignore_certificate_errors;
-
-		/// <summary>
 		/// Comma delimited ordered list of language codes without any whitespace that
 		/// will be used in the &quot;Accept-Language&quot; HTTP header. Can be set globally
 		/// using the CefSettings.accept_language_list value or overridden on a per-

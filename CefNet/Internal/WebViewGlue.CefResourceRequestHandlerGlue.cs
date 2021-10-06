@@ -62,7 +62,7 @@ namespace CefNet.Internal
 		/// Return Continue to continue the request immediately. Return ContinueAsync and call CefRequestCallback:: Continue() at a later time to continue
 		/// or cancel the request asynchronously. Return Cancel to cancel the request immediately.
 		/// </returns>
-		internal protected virtual CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefRequestCallback callback)
+		internal protected virtual CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefCallback callback)
 		{
 			return CefReturnValue.Continue;
 		}

@@ -53,7 +53,7 @@ namespace CefNet.Internal
 			return false;
 		}
 
-		internal protected virtual bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefRequestCallback callback)
+		internal protected virtual bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefCallback callback)
 		{
 			return false;
 		}
@@ -63,7 +63,7 @@ namespace CefNet.Internal
 			return false;
 		}
 
-		internal protected virtual bool OnCertificateError(CefBrowser browser, CefErrorCode certError, string requestUrl, CefSSLInfo sslInfo, CefRequestCallback callback)
+		internal protected virtual bool OnCertificateError(CefBrowser browser, CefErrorCode certError, string requestUrl, CefSSLInfo sslInfo, CefCallback callback)
 		{
 			return false;
 		}

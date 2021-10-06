@@ -54,7 +54,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// cef_return_value_t (*)(_cef_resource_request_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, _cef_request_callback_t* callback)*
+		/// cef_return_value_t (*)(_cef_resource_request_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, _cef_callback_t* callback)*
 		/// </summary>
 		public void* on_before_resource_load;
 
@@ -65,15 +65,15 @@ namespace CefNet.CApi
 		/// or change the resource load optionally modify |request|. Modification of
 		/// the request URL will be treated as a redirect. Return RV_CONTINUE to
 		/// continue the request immediately. Return RV_CONTINUE_ASYNC and call
-		/// cef_request_callback_t:: cont() at a later time to continue or cancel the
-		/// request asynchronously. Return RV_CANCEL to cancel the request immediately.
+		/// cef_callback_t functions at a later time to continue or cancel the request
+		/// asynchronously. Return RV_CANCEL to cancel the request immediately.
 		/// </summary>
 		[NativeName("on_before_resource_load")]
-		public unsafe CefReturnValue OnBeforeResourceLoad(cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_request_callback_t* callback)
+		public unsafe CefReturnValue OnBeforeResourceLoad(cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_callback_t* callback)
 		{
 			fixed (cef_resource_request_handler_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_request_callback_t*, CefReturnValue>)on_before_resource_load)(self, browser, frame, request, callback);
+				return ((delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_callback_t*, CefReturnValue>)on_before_resource_load)(self, browser, frame, request, callback);
 			}
 		}
 

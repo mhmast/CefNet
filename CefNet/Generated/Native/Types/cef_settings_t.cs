@@ -272,17 +272,6 @@ namespace CefNet.CApi
 		public int uncaught_exception_stack_size;
 
 		/// <summary>
-		/// Set to true (1) to ignore errors related to invalid SSL certificates.
-		/// Enabling this setting can lead to potential security vulnerabilities like
-		/// &quot;man in the middle&quot; attacks. Applications that load content from the
-		/// internet should not enable this setting. Also configurable using the
-		/// &quot;ignore-certificate-errors&quot; command-line switch. Can be overridden for
-		/// individual CefRequestContext instances via the
-		/// CefRequestContextSettings.ignore_certificate_errors value.
-		/// </summary>
-		public int ignore_certificate_errors;
-
-		/// <summary>
 		/// Background color used for the browser before a document is loaded and when
 		/// no document color is specified. The alpha component must be either fully
 		/// opaque (0xFF) or fully transparent (0x00). If the alpha component is fully

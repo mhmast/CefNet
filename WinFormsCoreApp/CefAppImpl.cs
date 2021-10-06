@@ -15,7 +15,7 @@ namespace WinFormsCoreApp
 
 			//commandLine.AppendSwitchWithValue("proxy-server", "127.0.0.1:8888");
 
-
+			commandLine.AppendSwitch("ignore-certificate-errors");
 			commandLine.AppendSwitchWithValue("remote-debugging-port", "9222");
 			
 			//enable-devtools-experiments

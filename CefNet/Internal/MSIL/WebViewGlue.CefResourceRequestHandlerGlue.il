@@ -14,8 +14,8 @@
 	{
 		.maxstack 2
 		ldarg.0
-		ldvirtftn instance valuetype CefNet.CefReturnValue CefNet.Internal.WebViewGlue::OnBeforeResourceLoad(class CefNet.CefBrowser, class CefNet.CefFrame, class CefNet.CefRequest, class CefNet.CefRequestCallback)
-		ldftn instance valuetype CefNet.CefReturnValue CefNet.Internal.WebViewGlue::OnBeforeResourceLoad(class CefNet.CefBrowser, class CefNet.CefFrame, class CefNet.CefRequest, class CefNet.CefRequestCallback)
+		ldvirtftn instance valuetype CefNet.CefReturnValue CefNet.Internal.WebViewGlue::OnBeforeResourceLoad(class CefNet.CefBrowser, class CefNet.CefFrame, class CefNet.CefRequest, class CefNet.CefCallback)
+		ldftn instance valuetype CefNet.CefReturnValue CefNet.Internal.WebViewGlue::OnBeforeResourceLoad(class CefNet.CefBrowser, class CefNet.CefFrame, class CefNet.CefRequest, class CefNet.CefCallback)
 		ceq
 		ret
 	}

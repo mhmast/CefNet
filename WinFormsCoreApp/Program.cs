@@ -43,7 +43,6 @@ namespace WinFormsCoreApp
 			settings.LocalesDirPath = Path.Combine(cefPath, "Resources", "locales");
 			settings.ResourcesDirPath = Path.Combine(cefPath, "Resources");
 			settings.LogSeverity = CefLogSeverity.Warning;
-			settings.IgnoreCertificateErrors = true;
 			settings.UncaughtExceptionStackSize = 8;
 			
 			var app = new CefAppImpl();

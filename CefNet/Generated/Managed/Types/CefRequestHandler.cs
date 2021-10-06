@@ -78,8 +78,8 @@ namespace CefNet
 			self->on_open_urlfrom_tab = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_string_t*, CefWindowOpenDisposition, int, int>)&OnOpenUrlFromTabImpl;
 			self->get_resource_request_handler = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, int, int, cef_string_t*, int*, cef_resource_request_handler_t*>)&GetResourceRequestHandlerImpl;
 			self->get_auth_credentials = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, int, cef_string_t*, int, cef_string_t*, cef_string_t*, cef_auth_callback_t*, int>)&GetAuthCredentialsImpl;
-			self->on_quota_request = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, long, cef_request_callback_t*, int>)&OnQuotaRequestImpl;
-			self->on_certificate_error = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefErrorCode, cef_string_t*, cef_sslinfo_t*, cef_request_callback_t*, int>)&OnCertificateErrorImpl;
+			self->on_quota_request = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, long, cef_callback_t*, int>)&OnQuotaRequestImpl;
+			self->on_certificate_error = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefErrorCode, cef_string_t*, cef_sslinfo_t*, cef_callback_t*, int>)&OnCertificateErrorImpl;
 			self->on_select_client_certificate = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, int, cef_string_t*, int, UIntPtr, cef_x509certificate_t**, cef_select_client_certificate_callback_t*, int>)&OnSelectClientCertificateImpl;
 			self->on_plugin_crashed = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, void>)&OnPluginCrashedImpl;
 			self->on_render_view_ready = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, void>)&OnRenderViewReadyImpl;
@@ -278,25 +278,25 @@ namespace CefNet
 		/// size via the webkitStorageInfo.requestQuota function. |origin_url| is the
 		/// origin of the page making the request. |new_size| is the requested quota
 		/// size in bytes. Return true (1) to continue the request and call
-		/// cef_request_callback_t::cont() either in this function or at a later time
-		/// to grant or deny the request. Return false (0) to cancel the request
+		/// cef_callback_t functions either in this function or at a later time to
+		/// grant or deny the request. Return false (0) to cancel the request
 		/// immediately.
 		/// </summary>
-		protected internal unsafe virtual bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefRequestCallback callback)
+		protected internal unsafe virtual bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefCallback callback)
 		{
 			return default;
 		}
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate int OnQuotaRequestDelegate(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, long new_size, cef_request_callback_t* callback);
+		private unsafe delegate int OnQuotaRequestDelegate(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, long new_size, cef_callback_t* callback);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* origin_url, int64 new_size, _cef_request_callback_t* callback)*
+		// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* origin_url, int64 new_size, _cef_callback_t* callback)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe int OnQuotaRequestImpl(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, long new_size, cef_request_callback_t* callback)
+		private static unsafe int OnQuotaRequestImpl(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, long new_size, cef_callback_t* callback)
 		{
 			var instance = GetInstance((IntPtr)self) as CefRequestHandler;
 			if (instance == null || ((ICefRequestHandlerPrivate)instance).AvoidOnQuotaRequest())
@@ -305,7 +305,7 @@ namespace CefNet
 				ReleaseIfNonNull((cef_base_ref_counted_t*)callback);
 				return default;
 			}
-			return instance.OnQuotaRequest(CefBrowser.Wrap(CefBrowser.Create, browser), CefString.Read(origin_url), new_size, CefRequestCallback.Wrap(CefRequestCallback.Create, callback)) ? 1 : 0;
+			return instance.OnQuotaRequest(CefBrowser.Wrap(CefBrowser.Create, browser), CefString.Read(origin_url), new_size, CefCallback.Wrap(CefCallback.Create, callback)) ? 1 : 0;
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]
@@ -313,27 +313,27 @@ namespace CefNet
 
 		/// <summary>
 		/// Called on the UI thread to handle requests for URLs with an invalid SSL
-		/// certificate. Return true (1) and call cef_request_callback_t::cont() either
-		/// in this function or at a later time to continue or cancel the request.
-		/// Return false (0) to cancel the request immediately. If
+		/// certificate. Return true (1) and call cef_callback_t functions either in
+		/// this function or at a later time to continue or cancel the request. Return
+		/// false (0) to cancel the request immediately. If
 		/// CefSettings.ignore_certificate_errors is set all invalid certificates will
 		/// be accepted without calling this function.
 		/// </summary>
-		protected internal unsafe virtual bool OnCertificateError(CefBrowser browser, CefErrorCode certError, string requestUrl, CefSSLInfo sSLInfo, CefRequestCallback callback)
+		protected internal unsafe virtual bool OnCertificateError(CefBrowser browser, CefErrorCode certError, string requestUrl, CefSSLInfo sSLInfo, CefCallback callback)
 		{
 			return default;
 		}
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate int OnCertificateErrorDelegate(cef_request_handler_t* self, cef_browser_t* browser, CefErrorCode cert_error, cef_string_t* request_url, cef_sslinfo_t* ssl_info, cef_request_callback_t* callback);
+		private unsafe delegate int OnCertificateErrorDelegate(cef_request_handler_t* self, cef_browser_t* browser, CefErrorCode cert_error, cef_string_t* request_url, cef_sslinfo_t* ssl_info, cef_callback_t* callback);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, cef_errorcode_t cert_error, const cef_string_t* request_url, _cef_sslinfo_t* ssl_info, _cef_request_callback_t* callback)*
+		// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, cef_errorcode_t cert_error, const cef_string_t* request_url, _cef_sslinfo_t* ssl_info, _cef_callback_t* callback)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe int OnCertificateErrorImpl(cef_request_handler_t* self, cef_browser_t* browser, CefErrorCode cert_error, cef_string_t* request_url, cef_sslinfo_t* ssl_info, cef_request_callback_t* callback)
+		private static unsafe int OnCertificateErrorImpl(cef_request_handler_t* self, cef_browser_t* browser, CefErrorCode cert_error, cef_string_t* request_url, cef_sslinfo_t* ssl_info, cef_callback_t* callback)
 		{
 			var instance = GetInstance((IntPtr)self) as CefRequestHandler;
 			if (instance == null || ((ICefRequestHandlerPrivate)instance).AvoidOnCertificateError())
@@ -343,7 +343,7 @@ namespace CefNet
 				ReleaseIfNonNull((cef_base_ref_counted_t*)callback);
 				return default;
 			}
-			return instance.OnCertificateError(CefBrowser.Wrap(CefBrowser.Create, browser), cert_error, CefString.Read(request_url), CefSSLInfo.Wrap(CefSSLInfo.Create, ssl_info), CefRequestCallback.Wrap(CefRequestCallback.Create, callback)) ? 1 : 0;
+			return instance.OnCertificateError(CefBrowser.Wrap(CefBrowser.Create, browser), cert_error, CefString.Read(request_url), CefSSLInfo.Wrap(CefSSLInfo.Create, ssl_info), CefCallback.Wrap(CefCallback.Create, callback)) ? 1 : 0;
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

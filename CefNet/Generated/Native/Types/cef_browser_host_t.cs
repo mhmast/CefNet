@@ -807,23 +807,6 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, int setFocus)*
-		/// </summary>
-		public void* send_focus_event;
-
-		/// <summary>
-		/// Send a focus event to the browser.
-		/// </summary>
-		[NativeName("send_focus_event")]
-		public unsafe void SendFocusEvent(int setFocus)
-		{
-			fixed (cef_browser_host_t* self = &this)
-			{
-				((delegate* unmanaged[Stdcall]<cef_browser_host_t*, int, void>)send_focus_event)(self, setFocus);
-			}
-		}
-
-		/// <summary>
 		/// void (*)(_cef_browser_host_t* self)*
 		/// </summary>
 		public void* send_capture_lost_event;

@@ -74,7 +74,7 @@ namespace CefNet.Internal
 			return _implementation.AvoidOnQuotaRequest();
 		}
 
-		protected internal unsafe override bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefRequestCallback callback)
+		protected internal unsafe override bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefCallback callback)
 		{
 			return _implementation.OnQuotaRequest(browser, originUrl, newSize, callback);
 		}
@@ -84,7 +84,7 @@ namespace CefNet.Internal
 			return _implementation.AvoidOnCertificateError();
 		}
 
-		protected internal unsafe override bool OnCertificateError(CefBrowser browser, CefErrorCode certError, string requestUrl, CefSSLInfo sSLInfo, CefRequestCallback callback)
+		protected internal unsafe override bool OnCertificateError(CefBrowser browser, CefErrorCode certError, string requestUrl, CefSSLInfo sSLInfo, CefCallback callback)
 		{
 			return _implementation.OnCertificateError(browser, certError, requestUrl, sSLInfo, callback);
 		}

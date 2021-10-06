@@ -27,8 +27,9 @@ namespace CefNet
 	/// optionally have a value specified using the &apos;=&apos; delimiter (e.g.
 	/// &quot;-switch=value&quot;). An argument of &quot;--&quot; will terminate switch parsing with all
 	/// subsequent tokens, regardless of prefix, being interpreted as non-switch
-	/// arguments. Switch names are considered case-insensitive. This structure can
-	/// be used before cef_initialize() is called.
+	/// arguments. Switch names should be lowercase ASCII and will be converted to
+	/// such if necessary. Switch values will retain the original case and UTF8
+	/// encoding. This structure can be used before cef_initialize() is called.
 	/// </summary>
 	/// <remarks>
 	/// Role: Proxy

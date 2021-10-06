@@ -112,18 +112,6 @@ namespace CefNet.CApi
 		public CefState plugins;
 
 		/// <summary>
-		/// Controls whether file URLs will have access to all URLs. Also configurable
-		/// using the &quot;allow-universal-access-from-files&quot; command-line switch.
-		/// </summary>
-		public CefState universal_access_from_file_urls;
-
-		/// <summary>
-		/// Controls whether file URLs will have access to other file URLs. Also
-		/// configurable using the &quot;allow-access-from-files&quot; command-line switch.
-		/// </summary>
-		public CefState file_access_from_file_urls;
-
-		/// <summary>
 		/// Controls whether image URLs will be loaded from the network. A cached image
 		/// will still be rendered if requested. Also configurable using the
 		/// &quot;disable-image-loading&quot; command-line switch.
@@ -160,12 +148,6 @@ namespace CefNet.CApi
 		/// &quot;disable-databases&quot; command-line switch.
 		/// </summary>
 		public CefState databases;
-
-		/// <summary>
-		/// Controls whether the application cache can be used. Also configurable using
-		/// the &quot;disable-application-cache&quot; command-line switch.
-		/// </summary>
-		public CefState application_cache;
 
 		/// <summary>
 		/// Controls whether WebGL can be used. Note that WebGL requires hardware

@@ -67,7 +67,7 @@ namespace CefNet
 			self->on_protocol_execution = (void*)Marshal.GetFunctionPointerForDelegate(fnOnProtocolExecution);
 			#else
 			self->get_cookie_access_filter = (delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_cookie_access_filter_t*>)&GetCookieAccessFilterImpl;
-			self->on_before_resource_load = (delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_request_callback_t*, CefReturnValue>)&OnBeforeResourceLoadImpl;
+			self->on_before_resource_load = (delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_callback_t*, CefReturnValue>)&OnBeforeResourceLoadImpl;
 			self->get_resource_handler = (delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_resource_handler_t*>)&GetResourceHandlerImpl;
 			self->on_resource_redirect = (delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_response_t*, cef_string_t*, void>)&OnResourceRedirectImpl;
 			self->on_resource_response = (delegate* unmanaged[Stdcall]<cef_resource_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, cef_response_t*, int>)&OnResourceResponseImpl;
@@ -133,24 +133,24 @@ namespace CefNet
 		/// or change the resource load optionally modify |request|. Modification of
 		/// the request URL will be treated as a redirect. Return RV_CONTINUE to
 		/// continue the request immediately. Return RV_CONTINUE_ASYNC and call
-		/// cef_request_callback_t:: cont() at a later time to continue or cancel the
-		/// request asynchronously. Return RV_CANCEL to cancel the request immediately.
+		/// cef_callback_t functions at a later time to continue or cancel the request
+		/// asynchronously. Return RV_CANCEL to cancel the request immediately.
 		/// </summary>
-		protected internal unsafe virtual CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefRequestCallback callback)
+		protected internal unsafe virtual CefReturnValue OnBeforeResourceLoad(CefBrowser browser, CefFrame frame, CefRequest request, CefCallback callback)
 		{
 			return default;
 		}
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate CefReturnValue OnBeforeResourceLoadDelegate(cef_resource_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_request_callback_t* callback);
+		private unsafe delegate CefReturnValue OnBeforeResourceLoadDelegate(cef_resource_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_callback_t* callback);
 
 #endif // NET_LESS_5_0
-		// cef_return_value_t (*)(_cef_resource_request_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, _cef_request_callback_t* callback)*
+		// cef_return_value_t (*)(_cef_resource_request_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, _cef_callback_t* callback)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe CefReturnValue OnBeforeResourceLoadImpl(cef_resource_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_request_callback_t* callback)
+		private static unsafe CefReturnValue OnBeforeResourceLoadImpl(cef_resource_request_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_callback_t* callback)
 		{
 			var instance = GetInstance((IntPtr)self) as CefResourceRequestHandler;
 			if (instance == null || ((ICefResourceRequestHandlerPrivate)instance).AvoidOnBeforeResourceLoad())
@@ -161,7 +161,7 @@ namespace CefNet
 				ReleaseIfNonNull((cef_base_ref_counted_t*)callback);
 				return default;
 			}
-			return instance.OnBeforeResourceLoad(CefBrowser.Wrap(CefBrowser.Create, browser), CefFrame.Wrap(CefFrame.Create, frame), CefRequest.Wrap(CefRequest.Create, request), CefRequestCallback.Wrap(CefRequestCallback.Create, callback));
+			return instance.OnBeforeResourceLoad(CefBrowser.Wrap(CefBrowser.Create, browser), CefFrame.Wrap(CefFrame.Create, frame), CefRequest.Wrap(CefRequest.Create, request), CefCallback.Wrap(CefCallback.Create, callback));
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

@@ -63,8 +63,8 @@
 			.override method instance bool CefNet.Internal.ICefRequestHandlerPrivate::AvoidOnQuotaRequest()
 			.maxstack 2
 			ldarg.0
-			ldvirtftn instance bool CefNet.CefRequestHandler::OnQuotaRequest(class CefNet.CefBrowser, string, int64, class CefNet.CefRequestCallback)
-			ldftn instance bool CefNet.CefRequestHandler::OnQuotaRequest(class CefNet.CefBrowser, string, int64, class CefNet.CefRequestCallback)
+			ldvirtftn instance bool CefNet.CefRequestHandler::OnQuotaRequest(class CefNet.CefBrowser, string, int64, class CefNet.CefCallback)
+			ldftn instance bool CefNet.CefRequestHandler::OnQuotaRequest(class CefNet.CefBrowser, string, int64, class CefNet.CefCallback)
 			ceq
 			ret
 		}
@@ -74,8 +74,8 @@
 			.override method instance bool CefNet.Internal.ICefRequestHandlerPrivate::AvoidOnCertificateError()
 			.maxstack 2
 			ldarg.0
-			ldvirtftn instance bool CefNet.CefRequestHandler::OnCertificateError(class CefNet.CefBrowser, valuetype CefNet.CefErrorCode, string, class CefNet.CefSSLInfo, class CefNet.CefRequestCallback)
-			ldftn instance bool CefNet.CefRequestHandler::OnCertificateError(class CefNet.CefBrowser, valuetype CefNet.CefErrorCode, string, class CefNet.CefSSLInfo, class CefNet.CefRequestCallback)
+			ldvirtftn instance bool CefNet.CefRequestHandler::OnCertificateError(class CefNet.CefBrowser, valuetype CefNet.CefErrorCode, string, class CefNet.CefSSLInfo, class CefNet.CefCallback)
+			ldftn instance bool CefNet.CefRequestHandler::OnCertificateError(class CefNet.CefBrowser, valuetype CefNet.CefErrorCode, string, class CefNet.CefSSLInfo, class CefNet.CefCallback)
 			ceq
 			ret
 		}
