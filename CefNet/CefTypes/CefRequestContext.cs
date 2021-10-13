@@ -272,5 +272,53 @@ namespace CefNet
 			}
 		}
 
+		/// <summary>
+		/// Returns the cookie manager for this object.
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// The token to monitor for cancellation requests.
+		/// The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
+		/// <returns>
+		/// A task that represents the asynchronous operation. The task will complete after the manager&apos;s
+		/// storage has been initialized.
+		/// </returns>
+		public async Task<CefCookieManager> GetCookieManagerAsync(CancellationToken cancellationToken = default)
+		{
+			CefCookieManager cookieManager;
+			var tcs = new TaskCompletionSource<int>();
+			using (cancellationToken.Register(() => tcs.TrySetCanceled()))
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				cookieManager = this.GetCookieManager(new CefCompletionCallbackImpl(tcs.TrySetResult));
+				await tcs.Task.ConfigureAwait(false);
+			}
+			return cookieManager;
+		}
+
+		/// <summary>
+		/// Returns the MediaRouter object associated with this context.
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// The token to monitor for cancellation requests.
+		/// The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
+		/// <returns>
+		/// A task that represents the asynchronous operation. The task will complete after the manager&apos;s
+		/// context has been initialized.
+		/// </returns>
+		public async Task<CefMediaRouter> GetMediaRouterAsync(CancellationToken cancellationToken = default)
+		{
+			CefMediaRouter mediaRouter;
+			var tcs = new TaskCompletionSource<int>();
+			using (cancellationToken.Register(() => tcs.TrySetCanceled()))
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				mediaRouter = this.GetMediaRouter(new CefCompletionCallbackImpl(tcs.TrySetResult));
+				await tcs.Task.ConfigureAwait(false);
+			}
+			return mediaRouter;
+		}
+
 	}
 }
