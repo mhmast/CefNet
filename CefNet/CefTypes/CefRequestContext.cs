@@ -207,6 +207,9 @@ namespace CefNet
 		/// The token to monitor for cancellation requests.
 		/// The default value is <see cref="CancellationToken.None"/>.
 		/// </param>
+		/// <returns>
+		/// A task that represents the asynchronous operation.
+		/// </returns>
 		public async Task ClearHttpAuthCredentialsAsync(CancellationToken cancellationToken = default)
 		{
 			var tcs = new TaskCompletionSource<int>();
@@ -214,6 +217,57 @@ namespace CefNet
 			{
 				cancellationToken.ThrowIfCancellationRequested();
 				this.ClearHttpAuthCredentials(new CefCompletionCallbackImpl(tcs.TrySetResult));
+				await tcs.Task.ConfigureAwait(false);
+			}
+		}
+
+		/// <summary>
+		/// Clears all certificate exceptions that were added as part of handling
+		/// <see cref="CefRequestHandler.OnCertificateError"/>.
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// The token to monitor for cancellation requests.
+		/// The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
+		/// <remarks>
+		/// If you call this it is recommended that you also call <see cref="CloseAllConnectionsAsync"/>
+		/// or you risk not being prompted again for server certificates if you reconnect quickly.
+		/// </remarks>
+		/// <returns>
+		/// A task that represents the asynchronous operation.
+		/// </returns>
+		public async Task ClearCertificateExceptionsAsync(CancellationToken cancellationToken = default)
+		{
+			var tcs = new TaskCompletionSource<int>();
+			using (cancellationToken.Register(() => tcs.TrySetCanceled()))
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				this.ClearCertificateExceptions(new CefCompletionCallbackImpl(tcs.TrySetResult));
+				await tcs.Task.ConfigureAwait(false);
+			}
+		}
+
+		/// <summary>
+		/// Clears all active and idle connections that Chromium currently has.
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// The token to monitor for cancellation requests.
+		/// The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
+		/// <remarks>
+		/// This is only recommended if you have released all other CEF objects but don&apos;t yet
+		/// want to call <see cref="CefNetApplication.Shutdown"/>.
+		/// </remarks>
+		/// <returns>
+		/// A task that represents the asynchronous operation.
+		/// </returns>
+		public async Task CloseAllConnectionsAsync(CancellationToken cancellationToken = default)
+		{
+			var tcs = new TaskCompletionSource<int>();
+			using (cancellationToken.Register(() => tcs.TrySetCanceled()))
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				this.CloseAllConnections(new CefCompletionCallbackImpl(tcs.TrySetResult));
 				await tcs.Task.ConfigureAwait(false);
 			}
 		}
