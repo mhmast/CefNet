@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using CefNet.CApi;
+using CefNet.Internal;
 
 namespace CefNet
 {
-	public unsafe partial class CefRequestContext
+	public partial class CefRequestContext
 	{
 
 #if USESAFECACHE
@@ -44,7 +46,7 @@ namespace CefNet
 		/// <summary>
 		/// Returns the global context object.
 		/// </summary>
-		public static CefRequestContext GetGlobalContext()
+		public static unsafe CefRequestContext GetGlobalContext()
 		{
 			return CefRequestContext.Wrap(CefRequestContext.Create, CefNativeApi.cef_request_context_get_global_context());
 		}
@@ -61,7 +63,7 @@ namespace CefNet
 		/// <summary>
 		/// Creates a new context object with the specified |settings| and optional |handler|.
 		/// </summary>
-		public CefRequestContext(CefRequestContextSettings settings, CefRequestContextHandler handler)
+		public unsafe CefRequestContext(CefRequestContextSettings settings, CefRequestContextHandler handler)
 			: this(CefNativeApi.cef_request_context_create_context(
 				(settings ?? throw new ArgumentNullException(nameof(settings))).GetNativeInstance(),
 				handler != null ? handler.GetNativeInstance() : null))
@@ -86,7 +88,7 @@ namespace CefNet
 		/// <summary>
 		/// Creates a new context object that shares storage with |other| and uses an optional |handler|.
 		/// </summary>
-		public CefRequestContext(CefRequestContext other, CefRequestContextHandler handler)
+		public unsafe CefRequestContext(CefRequestContext other, CefRequestContextHandler handler)
 			: this(CefNativeApi.cef_create_context_shared(
 				(other ?? throw new ArgumentNullException(nameof(other))).GetNativeInstance(),
 				handler != null ? handler.GetNativeInstance() : null))
@@ -195,6 +197,25 @@ namespace CefNet
 			if (taskCompletion is null)
 				throw exception;
 			taskCompletion.TrySetException(exception);
+		}
+
+		/// <summary>
+		/// Clears all HTTP authentication credentials that were added as part of
+		/// handling GetAuthCredentials.
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// The token to monitor for cancellation requests.
+		/// The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
+		public async Task ClearHttpAuthCredentialsAsync(CancellationToken cancellationToken = default)
+		{
+			var tcs = new TaskCompletionSource<int>();
+			using (cancellationToken.Register(() => tcs.TrySetCanceled()))
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				this.ClearHttpAuthCredentials(new CefCompletionCallbackImpl(tcs.TrySetResult));
+				await tcs.Task.ConfigureAwait(false);
+			}
 		}
 
 	}
