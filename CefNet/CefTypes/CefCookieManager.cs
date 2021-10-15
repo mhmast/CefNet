@@ -8,7 +8,7 @@ using CefNet.Net;
 
 namespace CefNet
 {
-	public unsafe partial class CefCookieManager
+	public partial class CefCookieManager
 	{
 		/// <summary>
 		/// Returns the global cookie manager. By default data will be stored at CefSettings.CachePath
@@ -19,7 +19,7 @@ namespace CefNet
 		/// If |callback| is non-NULL it will be executed asnychronously on the UI thread after the
 		/// manager&apos;s storage has been initialized.
 		/// </param>
-		public static CefCookieManager GetGlobalManager(CefCompletionCallback callback)
+		public static unsafe CefCookieManager GetGlobalManager(CefCompletionCallback callback)
 		{
 			return CefCookieManager.Wrap(CefCookieManager.Create, CefNativeApi.cef_cookie_manager_get_global_manager(callback != null ? callback.GetNativeInstance() : null));
 		}
@@ -163,6 +163,29 @@ namespace CefNet
 			if (!VisitAllCookies(deleteCookieVisitor))
 				throw new InvalidOperationException();
 			return deleteCookieVisitor.CompletionTask;
+		}
+
+		/// <summary>
+		/// Flush the backing store (if any) to disk.
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// The token to monitor for cancellation requests.
+		/// The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
+		/// <returns>
+		/// The result of an asynchronous operation is false if cookies cannot be accessed.
+		/// </returns>
+		public async Task<bool> FlushStoreAsync(CancellationToken cancellationToken = default)
+		{
+			bool result;
+			var tcs = new TaskCompletionSource<int>();
+			using (cancellationToken.Register(() => tcs.TrySetCanceled()))
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				result = this.FlushStore(new CefCompletionCallbackImpl(tcs.TrySetResult));
+				await tcs.Task.ConfigureAwait(false);
+			}
+			return result;
 		}
 
 	}
