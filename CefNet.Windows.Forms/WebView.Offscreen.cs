@@ -543,7 +543,7 @@ namespace CefNet.Windows.Forms
 			{
 				if (WindowlessRenderingEnabled)
 				{
-					CefEventFlags modifiers = CefEventFlags.None;
+					CefEventFlags modifiers = GetModifierKeys();
 					if (e.Button == MouseButtons.Left)
 						modifiers |= CefEventFlags.LeftMouseButton;
 					if (e.Button == MouseButtons.Right)

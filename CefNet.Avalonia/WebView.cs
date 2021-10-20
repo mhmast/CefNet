@@ -752,7 +752,7 @@ namespace CefNet.Avalonia
 			}
 			else
 			{
-				CefEventFlags modifiers = CefEventFlags.None;
+				CefEventFlags modifiers = GetModifierKeys(e.KeyModifiers);
 				PointerPoint pointerPoint = e.GetCurrentPoint(this);
 				PointerPointProperties pp = pointerPoint.Properties;
 				if (pp.IsLeftButtonPressed)

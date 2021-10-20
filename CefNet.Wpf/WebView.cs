@@ -606,7 +606,7 @@ namespace CefNet.Wpf
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			CefEventFlags modifiers = CefEventFlags.None;
+			CefEventFlags modifiers = GetModifierKeys();
 			if (e.LeftButton == MouseButtonState.Pressed)
 				modifiers |= CefEventFlags.LeftMouseButton;
 			if (e.RightButton == MouseButtonState.Pressed)
