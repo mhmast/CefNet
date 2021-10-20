@@ -916,7 +916,7 @@ namespace CefNet
 		/// <param name="e">A <see cref="FrameEventArgs"/> that contains the event data.</param>
 		protected private virtual void OnCefFrameDetached(FrameEventArgs e)
 		{
-			((EventHandler<FrameEventArgs>)ViewGlue.GetEventHandler(WebViewGlue.FrameDetachedEvent))?.Invoke(this, e);
+			((EventHandler<FrameEventArgs>)ViewGlue?.GetEventHandler(WebViewGlue.FrameDetachedEvent))?.Invoke(this, e);
 		}
 
 		void IChromiumWebViewPrivate.RaiseCefFrameDetached(FrameEventArgs e)
