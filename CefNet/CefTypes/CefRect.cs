@@ -33,6 +33,18 @@ namespace CefNet
 		}
 
 		/// <summary>
+		/// Gets a value which indicates that the <see cref="Width"/> or <see cref="Height"/>
+		/// property of this <see cref="CefRect"/> structure is zero or negative.
+		/// </summary>
+		public bool IsNullOrNegativeSize
+		{
+			get
+			{
+				return _instance.width <= 0 || _instance.height <= 0;
+			}
+		}
+
+		/// <summary>
 		/// Gets the x-coordinate that is the sum of <see cref="X"/> and <see cref="Width"/>
 		/// property values of this <see cref="CefRect"/> structure.
 		/// </summary>
