@@ -228,6 +228,8 @@ namespace CefNet
 
 		SSLKeyUsageIncompatible = -181,
 
+		InvalidEchConfigList = -182,
+
 		CertCommonNameInvalid = -200,
 
 		CertDateInvalid = -201,
