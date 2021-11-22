@@ -872,7 +872,7 @@ namespace CefNet
 		/// <param name="e">A <see cref="FrameEventArgs"/> that contains the event data.</param>
 		protected private virtual void OnCefFrameCreated(FrameEventArgs e)
 		{
-			((EventHandler<FrameEventArgs>)ViewGlue.GetEventHandler(WebViewGlue.FrameCreatedEvent))?.Invoke(this, e);
+			((EventHandler<FrameEventArgs>)ViewGlue?.GetEventHandler(WebViewGlue.FrameCreatedEvent))?.Invoke(this, e);
 		}
 
 		void IChromiumWebViewPrivate.RaiseCefFrameCreated(FrameEventArgs e)
@@ -894,7 +894,7 @@ namespace CefNet
 		/// <param name="e">A <see cref="FrameEventArgs"/> that contains the event data.</param>
 		protected virtual void OnCefFrameAttached(FrameEventArgs e)
 		{
-			((EventHandler<FrameEventArgs>)ViewGlue.GetEventHandler(WebViewGlue.FrameAttachedEvent))?.Invoke(this, e);
+			((EventHandler<FrameEventArgs>)ViewGlue?.GetEventHandler(WebViewGlue.FrameAttachedEvent))?.Invoke(this, e);
 		}
 
 		void IChromiumWebViewPrivate.RaiseCefFrameAttached(FrameEventArgs e)
