@@ -230,6 +230,10 @@ namespace CefNet
 
 		InvalidEchConfigList = -182,
 
+		EchNotNegotiated = -183,
+
+		EchFallbackCertificateInvalid = -184,
+
 		CertCommonNameInvalid = -200,
 
 		CertDateInvalid = -201,

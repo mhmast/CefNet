@@ -50,39 +50,6 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// int (*)(_cef_request_context_handler_t* self, const cef_string_t* mime_type, const cef_string_t* plugin_url, int is_main_frame, const cef_string_t* top_origin_url, _cef_web_plugin_info_t* plugin_info, cef_plugin_policy_t* plugin_policy)*
-		/// </summary>
-		public void* on_before_plugin_load;
-
-		/// <summary>
-		/// Called on multiple browser process threads before a plugin instance is
-		/// loaded. |mime_type| is the mime type of the plugin that will be loaded.
-		/// |plugin_url| is the content URL that the plugin will load and may be NULL.
-		/// |is_main_frame| will be true (1) if the plugin is being loaded in the main
-		/// (top-level) frame, |top_origin_url| is the URL for the top-level frame that
-		/// contains the plugin when loading a specific plugin instance or NULL when
-		/// building the initial list of enabled plugins for &apos;navigator.plugins&apos;
-		/// JavaScript state. |plugin_info| includes additional information about the
-		/// plugin that will be loaded. |plugin_policy| is the recommended policy.
-		/// Modify |plugin_policy| and return true (1) to change the policy. Return
-		/// false (0) to use the recommended policy. The default plugin policy can be
-		/// set at runtime using the `--plugin-policy=[allow|detect|block]` command-
-		/// line flag. Decisions to mark a plugin as disabled by setting
-		/// |plugin_policy| to PLUGIN_POLICY_DISABLED may be cached when
-		/// |top_origin_url| is NULL. To purge the plugin list cache and potentially
-		/// trigger new calls to this function call
-		/// cef_request_context_t::PurgePluginListCache.
-		/// </summary>
-		[NativeName("on_before_plugin_load")]
-		public unsafe int OnBeforePluginLoad([Immutable]cef_string_t* mime_type, [Immutable]cef_string_t* plugin_url, int is_main_frame, [Immutable]cef_string_t* top_origin_url, cef_web_plugin_info_t* plugin_info, CefPluginPolicy* plugin_policy)
-		{
-			fixed (cef_request_context_handler_t* self = &this)
-			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_context_handler_t*, cef_string_t*, cef_string_t*, int, cef_string_t*, cef_web_plugin_info_t*, CefPluginPolicy*, int>)on_before_plugin_load)(self, mime_type, plugin_url, is_main_frame, top_origin_url, plugin_info, plugin_policy);
-			}
-		}
-
-		/// <summary>
 		/// _cef_resource_request_handler_t* (*)(_cef_request_context_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, int is_navigation, int is_download, const cef_string_t* request_initiator, int* disable_default_handling)*
 		/// </summary>
 		public void* get_resource_request_handler;

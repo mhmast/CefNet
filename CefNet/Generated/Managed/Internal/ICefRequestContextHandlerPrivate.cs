@@ -23,7 +23,6 @@ namespace CefNet.Internal
 	public interface ICefRequestContextHandlerPrivate
 	{
 		bool AvoidOnRequestContextInitialized();
-		bool AvoidOnBeforePluginLoad();
 		bool AvoidGetResourceRequestHandler();
 	}
 }

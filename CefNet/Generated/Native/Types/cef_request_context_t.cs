@@ -198,27 +198,6 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_request_context_t* self, int reload_pages)*
-		/// </summary>
-		public void* purge_plugin_list_cache;
-
-		/// <summary>
-		/// Tells all renderer processes associated with this context to throw away
-		/// their plugin list cache. If |reload_pages| is true (1) they will also
-		/// reload all pages with plugins.
-		/// cef_request_context_handler_t::OnBeforePluginLoad may be called to rebuild
-		/// the plugin list cache.
-		/// </summary>
-		[NativeName("purge_plugin_list_cache")]
-		public unsafe void PurgePluginListCache(int reload_pages)
-		{
-			fixed (cef_request_context_t* self = &this)
-			{
-				((delegate* unmanaged[Stdcall]<cef_request_context_t*, int, void>)purge_plugin_list_cache)(self, reload_pages);
-			}
-		}
-
-		/// <summary>
 		/// int (*)(_cef_request_context_t* self, const cef_string_t* name)*
 		/// </summary>
 		public void* has_preference;

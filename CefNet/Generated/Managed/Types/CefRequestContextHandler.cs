@@ -33,8 +33,6 @@ namespace CefNet
 #if NET_LESS_5_0
 		private static readonly OnRequestContextInitializedDelegate fnOnRequestContextInitialized = OnRequestContextInitializedImpl;
 
-		private static readonly OnBeforePluginLoadDelegate fnOnBeforePluginLoad = OnBeforePluginLoadImpl;
-
 		private static readonly GetResourceRequestHandlerDelegate fnGetResourceRequestHandler = GetResourceRequestHandlerImpl;
 
 #endif // NET_LESS_5_0
@@ -48,11 +46,9 @@ namespace CefNet
 			cef_request_context_handler_t* self = this.NativeInstance;
 			#if NET_LESS_5_0
 			self->on_request_context_initialized = (void*)Marshal.GetFunctionPointerForDelegate(fnOnRequestContextInitialized);
-			self->on_before_plugin_load = (void*)Marshal.GetFunctionPointerForDelegate(fnOnBeforePluginLoad);
 			self->get_resource_request_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetResourceRequestHandler);
 			#else
 			self->on_request_context_initialized = (delegate* unmanaged[Stdcall]<cef_request_context_handler_t*, cef_request_context_t*, void>)&OnRequestContextInitializedImpl;
-			self->on_before_plugin_load = (delegate* unmanaged[Stdcall]<cef_request_context_handler_t*, cef_string_t*, cef_string_t*, int, cef_string_t*, cef_web_plugin_info_t*, CefPluginPolicy*, int>)&OnBeforePluginLoadImpl;
 			self->get_resource_request_handler = (delegate* unmanaged[Stdcall]<cef_request_context_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, int, int, cef_string_t*, int*, cef_resource_request_handler_t*>)&GetResourceRequestHandlerImpl;
 			#endif
 		}
@@ -91,53 +87,6 @@ namespace CefNet
 				return;
 			}
 			instance.OnRequestContextInitialized(CefRequestContext.Wrap(CefRequestContext.Create, request_context));
-		}
-
-		[MethodImpl(MethodImplOptions.ForwardRef)]
-		extern bool ICefRequestContextHandlerPrivate.AvoidOnBeforePluginLoad();
-
-		/// <summary>
-		/// Called on multiple browser process threads before a plugin instance is
-		/// loaded. |mime_type| is the mime type of the plugin that will be loaded.
-		/// |plugin_url| is the content URL that the plugin will load and may be NULL.
-		/// |is_main_frame| will be true (1) if the plugin is being loaded in the main
-		/// (top-level) frame, |top_origin_url| is the URL for the top-level frame that
-		/// contains the plugin when loading a specific plugin instance or NULL when
-		/// building the initial list of enabled plugins for &apos;navigator.plugins&apos;
-		/// JavaScript state. |plugin_info| includes additional information about the
-		/// plugin that will be loaded. |plugin_policy| is the recommended policy.
-		/// Modify |plugin_policy| and return true (1) to change the policy. Return
-		/// false (0) to use the recommended policy. The default plugin policy can be
-		/// set at runtime using the `--plugin-policy=[allow|detect|block]` command-
-		/// line flag. Decisions to mark a plugin as disabled by setting
-		/// |plugin_policy| to PLUGIN_POLICY_DISABLED may be cached when
-		/// |top_origin_url| is NULL. To purge the plugin list cache and potentially
-		/// trigger new calls to this function call
-		/// cef_request_context_t::PurgePluginListCache.
-		/// </summary>
-		protected internal unsafe virtual bool OnBeforePluginLoad(string mimeType, string pluginUrl, bool isMainFrame, string topOriginUrl, CefWebPluginInfo pluginInfo, ref CefPluginPolicy pluginPolicy)
-		{
-			return default;
-		}
-
-#if NET_LESS_5_0
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate int OnBeforePluginLoadDelegate(cef_request_context_handler_t* self, cef_string_t* mime_type, cef_string_t* plugin_url, int is_main_frame, cef_string_t* top_origin_url, cef_web_plugin_info_t* plugin_info, CefPluginPolicy* plugin_policy);
-
-#endif // NET_LESS_5_0
-		// int (*)(_cef_request_context_handler_t* self, const cef_string_t* mime_type, const cef_string_t* plugin_url, int is_main_frame, const cef_string_t* top_origin_url, _cef_web_plugin_info_t* plugin_info, cef_plugin_policy_t* plugin_policy)*
-#if !NET_LESS_5_0
-		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-#endif
-		private static unsafe int OnBeforePluginLoadImpl(cef_request_context_handler_t* self, cef_string_t* mime_type, cef_string_t* plugin_url, int is_main_frame, cef_string_t* top_origin_url, cef_web_plugin_info_t* plugin_info, CefPluginPolicy* plugin_policy)
-		{
-			var instance = GetInstance((IntPtr)self) as CefRequestContextHandler;
-			if (instance == null || ((ICefRequestContextHandlerPrivate)instance).AvoidOnBeforePluginLoad())
-			{
-				ReleaseIfNonNull((cef_base_ref_counted_t*)plugin_info);
-				return default;
-			}
-			return instance.OnBeforePluginLoad(CefString.Read(mime_type), CefString.Read(plugin_url), is_main_frame != 0, CefString.Read(top_origin_url), CefWebPluginInfo.Wrap(CefWebPluginInfo.Create, plugin_info), ref *plugin_policy) ? 1 : 0;
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

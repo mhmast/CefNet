@@ -39,16 +39,6 @@ namespace CefNet.Internal
 			_implementation.OnRequestContextInitialized(requestContext);
 		}
 
-		bool ICefRequestContextHandlerPrivate.AvoidOnBeforePluginLoad()
-		{
-			return _implementation.AvoidOnBeforePluginLoad();
-		}
-
-		protected internal unsafe override bool OnBeforePluginLoad(string mimeType, string pluginUrl, bool isMainFrame, string topOriginUrl, CefWebPluginInfo pluginInfo, ref CefPluginPolicy pluginPolicy)
-		{
-			return _implementation.OnBeforePluginLoad(mimeType, pluginUrl, isMainFrame, topOriginUrl, pluginInfo, ref pluginPolicy);
-		}
-
 		bool ICefRequestContextHandlerPrivate.AvoidGetResourceRequestHandler()
 		{
 			return _implementation.AvoidGetResourceRequestHandler();

@@ -150,19 +150,6 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Tells all renderer processes associated with this context to throw away
-		/// their plugin list cache. If |reload_pages| is true (1) they will also
-		/// reload all pages with plugins.
-		/// cef_request_context_handler_t::OnBeforePluginLoad may be called to rebuild
-		/// the plugin list cache.
-		/// </summary>
-		public unsafe virtual void PurgePluginListCache(bool reloadPages)
-		{
-			NativeInstance->PurgePluginListCache(reloadPages ? 1 : 0);
-			GC.KeepAlive(this);
-		}
-
-		/// <summary>
 		/// Returns true (1) if a preference with the specified |name| exists. This
 		/// function must be called on the browser process UI thread.
 		/// </summary>

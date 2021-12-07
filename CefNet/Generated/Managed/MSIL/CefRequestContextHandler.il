@@ -25,17 +25,6 @@
 			ret
 		}
 
-		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefRequestContextHandlerPrivate.AvoidOnBeforePluginLoad()
-		{
-			.override method instance bool CefNet.Internal.ICefRequestContextHandlerPrivate::AvoidOnBeforePluginLoad()
-			.maxstack 2
-			ldarg.0
-			ldvirtftn instance bool CefNet.CefRequestContextHandler::OnBeforePluginLoad(string, string, bool, string, class CefNet.CefWebPluginInfo, valuetype CefNet.CefPluginPolicy&)
-			ldftn instance bool CefNet.CefRequestContextHandler::OnBeforePluginLoad(string, string, bool, string, class CefNet.CefWebPluginInfo, valuetype CefNet.CefPluginPolicy&)
-			ceq
-			ret
-		}
-
 		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefRequestContextHandlerPrivate.AvoidGetResourceRequestHandler()
 		{
 			.override method instance bool CefNet.Internal.ICefRequestContextHandlerPrivate::AvoidGetResourceRequestHandler()
