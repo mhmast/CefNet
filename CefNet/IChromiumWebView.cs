@@ -136,6 +136,11 @@ namespace CefNet
 		event EventHandler<IScriptDialogOpeningEventArgs> ScriptDialogOpening;
 
 		/// <summary>
+		/// Occurs when a download has begun.
+		/// </summary>
+		event EventHandler<DownloadEventArgs> Download;
+
+		/// <summary>
 		/// Gets and sets a default URL.
 		/// </summary>
 		/// <remarks>

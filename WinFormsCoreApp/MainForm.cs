@@ -316,8 +316,29 @@ namespace WinFormsCoreApp
 			{
 				tab.WebView.Navigated += WebView_Navigated;
 				tab.WebView.PdfPrintFinished += WebView_PdfPrintFinished;
+				tab.WebView.Download += WebView_Download; 
 				tabs.SelectTab(tab);
 			}
+		}
+
+		private async void WebView_Download(object sender, DownloadEventArgs e)
+		{
+			CefBeforeDownloadCallback callback = e.GetDeferral();
+			bool isCanceled;
+			using (var dlg = new SaveFileDialog())
+			{
+				dlg.Filter = "All files (*.*)|*.*";
+				dlg.FileName = e.DownloadOperation.SuggestedFileName;
+				isCanceled = dlg.ShowDialog() != DialogResult.OK;
+				if (isCanceled)
+					e.DownloadOperation.Cancel();
+				else
+					callback.Continue(dlg.FileName, false);
+			}
+			if (isCanceled)
+				return;
+			await e.DownloadOperation.WhenComplete();
+			MessageBox.Show($"Download is completed ({e.DownloadOperation.FullPath})!");
 		}
 
 		private void Tabs_ControlRemoved(object sender, ControlEventArgs e)
@@ -327,6 +348,7 @@ namespace WinFormsCoreApp
 			{
 				tab.WebView.Navigated -= WebView_Navigated;
 				tab.WebView.PdfPrintFinished -= WebView_PdfPrintFinished;
+				tab.WebView.Download -= WebView_Download;
 			}
 		}
 

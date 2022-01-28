@@ -1,27 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.CompilerServices;
+﻿using System.IO;
+using System.Threading;
 
 namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
-		public void CreateOrDestroyDownloadGlue()
-		{
-			if (AvoidOnBeforeDownload()
-				&& AvoidOnDownloadUpdated())
-			{
-				this.DownloadGlue = null;
-			}
-			else if (this.DownloadGlue is null)
-			{
-				this.DownloadGlue = new CefDownloadHandlerGlue(this);
-			}
-		}
 
-		[MethodImpl(MethodImplOptions.ForwardRef)]
-		internal extern bool AvoidOnBeforeDownload();
+		internal bool AvoidOnBeforeDownload() => false;
 
 		/// <summary>
 		/// Called before a download begins.
@@ -33,14 +18,21 @@ namespace CefNet.Internal
 		/// Execute <paramref name="callback"/> either asynchronously or in this function
 		/// to continue the download if desired.
 		/// </param>
-		/// <remarks>By default the download will be canceled.</remarks>
 		internal protected virtual void OnBeforeDownload(CefBrowser browser, CefDownloadItem downloadItem, string suggestedName, CefBeforeDownloadCallback callback)
 		{
-
+			var e = new DownloadEventArgs(new CefNetDownloadOperation(downloadItem), suggestedName, callback);
+			e.DownloadOperation.SuggestedFileName = suggestedName;
+			ThreadPool.QueueUserWorkItem(_ =>
+			{
+				WebView.RaiseDownload(e);
+				if (e.Cancel)
+					e.DownloadOperation.Cancel();
+				else if (e.ShowDialog.HasValue)
+					callback.Continue(e.DownloadPath != suggestedName && Path.IsPathRooted(e.DownloadPath) ? e.DownloadPath : null, e.ShowDialog.Value);
+			});
 		}
 
-		[MethodImpl(MethodImplOptions.ForwardRef)]
-		internal extern bool AvoidOnDownloadUpdated();
+		internal bool AvoidOnDownloadUpdated() => false;
 
 		/// <summary>
 		/// Called when a download&apos;s status or progress information has been updated.
@@ -55,7 +47,7 @@ namespace CefNet.Internal
 		/// <remarks>This may be called multiple times before and after <see cref="OnBeforeDownload"/>.</remarks>
 		internal protected virtual void OnDownloadUpdated(CefBrowser browser, CefDownloadItem downloadItem, CefDownloadItemCallback callback)
 		{
-
+			CefNetDownloadOperation.TryUpdate(downloadItem, callback);
 		}
 	}
 }

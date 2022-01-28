@@ -133,6 +133,9 @@ namespace CefNet
 		/// </summary>
 		public event EventHandler<DevToolsProtocolEventAvailableEventArgs> DevToolsProtocolEventAvailable;
 
+		/// <inheritdoc />
+		public event EventHandler<DownloadEventArgs> Download;
+
 		private static CefBrowserSettings _DefaultBrowserSettings;
 
 		//private LifeSpanGlue lifeSpanHandler;
@@ -1033,6 +1036,20 @@ namespace CefNet
 		protected virtual void OnScriptDialogOpening(IScriptDialogOpeningEventArgs e)
 		{
 			ScriptDialogOpeningEvent?.Invoke(this, e);
+		}
+
+		void IChromiumWebViewPrivate.RaiseDownload(DownloadEventArgs e)
+		{
+			RaiseCrossThreadEvent(OnDownload, e, true);
+		}
+
+		/// <summary>
+		/// Raises the <see cref="Download"/> event.
+		/// </summary>
+		/// <param name="e">A <see cref="DownloadEventArgs"/> that contains the event data.</param>
+		protected virtual void OnDownload(DownloadEventArgs e)
+		{
+			Download?.Invoke(this, e);
 		}
 
 		private void InitMouseEvent(int x, int y, CefEventFlags modifiers)

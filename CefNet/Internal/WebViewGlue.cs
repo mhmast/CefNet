@@ -53,7 +53,7 @@ namespace CefNet.Internal
 			this.ContextMenuGlue = new CefContextMenuHandlerGlue(this);
 			this.LoadGlue = new CefLoadHandlerGlue(this);
 			this.PrintGlue = new CefPrintHandlerGlue(this);
-
+			this.DownloadGlue = new CefDownloadHandlerGlue(this);
 			this.CookieAccessFilterGlue = new CefCookieAccessFilterGlue(this);
 			this.ResourceRequestGlue = new CefResourceRequestHandlerGlue(this);
 
@@ -62,7 +62,6 @@ namespace CefNet.Internal
 			CreateOrDestroyKeyboardGlue();
 			CreateOrDestroyDragGlue();
 			CreateOrDestroyFocusGlue();
-			CreateOrDestroyDownloadGlue();
 			CreateOrDestroyDialogGlue();
 		}
 
