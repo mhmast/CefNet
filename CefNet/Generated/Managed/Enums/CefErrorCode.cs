@@ -266,8 +266,6 @@ namespace CefNet
 
 		CertKnownInterceptionBlocked = -217,
 
-		SSLObsoleteVersion = -218,
-
 		CertEnd = -219,
 
 		InvalidUrl = -300,
