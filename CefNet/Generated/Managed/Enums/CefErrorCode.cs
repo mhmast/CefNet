@@ -120,8 +120,6 @@ namespace CefNet
 
 		ProxyAuthUnsupported = -115,
 
-		CertErrorInSSLRenegotiation = -116,
-
 		BadSSLClientAuthCert = -117,
 
 		ConnectionTimedOut = -118,
@@ -224,7 +222,7 @@ namespace CefNet
 
 		WrongVersionOnEarlyData = -179,
 
-		Tls13DowngradeDetected = -180,
+		TLS13DowngradeDetected = -180,
 
 		SSLKeyUsageIncompatible = -181,
 
@@ -493,6 +491,8 @@ namespace CefNet
 		DnsSecureResolverHostnameResolutionFailed = -808,
 
 		DnsNameHttpsOnly = -809,
+
+		DnsRequestCancelled = -810,
 	}
 }
 
