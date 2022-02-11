@@ -280,9 +280,9 @@ namespace CefNet.Unsafe
 
 		TranslatorTestScopedLibraryChildChild,
 
-		Urlrequest,
+		UrlRequest,
 
-		UrlrequestClient,
+		UrlRequestClient,
 
 		V8Accessor,
 

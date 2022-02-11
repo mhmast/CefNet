@@ -205,6 +205,8 @@ namespace CefGen
 					t += "TLS" + char.ToUpper(part[3]) + part.Substring(4);
 				else if (part.Length > 3 && part.StartsWith("ssl", StringComparison.OrdinalIgnoreCase))
 					t += "SSL" + char.ToUpper(part[3]) + part.Substring(4);
+				else if (part.Length > 4 && part.StartsWith("url", StringComparison.OrdinalIgnoreCase))
+					t += "Url" + char.ToUpper(part[3]) + part.Substring(4);
 				else if (part.Length > 4 && part.StartsWith("x509", StringComparison.OrdinalIgnoreCase))
 					t += "X509" + char.ToUpper(part[4]) + part.Substring(5);
 				else
