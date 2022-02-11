@@ -151,11 +151,11 @@ namespace CefNet
 		/// <summary>
 		/// Gets the SSL information for this navigation entry.
 		/// </summary>
-		public unsafe virtual CefSSLStatus Sslstatus
+		public unsafe virtual CefSSLStatus SSLStatus
 		{
 			get
 			{
-				return SafeCall(CefSSLStatus.Wrap(CefSSLStatus.Create, NativeInstance->GetSslstatus()));
+				return SafeCall(CefSSLStatus.Wrap(CefSSLStatus.Create, NativeInstance->GetSSLStatus()));
 			}
 		}
 	}

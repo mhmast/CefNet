@@ -249,17 +249,22 @@ namespace CefGen
 			}
 
 			string value = itemDecl.Value;
-			if (value.StartsWith("0x")
-					&& uint.TryParse(value.Substring(2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out uint num)
-					&& num > int.MaxValue)
+			if (value is not null)
 			{
-				value = "unchecked((int)" + value + ")";
+				if (value.StartsWith("0x")
+						&& uint.TryParse(value.Substring(2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out uint num)
+						&& num > int.MaxValue)
+				{
+					value = "unchecked((int)" + value + ")";
+				}
 			}
-
 			WriteIndent();
 			Output.Write(itemDecl.Name);
-			Output.Write(" = ");
-			Output.Write(value);
+			if (value is not null)
+			{
+				Output.Write(" = ");
+				Output.Write(value);
+			}
 			Output.WriteLine(",");
 		}
 

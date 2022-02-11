@@ -73,7 +73,7 @@ namespace CefNet.CApi
 		/// Returns the SSL version used for the SSL connection.
 		/// </summary>
 		[NativeName("get_sslversion")]
-		public unsafe CefSSLVersion GetSslversion()
+		public unsafe CefSSLVersion GetSSLVersion()
 		{
 			fixed (cef_sslstatus_t* self = &this)
 			{
@@ -107,7 +107,7 @@ namespace CefNet.CApi
 		/// Returns the X.509 certificate.
 		/// </summary>
 		[NativeName("get_x509certificate")]
-		public unsafe cef_x509certificate_t* GetX509certificate()
+		public unsafe cef_x509certificate_t* GetX509Certificate()
 		{
 			fixed (cef_sslstatus_t* self = &this)
 			{

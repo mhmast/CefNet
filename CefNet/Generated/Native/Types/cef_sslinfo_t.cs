@@ -56,7 +56,7 @@ namespace CefNet.CApi
 		/// Returns the X.509 certificate.
 		/// </summary>
 		[NativeName("get_x509certificate")]
-		public unsafe cef_x509certificate_t* GetX509certificate()
+		public unsafe cef_x509certificate_t* GetX509Certificate()
 		{
 			fixed (cef_sslinfo_t* self = &this)
 			{

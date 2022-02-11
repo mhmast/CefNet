@@ -301,7 +301,7 @@ namespace CefGen
 
 				CppFunctionType fnType = fieldType.FunctionTypeRef;
 				TypeDesc retType = GetTypeDesc(fnType.ReturnType);
-				caller = new CodeMethod(field.Name.ToUpperCamel(fnType.Parameters.Count).EscapeName());
+				caller = new CodeMethod(field.Name.ToUpperCamel(false, fnType.Parameters.Count).EscapeName());
 				var rvtype = new CodeMethodParameter(null);
 				rvtype.Type = ResolveCefType(retType.ToString());
 				if (retType.Name == "char16" || retType.Name == "wchar")

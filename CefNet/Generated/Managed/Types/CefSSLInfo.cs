@@ -53,11 +53,11 @@ namespace CefNet
 		/// <summary>
 		/// Gets the X.509 certificate.
 		/// </summary>
-		public unsafe virtual CefX509Certificate X509certificate
+		public unsafe virtual CefX509Certificate X509Certificate
 		{
 			get
 			{
-				return SafeCall(CefX509Certificate.Wrap(CefX509Certificate.Create, NativeInstance->GetX509certificate()));
+				return SafeCall(CefX509Certificate.Wrap(CefX509Certificate.Create, NativeInstance->GetX509Certificate()));
 			}
 		}
 	}

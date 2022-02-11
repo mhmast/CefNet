@@ -29,17 +29,17 @@ namespace CefNet
 		/// </summary>
 		Unknown = 0,
 
-		Ssl2 = 1,
+		SSL2 = 1,
 
-		Ssl3 = 2,
+		SSL3 = 2,
 
-		Tls1 = 3,
+		TLS1 = 3,
 
-		Tls11 = 4,
+		TLS11 = 4,
 
-		Tls12 = 5,
+		TLS12 = 5,
 
-		Tls13 = 6,
+		TLS13 = 6,
 
 		Quic = 7,
 	}

@@ -77,7 +77,11 @@ namespace CefGen
 				return;
 			}
 
+
 			Clean(outDirPath);
+
+			Console.WriteLine("Generate CefWrapperType.cs");
+			GenerateCefWrapperTypes(cefPath, outDirPath);
 
 			Console.WriteLine("Generate unsafe types...");
 			GenerateFromCHeaders(cefPath, outDirPath, onlyStdCall);
@@ -313,6 +317,22 @@ namespace CefGen
 				csfile.Flush();
 			}
 
+		}
+
+		private static void GenerateCefWrapperTypes(string cefPath, string outDirPath)
+		{
+			var cwb = new CefWrapperTypesBuilder
+			{
+				BaseDirectory = cefPath,
+				Namespace = "CefNet.Unsafe"
+			};
+			var codegen = new CSharpCodeGen();
+			using (var csfile = new StreamWriter(Path.Combine(outDirPath, "Managed", "Enums", "CefWrapperType.cs"), false, Encoding.UTF8))
+			{
+				codegen.Directives.Add("#pragma warning disable 1591");
+				codegen.GenerateCode(cwb.Build(), csfile);
+				csfile.Flush();
+			}
 		}
 
 		private static void Clean(string path)

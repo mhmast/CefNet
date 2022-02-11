@@ -126,7 +126,7 @@ namespace CefGen
 
 		};
 
-		public static string ToUpperCamel(this string s, int argsCount = 0)
+		public static string ToUpperCamel(this string s, bool isEnumValue = false, int argsCount = 0)
 		{
 			if (string.IsNullOrEmpty(s))
 				return s;
@@ -183,8 +183,6 @@ namespace CefGen
 					t += "KeyUp";
 				else if (part == "rawkeydown")
 					t += "RawKeyDown";
-				else if (part == "v8context")
-					t += "V8Context";
 				else if (part == "uint")
 					t += "UInt";
 				else if (part == "bykey")
@@ -199,6 +197,16 @@ namespace CefGen
 					t += "ByQName";
 				else if (part == "bylname")
 					t += "ByLName";
+				else if (part.Length > 2 && part.StartsWith("V8", StringComparison.OrdinalIgnoreCase))
+					t += "V8" + char.ToUpper(part[2]) + part.Substring(3);
+				else if (isEnumValue && part.StartsWith("dom", StringComparison.OrdinalIgnoreCase))
+					t += "DOM" + char.ToUpper(part[3]) + part.Substring(4);
+				else if (part.Length > 3 && part.StartsWith("tls", StringComparison.OrdinalIgnoreCase))
+					t += "TLS" + char.ToUpper(part[3]) + part.Substring(4);
+				else if (part.Length > 3 && part.StartsWith("ssl", StringComparison.OrdinalIgnoreCase))
+					t += "SSL" + char.ToUpper(part[3]) + part.Substring(4);
+				else if (part.Length > 4 && part.StartsWith("x509", StringComparison.OrdinalIgnoreCase))
+					t += "X509" + char.ToUpper(part[4]) + part.Substring(5);
 				else
 					t += char.ToUpper(part[0]) + part.Substring(1);
 			}
@@ -207,6 +215,20 @@ namespace CefGen
 				return "GetCefType";
 			}
 			return t;
+		}
+
+		private static bool IsWordWithUpperCasePart(string word, out string part)
+		{
+			foreach (string name in UpperCaseNames)
+			{
+				if (word.StartsWith(name, StringComparison.OrdinalIgnoreCase))
+				{
+					part = name;
+					return true;
+				}
+			}
+			part = null;
+			return false;
 		}
 
 		public static string EscapeName(this string s)

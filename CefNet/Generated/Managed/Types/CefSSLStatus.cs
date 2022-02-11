@@ -64,11 +64,11 @@ namespace CefNet
 		/// <summary>
 		/// Gets the SSL version used for the SSL connection.
 		/// </summary>
-		public unsafe virtual CefSSLVersion Sslversion
+		public unsafe virtual CefSSLVersion SSLVersion
 		{
 			get
 			{
-				return SafeCall(NativeInstance->GetSslversion());
+				return SafeCall(NativeInstance->GetSSLVersion());
 			}
 		}
 
@@ -86,11 +86,11 @@ namespace CefNet
 		/// <summary>
 		/// Gets the X.509 certificate.
 		/// </summary>
-		public unsafe virtual CefX509Certificate X509certificate
+		public unsafe virtual CefX509Certificate X509Certificate
 		{
 			get
 			{
-				return SafeCall(CefX509Certificate.Wrap(CefX509Certificate.Create, NativeInstance->GetX509certificate()));
+				return SafeCall(CefX509Certificate.Wrap(CefX509Certificate.Create, NativeInstance->GetX509Certificate()));
 			}
 		}
 	}

@@ -202,7 +202,7 @@ namespace CefNet.CApi
 		/// Returns the SSL information for this navigation entry.
 		/// </summary>
 		[NativeName("get_sslstatus")]
-		public unsafe cef_sslstatus_t* GetSslstatus()
+		public unsafe cef_sslstatus_t* GetSSLStatus()
 		{
 			fixed (cef_navigation_entry_t* self = &this)
 			{
