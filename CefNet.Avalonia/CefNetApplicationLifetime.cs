@@ -110,6 +110,14 @@ namespace CefNet
 				e.Cancel = true;
 		}
 
+		/// <inheritdoc />
+		public bool TryShutdown(int exitCode = 0)
+		{
+			var e = new ShutdownRequestedEventArgs();
+			OnShutdownRequested(this, e);
+			return !e.Cancel;
+		}
+
 		public void Shutdown(int exitCode = 0)
 		{
 			if (_isShuttingDown)
