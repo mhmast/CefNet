@@ -167,7 +167,7 @@ namespace AvaloniaApp
 
 		private void Find_Click(object sender, RoutedEventArgs e)
 		{
-			SelectedView?.Find(0, "i", true, true, false);
+			SelectedView?.Find("i", true, true, false);
 		}
 
 		private void OpenPopup_Click(object sender, RoutedEventArgs e)

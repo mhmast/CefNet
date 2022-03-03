@@ -19,14 +19,16 @@ using CefNet.WinApi;
 namespace CefNet
 {
 	/// <summary>
-	/// Supported context menu media state bit flags.
+	/// Supported context menu media state bit flags. These constants match their
+	/// equivalents in Chromium&apos;s ContextMenuData::MediaFlags and should not be
+	/// renumbered.
 	/// </summary>
 	[Flags]
 	public enum CefContextMenuMediaStateFlags
 	{
 		None = 0,
 
-		Error = 1 << 0,
+		InError = 1 << 0,
 
 		Paused = 1 << 1,
 
@@ -38,13 +40,19 @@ namespace CefNet
 
 		HasAudio = 1 << 5,
 
-		HasVideo = 1 << 6,
+		CanToggleControls = 1 << 6,
 
-		ControlRootElement = 1 << 7,
+		Controls = 1 << 7,
 
 		CanPrint = 1 << 8,
 
 		CanRotate = 1 << 9,
+
+		CanPictureInPicture = 1 << 10,
+
+		PictureInPicture = 1 << 11,
+
+		CanLoop = 1 << 12,
 	}
 }
 

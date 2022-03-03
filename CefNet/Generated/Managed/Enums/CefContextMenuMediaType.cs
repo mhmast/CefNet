@@ -19,7 +19,8 @@ using CefNet.WinApi;
 namespace CefNet
 {
 	/// <summary>
-	/// Supported context menu media types.
+	/// Supported context menu media types. These constants match their equivalents
+	/// in Chromium&apos;s ContextMenuDataMediaType and should not be renumbered.
 	/// </summary>
 	public enum CefContextMenuMediaType
 	{
@@ -44,14 +45,19 @@ namespace CefNet
 		Audio = 3,
 
 		/// <summary>
+		/// An canvas node is selected.
+		/// </summary>
+		Canvas = 4,
+
+		/// <summary>
 		/// A file node is selected.
 		/// </summary>
-		File = 4,
+		File = 5,
 
 		/// <summary>
 		/// A plugin node is selected.
 		/// </summary>
-		Plugin = 5,
+		Plugin = 6,
 	}
 }
 

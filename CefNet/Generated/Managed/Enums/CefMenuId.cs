@@ -140,14 +140,12 @@ namespace CefNet
 		AddToDictionary = 206,
 
 		/// <summary>
-		/// Custom menu items originating from the renderer process. For example,
-		/// plugin placeholder menu items.
+		/// Custom menu items originating from the renderer process.
 		/// </summary>
 		CustomFirst = 220,
 
 		/// <summary>
-		/// Custom menu items originating from the renderer process. For example,
-		/// plugin placeholder menu items.
+		/// Custom menu items originating from the renderer process.
 		/// </summary>
 		CustomLast = 250,
 

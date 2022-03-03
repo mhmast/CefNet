@@ -463,16 +463,11 @@ namespace CefNet
 		/// Search for <paramref name="searchText"/>. The <see cref="TextFound"/> event
 		/// will be occurred to report find results.
 		/// </summary>
-		/// <param name="identifier">
-		/// An unique ID and these IDs must strictly increase so that newer requests always
-		/// have greater IDs than older requests. If <paramref name="identifier"/> is zero or less than the
-		/// previous ID value then it will be automatically assigned a new valid ID.
-		/// </param>
 		/// <param name="searchText">The string to seek.</param>
 		/// <param name="forward">A value which indicates whether to search forward or backward within the page.</param>
 		/// <param name="matchCase">The true value indicates that the search should be case-sensitive.</param>
 		/// <param name="findNext">A value which indicates whether this is the first request or a follow-up.</param>
-		void Find(int identifier, string searchText, bool forward, bool matchCase, bool findNext);
+		void Find(string searchText, bool forward, bool matchCase, bool findNext);
 
 		/// <summary>
 		/// Cancel all searches that are currently going on.

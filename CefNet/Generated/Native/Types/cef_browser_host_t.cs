@@ -354,27 +354,25 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, int identifier, const cef_string_t* searchText, int forward, int matchCase, int findNext)*
+		/// void (*)(_cef_browser_host_t* self, const cef_string_t* searchText, int forward, int matchCase, int findNext)*
 		/// </summary>
 		public void* find;
 
 		/// <summary>
-		/// Search for |searchText|. |identifier| must be a unique ID and these IDs
-		/// must strictly increase so that newer requests always have greater IDs than
-		/// older requests. If |identifier| is zero or less than the previous ID value
-		/// then it will be automatically assigned a new valid ID. |forward| indicates
-		/// whether to search forward or backward within the page. |matchCase|
-		/// indicates whether the search should be case-sensitive. |findNext| indicates
-		/// whether this is the first request or a follow-up. The cef_find_handler_t
-		/// instance, if any, returned via cef_client_t::GetFindHandler will be called
-		/// to report find results.
+		/// Search for |searchText|. |forward| indicates whether to search forward or
+		/// backward within the page. |matchCase| indicates whether the search should
+		/// be case-sensitive. |findNext| indicates whether this is the first request
+		/// or a follow-up. The search will be restarted if |searchText| or |matchCase|
+		/// change. The search will be stopped if |searchText| is NULL. The
+		/// cef_find_handler_t instance, if any, returned via
+		/// cef_client_t::GetFindHandler will be called to report find results.
 		/// </summary>
 		[NativeName("find")]
-		public unsafe void Find(int identifier, [Immutable]cef_string_t* searchText, int forward, int matchCase, int findNext)
+		public unsafe void Find([Immutable]cef_string_t* searchText, int forward, int matchCase, int findNext)
 		{
 			fixed (cef_browser_host_t* self = &this)
 			{
-				((delegate* unmanaged[Stdcall]<cef_browser_host_t*, int, cef_string_t*, int, int, int, void>)find)(self, identifier, searchText, forward, matchCase, findNext);
+				((delegate* unmanaged[Stdcall]<cef_browser_host_t*, cef_string_t*, int, int, int, void>)find)(self, searchText, forward, matchCase, findNext);
 			}
 		}
 

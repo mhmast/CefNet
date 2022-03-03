@@ -18,14 +18,19 @@ namespace CefNet
 			this.FinalUpdate = finalUpdate;
 		}
 
+		/// <inheritdoc />
 		public int ID { get; }
 
+		/// <inheritdoc />
 		public int Index { get; }
 
+		/// <inheritdoc />
 		public int Count { get; }
 
+		/// <inheritdoc />
 		public CefRect SelectionRect { get; }
 
+		/// <inheritdoc />
 		public bool FinalUpdate { get; }
 
 	}

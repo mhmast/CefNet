@@ -19,7 +19,9 @@ using CefNet.WinApi;
 namespace CefNet
 {
 	/// <summary>
-	/// Supported context menu edit state bit flags.
+	/// Supported context menu edit state bit flags. These constants match their
+	/// equivalents in Chromium&apos;s ContextMenuDataEditFlags and should not be
+	/// renumbered.
 	/// </summary>
 	[Flags]
 	public enum CefContextMenuEditStateFlags
@@ -41,6 +43,8 @@ namespace CefNet
 		CanSelectAll = 1 << 6,
 
 		CanTranslate = 1 << 7,
+
+		CanEditRichly = 1 << 8,
 	}
 }
 

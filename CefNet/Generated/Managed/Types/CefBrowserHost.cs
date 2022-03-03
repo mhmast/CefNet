@@ -348,22 +348,20 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Search for |searchText|. |identifier| must be a unique ID and these IDs
-		/// must strictly increase so that newer requests always have greater IDs than
-		/// older requests. If |identifier| is zero or less than the previous ID value
-		/// then it will be automatically assigned a new valid ID. |forward| indicates
-		/// whether to search forward or backward within the page. |matchCase|
-		/// indicates whether the search should be case-sensitive. |findNext| indicates
-		/// whether this is the first request or a follow-up. The cef_find_handler_t
-		/// instance, if any, returned via cef_client_t::GetFindHandler will be called
-		/// to report find results.
+		/// Search for |searchText|. |forward| indicates whether to search forward or
+		/// backward within the page. |matchCase| indicates whether the search should
+		/// be case-sensitive. |findNext| indicates whether this is the first request
+		/// or a follow-up. The search will be restarted if |searchText| or |matchCase|
+		/// change. The search will be stopped if |searchText| is NULL. The
+		/// cef_find_handler_t instance, if any, returned via
+		/// cef_client_t::GetFindHandler will be called to report find results.
 		/// </summary>
-		public unsafe virtual void Find(int identifier, string searchText, bool forward, bool matchCase, bool findNext)
+		public unsafe virtual void Find(string searchText, bool forward, bool matchCase, bool findNext)
 		{
-			fixed (char* s1 = searchText)
+			fixed (char* s0 = searchText)
 			{
-				var cstr1 = new cef_string_t { Str = s1, Length = searchText != null ? searchText.Length : 0 };
-				NativeInstance->Find(identifier, &cstr1, forward ? 1 : 0, matchCase ? 1 : 0, findNext ? 1 : 0);
+				var cstr0 = new cef_string_t { Str = s0, Length = searchText != null ? searchText.Length : 0 };
+				NativeInstance->Find(&cstr0, forward ? 1 : 0, matchCase ? 1 : 0, findNext ? 1 : 0);
 			}
 			GC.KeepAlive(this);
 		}

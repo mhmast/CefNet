@@ -10,7 +10,7 @@ namespace CefNet
 	public interface ITextFoundEventArgs
 	{
 		/// <summary>
-		/// Gets the search ID passed to <see cref="IChromiumWebView.Find"/>.
+		/// Gets a unique incremental identifier for the currently active search.
 		/// </summary>
 		int ID { get; }
 

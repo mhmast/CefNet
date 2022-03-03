@@ -576,16 +576,18 @@ namespace CefNet
 			AliveBrowserHost.PrintToPdf(path, settings, new CefPdfPrintCallbackGlue(ViewGlue));
 		}
 
-		public void Find(int identifier, string searchText, bool forward, bool matchCase, bool findNext)
+		/// <inheritdoc />
+		public void Find(string searchText, bool forward, bool matchCase, bool findNext)
 		{
 			if (searchText == null)
 				throw new ArgumentNullException(nameof(searchText));
 			if (searchText.Length == 0)
 				throw new ArgumentOutOfRangeException(nameof(searchText));
 
-			AliveBrowserHost.Find(identifier, searchText, forward, matchCase, findNext);
+			AliveBrowserHost.Find(searchText, forward, matchCase, findNext);
 		}
 
+		/// <inheritdoc />
 		public void StopFinding(bool clearSelection)
 		{
 			AliveBrowserHost.StopFinding(clearSelection);
