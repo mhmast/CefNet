@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net5.0;net6.0</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net45;net48</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>9.0</LangVersion>
@@ -51,6 +51,15 @@
   <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard')) OR $(TargetFramework.StartsWith('netcoreapp'))">
     <DefineConstants>$(DefineConstants);NET_LESS_5_0</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="runtime.$(NETCoreSdkRuntimeIdentifier).Microsoft.NETCore.ILDAsm" Version="6.0.0" GeneratePathProperty="true">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="runtime.$(NETCoreSdkRuntimeIdentifier).Microsoft.NETCore.ILAsm" Version="6.0.0" GeneratePathProperty="true">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
   
   <ItemGroup>
     <Folder Include="Generated\Managed\Types\" />
@@ -130,15 +139,14 @@
   </Target>
   
   <Target Name="CoreDecompile" Inputs="@(IntermediateAssembly)" Outputs="$(ILFile)" Condition=" Exists ( @(IntermediateAssembly) ) ">
-    <GetFrameworkSdkPath Condition="'$(MSBuildRuntimeType)' == 'Full' AND '$(FrameworkSdkPath)' == ''">
-      <Output TaskParameter="Path" PropertyName="FrameworkSdkPath" />
-    </GetFrameworkSdkPath>
+    <ItemGroup>
+      <ILDAsmPathPropertyName Include="Pkgruntime_$(NETCoreSdkRuntimeIdentifier)_Microsoft_NETCore_ILDAsm" />
+    </ItemGroup>
     <PropertyGroup>
-      <ILDasmExe>$(FrameworkSdkPath)\bin\NETFX 4.8 Tools\ildasm.exe</ILDasmExe>
-      <ILDasm>"$(ILDasmExe)" /nobar /linenum /source /utf8 /out="$(ILFile)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDasm>
-      <ILDasm Condition=" !Exists ( $(ILDasmExe) ) ">dotnet asm ildasm -linenum -source -utf8 -out="$(ILFile)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDasm>
+      <ILDAsm>$(%(ILDAsmPathPropertyName.Identity))/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/ildasm</ILDAsm>
+      <ILDAsmCmd>$(ILDAsm) /LINENUM /UTF8 /OUT="$(ILFILE)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDAsmCmd>
     </PropertyGroup>
-    <Exec Command="$(ILDasm)" />
+    <Exec Command="$(ILDAsmCmd)" />
     <ItemGroup>
       <FileWrites Include="$(ILFile)" />
       <FileWrites Include="$(ILResourceResFile)" />
@@ -174,48 +182,52 @@
     <GetFrameworkPath>
       <Output TaskParameter="Path" PropertyName="FrameworkPath" />
     </GetFrameworkPath>
+    <ItemGroup>
+      <ILAsmPathPropertyName Include="Pkgruntime_$(NETCoreSdkRuntimeIdentifier)_Microsoft_NETCore_ILAsm" />
+    </ItemGroup>
     <PropertyGroup>
-      <ILAsmExe>$(FrameworkPath)\ilasm.exe</ILAsmExe>
-      <ILAsm>"$(ILAsmExe)" /nologo /quiet /output:@(IntermediateAssembly->'"%(FullPath)"', ' ')</ILAsm>
-      <ILAsm Condition=" !Exists ( $(ILAsmExe) ) ">dotnet asm ilasm -nologo -quiet -output:@(IntermediateAssembly->'"%(FullPath)"', ' ')</ILAsm>
+      <ILAsmCmd>"$(%(ILAsmPathPropertyName.Identity))/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/ilasm" /NOLOGO /QUIET /OUTPUT:@(IntermediateAssembly->'"%(FullPath)"', ' ')</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(FileAlignment)' != '' ">
-      <ILAsm>$(ILAsm) -alignment=$(FileAlignment)</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /ALIGNMENT=$(FileAlignment)</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(BaseAddress)' != '' ">
-      <ILAsm>$(ILAsm) -base=$(BaseAddress)</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /BASE=$(BaseAddress)</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(OutputType)' == 'Library' ">
-      <ILAsm>$(ILAsm) -dll</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /DLL</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(DebugType)' == 'pdbonly' ">
-      <ILAsm>$(ILAsm) -pdb</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /PDB</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(DebugType)' == 'full' ">
-      <ILAsm>$(ILAsm) -debug</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /DEBUG</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Optimize)' == 'true' ">
-      <ILAsm>$(ILAsm) -optimize</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /OPTIMIZE</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Prefer32Bit)' == 'true' ">
-      <ILAsm>$(ILAsm) -32BITPREFERRED</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /32BITPREFERRED</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
-      <ILAsm>$(ILAsm) -pe64 -x64</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /PE64 /X64</ILAsmCmd>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Platform)' == 'Itanium' ">
-      <ILAsm>$(ILAsm) -pe64 -itanium</ILAsm>
+    <PropertyGroup Condition=" '$(Platform)' == 'arm64' ">
+      <ILAsmCmd>$(ILAsmCmd) /PE64 /ARM64</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(AssemblyOriginatorKeyFile)' != '' AND $(SignAssembly) ">
-      <ILAsm>$(ILAsm) -key:"$(AssemblyOriginatorKeyFile)"</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /KEY="../cefnetpub.snk"</ILAsmCmd>
+      <SDK40ToolsPath Condition="'$(SDK40ToolsPath)'==''">C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools</SDK40ToolsPath>
+      <SNSignCmd>"$(SDK40ToolsPath)\sn.exe" -q -R @(IntermediateAssembly->'&quot;%(FullPath)&quot;', ' ') "$(AssemblyOriginatorKeyFile)"</SNSignCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" Exists ( '$(ILResourceObjFile)' ) ">
-      <ILAsm>$(ILAsm) -resource:"$(ILResourceObjFile)"</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) /RESOURCE:"$(ILResourceObjFile)"</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" Exists ( '$(ILFile)' ) ">
-      <ILAsm>$(ILAsm) "$(ILFile)"</ILAsm>
+      <ILAsmCmd>$(ILAsmCmd) "$(ILFile)"</ILAsmCmd>
     </PropertyGroup>
-    <Exec Command="$(ILAsm) @(IL->'&quot;%(FullPath)&quot;', ' ')" />
+    <Exec Command="$(ILAsmCmd) @(IL->'&quot;%(FullPath)&quot;', ' ')" />
+    <Exec Command="$(SNSignCmd)" />
     <ItemGroup>
       <FileWrites Include="@(IntermediateAssembly->'%(RootDir)%(Directory)DesignTimeResolveAssemblyReferencesInput.cache', ' ')" />
     </ItemGroup>

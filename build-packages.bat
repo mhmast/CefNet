@@ -1,1 +1,1 @@
-dotnet build --no-incremental -c Nuget_Release -p:"FrameworkSdkPath=C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\"
+dotnet build --no-incremental -c Nuget_Release -p:"FrameworkPath=C:\Windows\Microsoft.NET\Framework\v4.0.30319" -p:"SDK40ToolsPath=C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools" /nowarn:"CS1591,CS1573"
