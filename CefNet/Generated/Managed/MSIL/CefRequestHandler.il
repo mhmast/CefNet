@@ -91,17 +91,6 @@
 			ret
 		}
 
-		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefRequestHandlerPrivate.AvoidOnPluginCrashed()
-		{
-			.override method instance bool CefNet.Internal.ICefRequestHandlerPrivate::AvoidOnPluginCrashed()
-			.maxstack 2
-			ldarg.0
-			ldvirtftn instance void CefNet.CefRequestHandler::OnPluginCrashed(class CefNet.CefBrowser, string)
-			ldftn instance void CefNet.CefRequestHandler::OnPluginCrashed(class CefNet.CefBrowser, string)
-			ceq
-			ret
-		}
-
 		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefRequestHandlerPrivate.AvoidOnRenderViewReady()
 		{
 			.override method instance bool CefNet.Internal.ICefRequestHandlerPrivate::AvoidOnRenderViewReady()

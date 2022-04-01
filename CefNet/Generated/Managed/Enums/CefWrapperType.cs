@@ -310,12 +310,6 @@ namespace CefNet.Unsafe
 
 		WaitableEvent,
 
-		WebPluginInfo,
-
-		WebPluginInfoVisitor,
-
-		WebPluginUnstableCallback,
-
 		Window,
 
 		WindowDelegate,

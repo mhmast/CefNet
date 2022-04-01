@@ -106,12 +106,6 @@ namespace CefNet.CApi
 		public CefState javascript_dom_paste;
 
 		/// <summary>
-		/// Controls whether any plugins will be loaded. Also configurable using the
-		/// &quot;disable-plugins&quot; command-line switch.
-		/// </summary>
-		public CefState plugins;
-
-		/// <summary>
 		/// Controls whether image URLs will be loaded from the network. A cached image
 		/// will still be rendered if requested. Also configurable using the
 		/// &quot;disable-image-loading&quot; command-line switch.

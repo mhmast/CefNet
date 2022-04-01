@@ -20,7 +20,7 @@ namespace CefNet.CApi
 {
 	public static partial class CefNativeApi
 	{
-		public static readonly string ApiHash = "58a564a53597120d05cedf5bcd355064168af0a7";
+		public static readonly string ApiHash = "c32d3ae315c5991d1bd81c412635d95a3fd353f8";
 
 		/// <summary>
 		/// Add an entry to the cross-origin access whitelist.
@@ -645,17 +645,6 @@ namespace CefNet.CApi
 		public static unsafe extern int cef_is_rtl();
 
 		/// <summary>
-		/// Query if a plugin is unstable. Can be called on any thread in the browser
-		/// process.
-		/// </summary>
-		/// <remarks>
-		/// Defined in include/capi/cef_web_plugin_capi.h as
-		/// void cef_is_web_plugin_unstable(const cef_string_t* path, cef_web_plugin_unstable_callback_t* callback)
-		/// </remarks>
-		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
-		public static unsafe extern void cef_is_web_plugin_unstable(cef_string_t* path, cef_web_plugin_unstable_callback_t* callback);
-
-		/// <summary>
 		/// Launches the process specified via |command_line|. Returns true (1) upon
 		/// success. Must be called on the browser process TID_PROCESS_LAUNCHER thread.
 		/// Unix-specific notes: - All file descriptors open in the parent process will
@@ -857,18 +846,6 @@ namespace CefNet.CApi
 		public static unsafe extern void cef_quit_message_loop();
 
 		/// <summary>
-		/// Cause the plugin list to refresh the next time it is accessed regardless of
-		/// whether it has already been loaded. Can be called on any thread in the
-		/// browser process.
-		/// </summary>
-		/// <remarks>
-		/// Defined in include/capi/cef_web_plugin_capi.h as
-		/// void cef_refresh_web_plugins()
-		/// </remarks>
-		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
-		public static unsafe extern void cef_refresh_web_plugins();
-
-		/// <summary>
 		/// Register a new V8 extension with the specified JavaScript extension code and
 		/// handler. Functions implemented by the handler are prototyped using the
 		/// keyword &apos;native&apos;. The calling of a native function is restricted to the scope
@@ -948,17 +925,6 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern int cef_register_scheme_handler_factory(cef_string_t* scheme_name, cef_string_t* domain_name, cef_scheme_handler_factory_t* factory);
-
-		/// <summary>
-		/// Register a plugin crash. Can be called on any thread in the browser process
-		/// but will be executed on the IO thread.
-		/// </summary>
-		/// <remarks>
-		/// Defined in include/capi/cef_web_plugin_capi.h as
-		/// void cef_register_web_plugin_crash(const cef_string_t* path)
-		/// </remarks>
-		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
-		public static unsafe extern void cef_register_web_plugin_crash(cef_string_t* path);
 
 		/// <summary>
 		/// Remove an entry from the cross-origin access whitelist. Returns false (0) if
@@ -1689,18 +1655,6 @@ namespace CefNet.CApi
 		public static unsafe extern int cef_time_to_timet(cef_time_t* cef_time, IntPtr* time);
 
 		/// <summary>
-		/// Unregister an internal plugin. This may be undone the next time
-		/// cef_refresh_web_plugins() is called. Can be called on any thread in the
-		/// browser process.
-		/// </summary>
-		/// <remarks>
-		/// Defined in include/capi/cef_web_plugin_capi.h as
-		/// void cef_unregister_internal_web_plugin(const cef_string_t* path)
-		/// </remarks>
-		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
-		public static unsafe extern void cef_unregister_internal_web_plugin(cef_string_t* path);
-
-		/// <summary>
 		/// Unescapes |text| and returns the result. Unescaping consists of looking for
 		/// the exact pattern &quot;%XX&quot; where each X is a hex digit and converting to the
 		/// character with the numerical value of those digits (e.g. &quot;i%20=%203%3b&quot;
@@ -1963,17 +1917,6 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern int cef_version_info(int entry);
-
-		/// <summary>
-		/// Visit web plugin information. Can be called on any thread in the browser
-		/// process.
-		/// </summary>
-		/// <remarks>
-		/// Defined in include/capi/cef_web_plugin_capi.h as
-		/// void cef_visit_web_plugin_info(cef_web_plugin_info_visitor_t* visitor)
-		/// </remarks>
-		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
-		public static unsafe extern void cef_visit_web_plugin_info(cef_web_plugin_info_visitor_t* visitor);
 
 		/// <summary>
 		/// Create a new waitable event. If |automatic_reset| is true (1) then the event

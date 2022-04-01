@@ -215,24 +215,6 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* plugin_path)*
-		/// </summary>
-		public void* on_plugin_crashed;
-
-		/// <summary>
-		/// Called on the browser process UI thread when a plugin has crashed.
-		/// |plugin_path| is the path of the plugin that crashed.
-		/// </summary>
-		[NativeName("on_plugin_crashed")]
-		public unsafe void OnPluginCrashed(cef_browser_t* browser, [Immutable]cef_string_t* plugin_path)
-		{
-			fixed (cef_request_handler_t* self = &this)
-			{
-				((delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, void>)on_plugin_crashed)(self, browser, plugin_path);
-			}
-		}
-
-		/// <summary>
 		/// void (*)(_cef_request_handler_t* self, _cef_browser_t* browser)*
 		/// </summary>
 		public void* on_render_view_ready;

@@ -695,9 +695,13 @@ namespace CefNet
 		/// <summary>
 		/// Raises the <see cref="BeforeChildProcessLaunch"/> event.<para/>
 		/// Will be called on the browser process UI thread when launching a render process
-		/// and on the browser process IO thread when launching a GPU or plugin process.
+		/// and on the browser process IO thread when launching a GPU process.
 		/// </summary>
 		/// <param name="e">A <see cref="BeforeChildProcessLaunchEventArgs"/> that contains the event data.</param>
+		/// <remarks>
+		/// Provides an opportunity to modify the child process command line.
+		/// Do not keep a reference to <see cref="BeforeChildProcessLaunchEventArgs.CommandLine"/> outside of this function.
+		/// </remarks>
 		protected internal virtual void OnBeforeChildProcessLaunch(BeforeChildProcessLaunchEventArgs e)
 		{
 			if (AllowDotnetProcess)

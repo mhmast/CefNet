@@ -324,22 +324,6 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Controls whether any plugins will be loaded. Also configurable using the
-		/// &quot;disable-plugins&quot; command-line switch.
-		/// </summary>
-		public CefState Plugins
-		{
-			get
-			{
-				return _instance->plugins;
-			}
-			set
-			{
-				_instance->plugins = value;
-			}
-		}
-
-		/// <summary>
 		/// Controls whether image URLs will be loaded from the network. A cached image
 		/// will still be rendered if requested. Also configurable using the
 		/// &quot;disable-image-loading&quot; command-line switch.
