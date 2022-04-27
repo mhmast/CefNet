@@ -169,6 +169,13 @@ namespace CefNet.CApi
 		/// empty then &quot;en-US,en&quot; will be used.
 		/// </summary>
 		public cef_string_t accept_language_list;
+
+		/// <summary>
+		/// Controls whether the Chrome status bubble will be used. Only supported with
+		/// the Chrome runtime. For details about the status bubble see
+		/// https://www.chromium.org/user-experience/status-bubble/
+		/// </summary>
+		public CefState chrome_status_bubble;
 	}
 }
 

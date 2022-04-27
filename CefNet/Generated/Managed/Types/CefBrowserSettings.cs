@@ -478,6 +478,23 @@ namespace CefNet
 			}
 		}
 
+		/// <summary>
+		/// Controls whether the Chrome status bubble will be used. Only supported with
+		/// the Chrome runtime. For details about the status bubble see
+		/// https://www.chromium.org/user-experience/status-bubble/
+		/// </summary>
+		public CefState ChromeStatusBubble
+		{
+			get
+			{
+				return _instance->chrome_status_bubble;
+			}
+			set
+			{
+				_instance->chrome_status_bubble = value;
+			}
+		}
+
 		public void Dispose()
 		{
 			Dispose(true);

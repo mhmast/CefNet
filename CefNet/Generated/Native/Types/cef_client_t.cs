@@ -47,6 +47,24 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
+		/// _cef_command_handler_t* (*)(_cef_client_t* self)*
+		/// </summary>
+		public void* get_command_handler;
+
+		/// <summary>
+		/// Return the handler for commands. If no handler is provided the default
+		/// implementation will be used.
+		/// </summary>
+		[NativeName("get_command_handler")]
+		public unsafe cef_command_handler_t* GetCommandHandler()
+		{
+			fixed (cef_client_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_client_t*, cef_command_handler_t*>)get_command_handler)(self);
+			}
+		}
+
+		/// <summary>
 		/// _cef_context_menu_handler_t* (*)(_cef_client_t* self)*
 		/// </summary>
 		public void* get_context_menu_handler;

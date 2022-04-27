@@ -31,6 +31,27 @@ namespace CefNet.CApi
 		public cef_base_ref_counted_t @base;
 
 		/// <summary>
+		/// int (*)(_cef_download_handler_t* self, _cef_browser_t* browser, const cef_string_t* url, const cef_string_t* request_method)*
+		/// </summary>
+		public void* can_download;
+
+		/// <summary>
+		/// Called before a download begins in response to a user-initiated action
+		/// (e.g. alt + link click or link click that returns a `Content-Disposition:
+		/// attachment` response from the server). |url| is the target download URL and
+		/// |request_function| is the target function (GET, POST, etc). Return true (1)
+		/// to proceed with the download or false (0) to cancel the download.
+		/// </summary>
+		[NativeName("can_download")]
+		public unsafe int CanDownload(cef_browser_t* browser, [Immutable]cef_string_t* url, [Immutable]cef_string_t* request_method)
+		{
+			fixed (cef_download_handler_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_download_handler_t*, cef_browser_t*, cef_string_t*, cef_string_t*, int>)can_download)(self, browser, url, request_method);
+			}
+		}
+
+		/// <summary>
 		/// void (*)(_cef_download_handler_t* self, _cef_browser_t* browser, _cef_download_item_t* download_item, const cef_string_t* suggested_name, _cef_before_download_callback_t* callback)*
 		/// </summary>
 		public void* on_before_download;

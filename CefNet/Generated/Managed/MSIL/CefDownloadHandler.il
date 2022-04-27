@@ -14,6 +14,17 @@
 	.class public CefDownloadHandler
 	{
 
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefDownloadHandlerPrivate.AvoidCanDownload()
+		{
+			.override method instance bool CefNet.Internal.ICefDownloadHandlerPrivate::AvoidCanDownload()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance bool CefNet.CefDownloadHandler::CanDownload(class CefNet.CefBrowser, string, string)
+			ldftn instance bool CefNet.CefDownloadHandler::CanDownload(class CefNet.CefBrowser, string, string)
+			ceq
+			ret
+		}
+
 		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefDownloadHandlerPrivate.AvoidOnBeforeDownload()
 		{
 			.override method instance bool CefNet.Internal.ICefDownloadHandlerPrivate::AvoidOnBeforeDownload()

@@ -392,6 +392,8 @@ namespace CefNet
 
 		QuicGoawayRequestCanBeRetried = -381,
 
+		TooManyAcceptChRestarts = -382,
+
 		CacheMiss = -400,
 
 		CacheReadFailure = -401,

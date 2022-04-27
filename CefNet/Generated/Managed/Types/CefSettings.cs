@@ -647,24 +647,6 @@ namespace CefNet
 			}
 		}
 
-		/// <summary>
-		/// GUID string used for identifying the application. This is passed to the
-		/// system AV function for scanning downloaded files. By default, the GUID
-		/// will be an empty string and the file will be treated as an untrusted
-		/// file when the GUID is empty.
-		/// </summary>
-		public string ApplicationClientIdForFileScanning
-		{
-			get
-			{
-				return CefString.Read(&_instance->application_client_id_for_file_scanning);
-			}
-			set
-			{
-				CefString.Replace(&_instance->application_client_id_for_file_scanning, value);
-			}
-		}
-
 		public void Dispose()
 		{
 			Dispose(true);
@@ -690,7 +672,6 @@ namespace CefNet
 				LocalesDirPath = null;
 				AcceptLanguageList = null;
 				CookieableSchemesList = null;
-				ApplicationClientIdForFileScanning = null;
 				Marshal.FreeHGlobal((IntPtr)_instance);
 				_instance = null;}
 		}

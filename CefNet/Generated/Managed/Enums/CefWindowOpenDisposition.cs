@@ -27,23 +27,65 @@ namespace CefNet
 	{
 		Unknown = 0,
 
+		/// <summary>
+		/// Current tab. This is the default in most cases.
+		/// </summary>
 		CurrentTab = 1,
 
+		/// <summary>
+		/// Indicates that only one tab with the url should exist in the same window.
+		/// </summary>
 		SingletonTab = 2,
 
+		/// <summary>
+		/// Shift key + Middle mouse button or meta/ctrl key while clicking.
+		/// </summary>
 		NewForegroundTab = 3,
 
+		/// <summary>
+		/// Middle mouse button or meta/ctrl key while clicking.
+		/// </summary>
 		NewBackgroundTab = 4,
 
+		/// <summary>
+		/// New popup window.
+		/// </summary>
 		NewPopup = 5,
 
+		/// <summary>
+		/// Shift key while clicking.
+		/// </summary>
 		NewWindow = 6,
 
+		/// <summary>
+		/// Alt key while clicking.
+		/// </summary>
 		SaveToDisk = 7,
 
+		/// <summary>
+		/// New off-the-record (incognito) window.
+		/// </summary>
 		OffTheRecord = 8,
 
+		/// <summary>
+		/// Special case error condition from the renderer.
+		/// </summary>
 		IgnoreAction = 9,
+
+		/// <summary>
+		/// Activates an existing tab containing the url, rather than navigating.
+		/// This is similar to SINGLETON_TAB, but searches across all windows from
+		/// the current profile and anonymity (instead of just the current one);
+		/// closes the current tab on switching if the current tab was the NTP with
+		/// no session history; and behaves like CURRENT_TAB instead of
+		/// NEW_FOREGROUND_TAB when no existing tab is found.
+		/// </summary>
+		SwitchToTab = 10,
+
+		/// <summary>
+		/// Creates a new document picture-in-picture window showing a child WebView.
+		/// </summary>
+		NewPictureInPicture = 11,
 	}
 }
 

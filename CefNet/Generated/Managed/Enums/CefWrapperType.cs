@@ -54,6 +54,8 @@ namespace CefNet.Unsafe
 
 		Client,
 
+		CommandHandler,
+
 		CommandLine,
 
 		CompletionCallback,

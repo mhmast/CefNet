@@ -297,5 +297,14 @@ namespace CefNet
 			}
 			GC.KeepAlive(this);
 		}
+
+		/// <summary>
+		/// Clear list of filenames.
+		/// </summary>
+		public unsafe virtual void ClearFilenames()
+		{
+			NativeInstance->ClearFilenames();
+			GC.KeepAlive(this);
+		}
 	}
 }

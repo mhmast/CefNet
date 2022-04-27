@@ -29,6 +29,16 @@ namespace CefNet.Internal
 			_implementation = impl;
 		}
 
+		bool ICefDownloadHandlerPrivate.AvoidCanDownload()
+		{
+			return _implementation.AvoidCanDownload();
+		}
+
+		protected internal unsafe override bool CanDownload(CefBrowser browser, string url, string requestMethod)
+		{
+			return _implementation.CanDownload(browser, url, requestMethod);
+		}
+
 		bool ICefDownloadHandlerPrivate.AvoidOnBeforeDownload()
 		{
 			return _implementation.AvoidOnBeforeDownload();

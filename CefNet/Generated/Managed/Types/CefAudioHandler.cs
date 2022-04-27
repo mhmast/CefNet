@@ -107,7 +107,7 @@ namespace CefNet
 
 		/// <summary>
 		/// Called on a browser audio capture thread when the browser starts streaming
-		/// audio. OnAudioSteamStopped will always be called after
+		/// audio. OnAudioStreamStopped will always be called after
 		/// OnAudioStreamStarted; both functions may be called multiple times for the
 		/// same browser. |params| contains the audio parameters like sample rate and
 		/// channel layout. |channels| is the number of channels.
