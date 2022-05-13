@@ -5,7 +5,7 @@
     <CodeAnalysisRuleSet Condition="!Exists($(CodeAnalysisRuleSet))">../Debug.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration) != 'Nuget_Release'">
-    <VersionSuffix>m-$([System.DateTime]::UtcNow.ToString(mmss))</VersionSuffix>
+    <VersionSuffix>dev</VersionSuffix>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Nuget_Release'">
     <DebugType>portable</DebugType>
@@ -18,7 +18,7 @@
   <PropertyGroup>
     <CefVersion>101.0</CefVersion>
     <VersionBuild>$([System.DateTime]::UtcNow.ToString(yy))$([System.DateTime]::UtcNow.DayOfYear.ToString(000))</VersionBuild>
-    <VersionRevision>$([System.DateTime]::UtcNow.ToString(HHmm))</VersionRevision>
+    <VersionRevision>$([System.DateTime]::UtcNow.ToString(HH))$([System.Convert]::ToUInt16($([MSBuild]::Divide($([System.DateTime]::UtcNow.Minute),5))))</VersionRevision>
     <VersionPrefix>$(CefVersion).$(VersionBuild).$(VersionRevision)</VersionPrefix>
     <AssemblyOriginatorKeyFile>../cefnet.snk</AssemblyOriginatorKeyFile>
     <SignAssembly Condition="Exists($(AssemblyOriginatorKeyFile))">true</SignAssembly>
