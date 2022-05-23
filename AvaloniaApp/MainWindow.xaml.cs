@@ -85,6 +85,19 @@ namespace AvaloniaApp
 			isFirstLoad = false;
 
 			AddTab(true);
+
+			// note: Below demonstrates that WebView cannot navigate immediately after creation.
+			// Trying this causes an InvalidOperationException to be thrown. Navgiation (and other tasks)
+			// require waiting until the BrowserCreated event has fired.
+			try
+			{
+				SelectedView?.Navigate("https://google.com");
+			}
+			catch (InvalidOperationException ioe)
+			{
+				Console.WriteLine("Cannot navgiate before browser is initialized:");
+				Console.WriteLine(ioe.Message);
+			}
 		}
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
