@@ -7,6 +7,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Avalonia.LogicalTree;
 using CefNet.Input;
 using CefNet.Internal;
 using CefNet.WinApi;
@@ -14,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Linq;
+using System.Diagnostics;
 
 namespace CefNet.Avalonia
 {
@@ -186,7 +189,28 @@ namespace CefNet.Avalonia
 
 		protected OffscreenGraphics OffscreenGraphics { get; private set; }
 
+		protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
+		{
+			base.OnAttachedToLogicalTree(e);
+			if (!IsDesignMode && (_state == State.NotInitialized))
+			{
+				Debug.Assert(BrowserObject == null);
+				Window window = e.Root as Window;
+				if (window != null)
+					OnCreateBrowser(window);
+			}
+		}
+
 		protected virtual void OnCreateBrowser()
+		{
+			Window window = (Window)(this.GetLogicalAncestors().FirstOrDefault(a => a is Window));
+			if (window is null)
+				throw new InvalidOperationException("OnCreateBrowser failed because no window is present in WebViews logical tree! Ensure that a window is present before creating the browser.");
+
+			OnCreateBrowser(window);
+		}
+
+		protected virtual void OnCreateBrowser(Window window)
 		{
 			if (this.Opener != null)
 				return;
@@ -199,13 +223,9 @@ namespace CefNet.Avalonia
 			Dictionary<InitialPropertyKeys, object> propertyBag = InitialPropertyBag;
 			InitialPropertyBag = null;
 
-			var avaloniaWindow = this.GetVisualRoot() as Window;
-			if (avaloniaWindow is null)
-				throw new InvalidOperationException("Window not found!");
-
 			using (var windowInfo = new CefWindowInfo())
 			{
-				IPlatformHandle platformHandle = avaloniaWindow.PlatformImpl.Handle;
+				IPlatformHandle platformHandle = window.PlatformImpl.Handle;
 				if (platformHandle is IMacOSTopLevelPlatformHandle macOSHandle)
 					windowInfo.SetAsWindowless(macOSHandle.GetNSWindowRetained());
 				else
@@ -266,6 +286,7 @@ namespace CefNet.Avalonia
 			DragDrop.SetAllowDrop(this, true);
 			ToolTip = new ToolTip { IsVisible = false };
 			this.ViewGlue = CreateWebViewGlue();
+			OffscreenGraphics = new OffscreenGraphics();
 		}
 
 		protected virtual WebViewGlue CreateWebViewGlue()
@@ -442,20 +463,6 @@ namespace CefNet.Avalonia
 			if (constraint.Width == 0 || constraint.Height == 0)
 				return new Size(1, 1);
 			return base.MeasureOverride(constraint);
-		}
-
-		protected override Size ArrangeOverride(Size arrangeBounds)
-		{
-			arrangeBounds = base.ArrangeOverride(arrangeBounds);
-			if (!IsDesignMode)
-			{
-				if (OffscreenGraphics == null)
-				{
-					OffscreenGraphics = new OffscreenGraphics();
-					OnCreateBrowser();
-				}
-			}
-			return arrangeBounds;
 		}
 
 		/// <summary>
