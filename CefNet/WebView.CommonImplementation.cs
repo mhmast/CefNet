@@ -1,4 +1,4 @@
-﻿using CefNet.Input;
+using CefNet.Input;
 using CefNet.Internal;
 
 
@@ -286,7 +286,12 @@ namespace CefNet
 
 		protected CefBrowser AliveBrowserObject
 		{
-			get { return BrowserObject; }
+			get {
+				if (!GetState(State.Created))
+					throw new InvalidOperationException("WebView.AliveBrowserObject instance is not yet initialized. Calls that require the browser instance can only be made after the BrowserCreated event has fired.");
+				System.Diagnostics.Debug.Assert(BrowserObject != null);
+				return BrowserObject;
+			}
 		}
 
 		protected CefBrowserHost AliveBrowserHost
@@ -324,7 +329,7 @@ namespace CefNet
 		{
 			get
 			{
-				return AliveBrowserObject.CanGoBack;
+				return BrowserObject?.CanGoBack ?? false;
 			}
 		}
 
@@ -336,9 +341,9 @@ namespace CefNet
 		/// </returns>
 		public bool GoBack()
 		{
-			CefBrowser browser = AliveBrowserObject;
-			if (!browser.CanGoBack)
+			if (!CanGoBack)
 				return false;
+			CefBrowser browser = AliveBrowserObject;
 			browser.GoBack();
 			GC.KeepAlive(browser);
 			return true;
@@ -352,7 +357,7 @@ namespace CefNet
 		{
 			get
 			{
-				return AliveBrowserObject.CanGoForward;
+				return BrowserObject?.CanGoForward ?? false;
 			}
 		}
 
@@ -364,9 +369,9 @@ namespace CefNet
 		/// </returns>
 		public bool GoForward()
 		{
-			CefBrowser browser = AliveBrowserObject;
-			if (!browser.CanGoForward)
+			if (!CanGoForward)
 				return false;
+			CefBrowser browser = AliveBrowserObject;
 			browser.GoForward();
 			GC.KeepAlive(browser);
 			return true;
@@ -380,7 +385,7 @@ namespace CefNet
 		{
 			get
 			{
-				return AliveBrowserObject.IsLoading;
+				return BrowserObject?.IsLoading ?? false;
 			}
 		}
 
@@ -426,7 +431,7 @@ namespace CefNet
 		{
 			get
 			{
-				return AliveBrowserObject.HasDocument;
+				return BrowserObject?.HasDocument ?? false;
 			}
 		}
 
