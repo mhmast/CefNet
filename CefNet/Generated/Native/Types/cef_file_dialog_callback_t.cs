@@ -30,23 +30,21 @@ namespace CefNet.CApi
 		public cef_base_ref_counted_t @base;
 
 		/// <summary>
-		/// void (*)(_cef_file_dialog_callback_t* self, int selected_accept_filter, cef_string_list_t file_paths)*
+		/// void (*)(_cef_file_dialog_callback_t* self, cef_string_list_t file_paths)*
 		/// </summary>
 		public void* cont;
 
 		/// <summary>
-		/// Continue the file selection. |selected_accept_filter| should be the 0-based
-		/// index of the value selected from the accept filters array passed to
-		/// cef_dialog_handler_t::OnFileDialog. |file_paths| should be a single value
-		/// or a list of values depending on the dialog mode. An NULL |file_paths|
-		/// value is treated the same as calling cancel().
+		/// Continue the file selection. |file_paths| should be a single value or a
+		/// list of values depending on the dialog mode. An NULL |file_paths| value is
+		/// treated the same as calling cancel().
 		/// </summary>
 		[NativeName("cont")]
-		public unsafe void Continue(int selected_accept_filter, cef_string_list_t file_paths)
+		public unsafe void Continue(cef_string_list_t file_paths)
 		{
 			fixed (cef_file_dialog_callback_t* self = &this)
 			{
-				((delegate* unmanaged[Stdcall]<cef_file_dialog_callback_t*, int, cef_string_list_t, void>)cont)(self, selected_accept_filter, file_paths);
+				((delegate* unmanaged[Stdcall]<cef_file_dialog_callback_t*, cef_string_list_t, void>)cont)(self, file_paths);
 			}
 		}
 

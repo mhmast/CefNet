@@ -31,23 +31,21 @@ namespace CefNet.CApi
 		public cef_base_ref_counted_t @base;
 
 		/// <summary>
-		/// void (*)(_cef_run_file_dialog_callback_t* self, int selected_accept_filter, cef_string_list_t file_paths)*
+		/// void (*)(_cef_run_file_dialog_callback_t* self, cef_string_list_t file_paths)*
 		/// </summary>
 		public void* on_file_dialog_dismissed;
 
 		/// <summary>
-		/// Called asynchronously after the file dialog is dismissed.
-		/// |selected_accept_filter| is the 0-based index of the value selected from
-		/// the accept filters array passed to cef_browser_host_t::RunFileDialog.
-		/// |file_paths| will be a single value or a list of values depending on the
-		/// dialog mode. If the selection was cancelled |file_paths| will be NULL.
+		/// Called asynchronously after the file dialog is dismissed. |file_paths| will
+		/// be a single value or a list of values depending on the dialog mode. If the
+		/// selection was cancelled |file_paths| will be NULL.
 		/// </summary>
 		[NativeName("on_file_dialog_dismissed")]
-		public unsafe void OnFileDialogDismissed(int selected_accept_filter, cef_string_list_t file_paths)
+		public unsafe void OnFileDialogDismissed(cef_string_list_t file_paths)
 		{
 			fixed (cef_run_file_dialog_callback_t* self = &this)
 			{
-				((delegate* unmanaged[Stdcall]<cef_run_file_dialog_callback_t*, int, cef_string_list_t, void>)on_file_dialog_dismissed)(self, selected_accept_filter, file_paths);
+				((delegate* unmanaged[Stdcall]<cef_run_file_dialog_callback_t*, cef_string_list_t, void>)on_file_dialog_dismissed)(self, file_paths);
 			}
 		}
 	}

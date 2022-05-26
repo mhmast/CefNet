@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="WebViewTab.cs" />
+    <Compile Update="WebViewTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

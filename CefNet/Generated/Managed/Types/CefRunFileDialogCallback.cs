@@ -44,7 +44,7 @@ namespace CefNet
 			#if NET_LESS_5_0
 			self->on_file_dialog_dismissed = (void*)Marshal.GetFunctionPointerForDelegate(fnOnFileDialogDismissed);
 			#else
-			self->on_file_dialog_dismissed = (delegate* unmanaged[Stdcall]<cef_run_file_dialog_callback_t*, int, cef_string_list_t, void>)&OnFileDialogDismissedImpl;
+			self->on_file_dialog_dismissed = (delegate* unmanaged[Stdcall]<cef_run_file_dialog_callback_t*, cef_string_list_t, void>)&OnFileDialogDismissedImpl;
 			#endif
 		}
 
@@ -57,33 +57,31 @@ namespace CefNet
 		extern bool ICefRunFileDialogCallbackPrivate.AvoidOnFileDialogDismissed();
 
 		/// <summary>
-		/// Called asynchronously after the file dialog is dismissed.
-		/// |selected_accept_filter| is the 0-based index of the value selected from
-		/// the accept filters array passed to cef_browser_host_t::RunFileDialog.
-		/// |file_paths| will be a single value or a list of values depending on the
-		/// dialog mode. If the selection was cancelled |file_paths| will be NULL.
+		/// Called asynchronously after the file dialog is dismissed. |file_paths| will
+		/// be a single value or a list of values depending on the dialog mode. If the
+		/// selection was cancelled |file_paths| will be NULL.
 		/// </summary>
-		protected internal unsafe virtual void OnFileDialogDismissed(bool selectedAcceptFilter, CefStringList filePaths)
+		protected internal unsafe virtual void OnFileDialogDismissed(CefStringList filePaths)
 		{
 		}
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnFileDialogDismissedDelegate(cef_run_file_dialog_callback_t* self, int selected_accept_filter, cef_string_list_t file_paths);
+		private unsafe delegate void OnFileDialogDismissedDelegate(cef_run_file_dialog_callback_t* self, cef_string_list_t file_paths);
 
 #endif // NET_LESS_5_0
-		// void (*)(_cef_run_file_dialog_callback_t* self, int selected_accept_filter, cef_string_list_t file_paths)*
+		// void (*)(_cef_run_file_dialog_callback_t* self, cef_string_list_t file_paths)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe void OnFileDialogDismissedImpl(cef_run_file_dialog_callback_t* self, int selected_accept_filter, cef_string_list_t file_paths)
+		private static unsafe void OnFileDialogDismissedImpl(cef_run_file_dialog_callback_t* self, cef_string_list_t file_paths)
 		{
 			var instance = GetInstance((IntPtr)self) as CefRunFileDialogCallback;
 			if (instance == null || ((ICefRunFileDialogCallbackPrivate)instance).AvoidOnFileDialogDismissed())
 			{
 				return;
 			}
-			instance.OnFileDialogDismissed(selected_accept_filter != 0, CefStringList.Wrap(file_paths));
+			instance.OnFileDialogDismissed(CefStringList.Wrap(file_paths));
 		}
 	}
 }

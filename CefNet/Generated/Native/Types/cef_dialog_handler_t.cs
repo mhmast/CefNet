@@ -31,7 +31,7 @@ namespace CefNet.CApi
 		public cef_base_ref_counted_t @base;
 
 		/// <summary>
-		/// int (*)(_cef_dialog_handler_t* self, _cef_browser_t* browser, cef_file_dialog_mode_t mode, const cef_string_t* title, const cef_string_t* default_file_path, cef_string_list_t accept_filters, int selected_accept_filter, _cef_file_dialog_callback_t* callback)*
+		/// int (*)(_cef_dialog_handler_t* self, _cef_browser_t* browser, cef_file_dialog_mode_t mode, const cef_string_t* title, const cef_string_t* default_file_path, cef_string_list_t accept_filters, _cef_file_dialog_callback_t* callback)*
 		/// </summary>
 		public void* on_file_dialog;
 
@@ -45,17 +45,16 @@ namespace CefNet.CApi
 		/// (a) valid lower-cased MIME types (e.g. &quot;text/*&quot; or &quot;image/*&quot;), (b)
 		/// individual file extensions (e.g. &quot;.txt&quot; or &quot;.png&quot;), or (c) combined
 		/// description and file extension delimited using &quot;|&quot; and &quot;;&quot; (e.g. &quot;Image
-		/// Types|.png;.gif;.jpg&quot;). |selected_accept_filter| is the 0-based index of
-		/// the filter that should be selected by default. To display a custom dialog
-		/// return true (1) and execute |callback| either inline or at a later time. To
-		/// display the default dialog return false (0).
+		/// Types|.png;.gif;.jpg&quot;). To display a custom dialog return true (1) and
+		/// execute |callback| either inline or at a later time. To display the default
+		/// dialog return false (0).
 		/// </summary>
 		[NativeName("on_file_dialog")]
-		public unsafe int OnFileDialog(cef_browser_t* browser, CefFileDialogMode mode, [Immutable]cef_string_t* title, [Immutable]cef_string_t* default_file_path, cef_string_list_t accept_filters, int selected_accept_filter, cef_file_dialog_callback_t* callback)
+		public unsafe int OnFileDialog(cef_browser_t* browser, CefFileDialogMode mode, [Immutable]cef_string_t* title, [Immutable]cef_string_t* default_file_path, cef_string_list_t accept_filters, cef_file_dialog_callback_t* callback)
 		{
 			fixed (cef_dialog_handler_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_dialog_handler_t*, cef_browser_t*, CefFileDialogMode, cef_string_t*, cef_string_t*, cef_string_list_t, int, cef_file_dialog_callback_t*, int>)on_file_dialog)(self, browser, mode, title, default_file_path, accept_filters, selected_accept_filter, callback);
+				return ((delegate* unmanaged[Stdcall]<cef_dialog_handler_t*, cef_browser_t*, CefFileDialogMode, cef_string_t*, cef_string_t*, cef_string_list_t, cef_file_dialog_callback_t*, int>)on_file_dialog)(self, browser, mode, title, default_file_path, accept_filters, callback);
 			}
 		}
 	}

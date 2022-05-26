@@ -267,20 +267,19 @@ namespace CefNet
 		/// selectable file types and may any combination of (a) valid lower-cased MIME
 		/// types (e.g. &quot;text/*&quot; or &quot;image/*&quot;), (b) individual file extensions (e.g.
 		/// &quot;.txt&quot; or &quot;.png&quot;), or (c) combined description and file extension delimited
-		/// using &quot;|&quot; and &quot;;&quot; (e.g. &quot;Image Types|.png;.gif;.jpg&quot;).
-		/// |selected_accept_filter| is the 0-based index of the filter that will be
-		/// selected by default. |callback| will be executed after the dialog is
-		/// dismissed or immediately if another dialog is already pending. The dialog
-		/// will be initiated asynchronously on the UI thread.
+		/// using &quot;|&quot; and &quot;;&quot; (e.g. &quot;Image Types|.png;.gif;.jpg&quot;). |callback| will be
+		/// executed after the dialog is dismissed or immediately if another dialog is
+		/// already pending. The dialog will be initiated asynchronously on the UI
+		/// thread.
 		/// </summary>
-		public unsafe virtual void RunFileDialog(CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, bool selectedAcceptFilter, CefRunFileDialogCallback callback)
+		public unsafe virtual void RunFileDialog(CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, CefRunFileDialogCallback callback)
 		{
 			fixed (char* s1 = title)
 			fixed (char* s2 = defaultFilePath)
 			{
 				var cstr1 = new cef_string_t { Str = s1, Length = title != null ? title.Length : 0 };
 				var cstr2 = new cef_string_t { Str = s2, Length = defaultFilePath != null ? defaultFilePath.Length : 0 };
-				NativeInstance->RunFileDialog(mode, &cstr1, &cstr2, acceptFilters.GetNativeInstance(), selectedAcceptFilter ? 1 : 0, (callback != null) ? callback.GetNativeInstance() : null);
+				NativeInstance->RunFileDialog(mode, &cstr1, &cstr2, acceptFilters.GetNativeInstance(), (callback != null) ? callback.GetNativeInstance() : null);
 			}
 			GC.KeepAlive(this);
 		}

@@ -34,9 +34,9 @@ namespace CefNet.Internal
 			return _implementation.AvoidOnFileDialog();
 		}
 
-		protected internal unsafe override bool OnFileDialog(CefBrowser browser, CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, int selectedAcceptFilter, CefFileDialogCallback callback)
+		protected internal unsafe override bool OnFileDialog(CefBrowser browser, CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, CefFileDialogCallback callback)
 		{
-			return _implementation.OnFileDialog(browser, mode, title, defaultFilePath, acceptFilters, selectedAcceptFilter, callback);
+			return _implementation.OnFileDialog(browser, mode, title, defaultFilePath, acceptFilters, callback);
 		}
 
 	}

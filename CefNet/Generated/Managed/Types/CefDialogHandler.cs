@@ -44,7 +44,7 @@ namespace CefNet
 			#if NET_LESS_5_0
 			self->on_file_dialog = (void*)Marshal.GetFunctionPointerForDelegate(fnOnFileDialog);
 			#else
-			self->on_file_dialog = (delegate* unmanaged[Stdcall]<cef_dialog_handler_t*, cef_browser_t*, CefFileDialogMode, cef_string_t*, cef_string_t*, cef_string_list_t, int, cef_file_dialog_callback_t*, int>)&OnFileDialogImpl;
+			self->on_file_dialog = (delegate* unmanaged[Stdcall]<cef_dialog_handler_t*, cef_browser_t*, CefFileDialogMode, cef_string_t*, cef_string_t*, cef_string_list_t, cef_file_dialog_callback_t*, int>)&OnFileDialogImpl;
 			#endif
 		}
 
@@ -66,26 +66,25 @@ namespace CefNet
 		/// (a) valid lower-cased MIME types (e.g. &quot;text/*&quot; or &quot;image/*&quot;), (b)
 		/// individual file extensions (e.g. &quot;.txt&quot; or &quot;.png&quot;), or (c) combined
 		/// description and file extension delimited using &quot;|&quot; and &quot;;&quot; (e.g. &quot;Image
-		/// Types|.png;.gif;.jpg&quot;). |selected_accept_filter| is the 0-based index of
-		/// the filter that should be selected by default. To display a custom dialog
-		/// return true (1) and execute |callback| either inline or at a later time. To
-		/// display the default dialog return false (0).
+		/// Types|.png;.gif;.jpg&quot;). To display a custom dialog return true (1) and
+		/// execute |callback| either inline or at a later time. To display the default
+		/// dialog return false (0).
 		/// </summary>
-		protected internal unsafe virtual bool OnFileDialog(CefBrowser browser, CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, int selectedAcceptFilter, CefFileDialogCallback callback)
+		protected internal unsafe virtual bool OnFileDialog(CefBrowser browser, CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, CefFileDialogCallback callback)
 		{
 			return default;
 		}
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate int OnFileDialogDelegate(cef_dialog_handler_t* self, cef_browser_t* browser, CefFileDialogMode mode, cef_string_t* title, cef_string_t* default_file_path, cef_string_list_t accept_filters, int selected_accept_filter, cef_file_dialog_callback_t* callback);
+		private unsafe delegate int OnFileDialogDelegate(cef_dialog_handler_t* self, cef_browser_t* browser, CefFileDialogMode mode, cef_string_t* title, cef_string_t* default_file_path, cef_string_list_t accept_filters, cef_file_dialog_callback_t* callback);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_dialog_handler_t* self, _cef_browser_t* browser, cef_file_dialog_mode_t mode, const cef_string_t* title, const cef_string_t* default_file_path, cef_string_list_t accept_filters, int selected_accept_filter, _cef_file_dialog_callback_t* callback)*
+		// int (*)(_cef_dialog_handler_t* self, _cef_browser_t* browser, cef_file_dialog_mode_t mode, const cef_string_t* title, const cef_string_t* default_file_path, cef_string_list_t accept_filters, _cef_file_dialog_callback_t* callback)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe int OnFileDialogImpl(cef_dialog_handler_t* self, cef_browser_t* browser, CefFileDialogMode mode, cef_string_t* title, cef_string_t* default_file_path, cef_string_list_t accept_filters, int selected_accept_filter, cef_file_dialog_callback_t* callback)
+		private static unsafe int OnFileDialogImpl(cef_dialog_handler_t* self, cef_browser_t* browser, CefFileDialogMode mode, cef_string_t* title, cef_string_t* default_file_path, cef_string_list_t accept_filters, cef_file_dialog_callback_t* callback)
 		{
 			var instance = GetInstance((IntPtr)self) as CefDialogHandler;
 			if (instance == null || ((ICefDialogHandlerPrivate)instance).AvoidOnFileDialog())
@@ -94,7 +93,7 @@ namespace CefNet
 				ReleaseIfNonNull((cef_base_ref_counted_t*)callback);
 				return default;
 			}
-			return instance.OnFileDialog(CefBrowser.Wrap(CefBrowser.Create, browser), mode, CefString.Read(title), CefString.Read(default_file_path), CefStringList.Wrap(accept_filters), selected_accept_filter, CefFileDialogCallback.Wrap(CefFileDialogCallback.Create, callback)) ? 1 : 0;
+			return instance.OnFileDialog(CefBrowser.Wrap(CefBrowser.Create, browser), mode, CefString.Read(title), CefString.Read(default_file_path), CefStringList.Wrap(accept_filters), CefFileDialogCallback.Wrap(CefFileDialogCallback.Create, callback)) ? 1 : 0;
 		}
 	}
 }

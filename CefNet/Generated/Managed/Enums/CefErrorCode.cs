@@ -394,6 +394,8 @@ namespace CefNet
 
 		TooManyAcceptChRestarts = -382,
 
+		InconsistentIpAddressSpace = -383,
+
 		CacheMiss = -400,
 
 		CacheReadFailure = -401,

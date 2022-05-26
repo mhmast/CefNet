@@ -19,8 +19,8 @@
 			.override method instance bool CefNet.Internal.ICefRunFileDialogCallbackPrivate::AvoidOnFileDialogDismissed()
 			.maxstack 2
 			ldarg.0
-			ldvirtftn instance void CefNet.CefRunFileDialogCallback::OnFileDialogDismissed(bool, class CefNet.CefStringList)
-			ldftn instance void CefNet.CefRunFileDialogCallback::OnFileDialogDismissed(bool, class CefNet.CefStringList)
+			ldvirtftn instance void CefNet.CefRunFileDialogCallback::OnFileDialogDismissed(class CefNet.CefStringList)
+			ldftn instance void CefNet.CefRunFileDialogCallback::OnFileDialogDismissed(class CefNet.CefStringList)
 			ceq
 			ret
 		}

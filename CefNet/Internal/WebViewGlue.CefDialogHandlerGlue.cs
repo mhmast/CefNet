@@ -41,15 +41,12 @@ namespace CefNet.Internal
 		/// </item>
 		/// </list>
 		/// </param>
-		/// <param name="selectedAcceptFilter">
-		/// The 0-based index of the filter that should be selected by default.
-		/// </param>
 		/// <param name="callback">A callback object.</param>
 		/// <returns>
 		/// To display a custom dialog return true and execute <paramref name="callback"/>
 		/// either inline or at a later time. To display the default dialog return false.
 		/// </returns>
-		internal protected virtual bool OnFileDialog(CefBrowser browser, CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, int selectedAcceptFilter, CefFileDialogCallback callback)
+		internal protected virtual bool OnFileDialog(CefBrowser browser, CefFileDialogMode mode, string title, string defaultFilePath, CefStringList acceptFilters, CefFileDialogCallback callback)
 		{
 			return false;
 		}

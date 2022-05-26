@@ -242,7 +242,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, cef_file_dialog_mode_t mode, const cef_string_t* title, const cef_string_t* default_file_path, cef_string_list_t accept_filters, int selected_accept_filter, _cef_run_file_dialog_callback_t* callback)*
+		/// void (*)(_cef_browser_host_t* self, cef_file_dialog_mode_t mode, const cef_string_t* title, const cef_string_t* default_file_path, cef_string_list_t accept_filters, _cef_run_file_dialog_callback_t* callback)*
 		/// </summary>
 		public void* run_file_dialog;
 
@@ -256,18 +256,17 @@ namespace CefNet.CApi
 		/// selectable file types and may any combination of (a) valid lower-cased MIME
 		/// types (e.g. &quot;text/*&quot; or &quot;image/*&quot;), (b) individual file extensions (e.g.
 		/// &quot;.txt&quot; or &quot;.png&quot;), or (c) combined description and file extension delimited
-		/// using &quot;|&quot; and &quot;;&quot; (e.g. &quot;Image Types|.png;.gif;.jpg&quot;).
-		/// |selected_accept_filter| is the 0-based index of the filter that will be
-		/// selected by default. |callback| will be executed after the dialog is
-		/// dismissed or immediately if another dialog is already pending. The dialog
-		/// will be initiated asynchronously on the UI thread.
+		/// using &quot;|&quot; and &quot;;&quot; (e.g. &quot;Image Types|.png;.gif;.jpg&quot;). |callback| will be
+		/// executed after the dialog is dismissed or immediately if another dialog is
+		/// already pending. The dialog will be initiated asynchronously on the UI
+		/// thread.
 		/// </summary>
 		[NativeName("run_file_dialog")]
-		public unsafe void RunFileDialog(CefFileDialogMode mode, [Immutable]cef_string_t* title, [Immutable]cef_string_t* default_file_path, cef_string_list_t accept_filters, int selected_accept_filter, cef_run_file_dialog_callback_t* callback)
+		public unsafe void RunFileDialog(CefFileDialogMode mode, [Immutable]cef_string_t* title, [Immutable]cef_string_t* default_file_path, cef_string_list_t accept_filters, cef_run_file_dialog_callback_t* callback)
 		{
 			fixed (cef_browser_host_t* self = &this)
 			{
-				((delegate* unmanaged[Stdcall]<cef_browser_host_t*, CefFileDialogMode, cef_string_t*, cef_string_t*, cef_string_list_t, int, cef_run_file_dialog_callback_t*, void>)run_file_dialog)(self, mode, title, default_file_path, accept_filters, selected_accept_filter, callback);
+				((delegate* unmanaged[Stdcall]<cef_browser_host_t*, CefFileDialogMode, cef_string_t*, cef_string_t*, cef_string_list_t, cef_run_file_dialog_callback_t*, void>)run_file_dialog)(self, mode, title, default_file_path, accept_filters, callback);
 			}
 		}
 
