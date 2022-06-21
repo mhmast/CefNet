@@ -56,8 +56,10 @@ OS_ARCH=`/usr/bin/arch`
 
 if [ $OS_ARCH = arm64 ]; then
   CEFZIP="cef_binary_102.0.10%2Bgf249b2e%2Bchromium-102.0.5005.115_macosarm64_minimal.tar.bz2"
+  RID="osx-arm64"
 else
   CEFZIP="cef_binary_102.0.10%2Bgf249b2e%2Bchromium-102.0.5005.115_macosx64_minimal.tar.bz2"
+  RID="osx-x64"
 fi
 
 TARGET="bin"
@@ -70,7 +72,7 @@ fi
 cd "$TARGET"
 
 echo "Building CefNet Avalonia demo..."
-dotnet publish ../AvaloniaApp/AvaloniaApp.csproj -c "$CONFIGURATION" -r osx-x64 -f "$NETTARGET" -o "publish" --self-contained
+dotnet publish ../AvaloniaApp/AvaloniaApp.csproj -c "$CONFIGURATION" -r $RID -f "$NETTARGET" -o "publish" --self-contained
 
 CEFBINARIES="../cef"
 CEFFRAMEWORK_DIR="$(find $CEFBINARIES -name "Release")"
