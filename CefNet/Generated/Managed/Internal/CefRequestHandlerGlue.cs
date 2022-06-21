@@ -99,16 +99,6 @@ namespace CefNet.Internal
 			return _implementation.OnSelectClientCertificate(browser, isProxy, host, port, certificates, callback);
 		}
 
-		bool ICefRequestHandlerPrivate.AvoidOnPluginCrashed()
-		{
-			return _implementation.AvoidOnPluginCrashed();
-		}
-
-		protected internal unsafe override void OnPluginCrashed(CefBrowser browser, string pluginPath)
-		{
-			_implementation.OnPluginCrashed(browser, pluginPath);
-		}
-
 		bool ICefRequestHandlerPrivate.AvoidOnRenderViewReady()
 		{
 			return _implementation.AvoidOnRenderViewReady();

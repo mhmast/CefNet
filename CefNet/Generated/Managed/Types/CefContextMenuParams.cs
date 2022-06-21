@@ -262,8 +262,7 @@ namespace CefNet
 
 		/// <summary>
 		/// Gets a value indicating whether the context menu contains items specified by the
-		/// renderer process (for example, plugin placeholder or pepper plugin menu
-		/// items).
+		/// renderer process.
 		/// </summary>
 		public unsafe virtual bool IsCustomMenu
 		{

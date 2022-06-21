@@ -5,6 +5,20 @@ namespace CefNet.Internal
 {
 	public partial class WebViewGlue
 	{
+		internal bool AvoidCanDownload() => false;
+
+		/// <summary>
+		/// Called before a download begins in response to a user-initiated action
+		/// (e.g. alt + link click or link click that returns a `Content-Disposition:
+		/// attachment` response from the server).
+		/// </summary>
+		/// <param name="url">The target download URL.</param>
+		/// <param name="requestMethod">The target function (GET, POST, etc)</param>
+		/// <returns>Return True to proceed with the download or False to cancel the download.</returns>
+		internal protected virtual bool CanDownload(CefBrowser browser, string url, string requestMethod)
+		{
+			return true;
+		}
 
 		internal bool AvoidOnBeforeDownload() => false;
 

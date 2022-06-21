@@ -43,22 +43,6 @@ namespace CefNet
 		/// already exists.
 		/// </summary>
 		Save = 3,
-
-		/// <summary>
-		/// General mask defining the bits used for the type values.
-		/// </summary>
-		TypeMask = 0xFF,
-
-		/// <summary>
-		/// Prompt to overwrite if the user selects an existing file with the Save
-		/// dialog.
-		/// </summary>
-		OverwritepromptFlag = 0x01000000,
-
-		/// <summary>
-		/// Do not display read-only files.
-		/// </summary>
-		HidereadonlyFlag = 0x02000000,
 	}
 }
 

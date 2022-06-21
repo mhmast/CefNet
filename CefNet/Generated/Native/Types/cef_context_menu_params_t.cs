@@ -385,8 +385,7 @@ namespace CefNet.CApi
 
 		/// <summary>
 		/// Returns true (1) if the context menu contains items specified by the
-		/// renderer process (for example, plugin placeholder or pepper plugin menu
-		/// items).
+		/// renderer process.
 		/// </summary>
 		[NativeName("is_custom_menu")]
 		public unsafe int IsCustomMenu()

@@ -37,6 +37,7 @@ namespace CefNet.Internal
 		private CefDragHandlerGlue DragGlue { get; set; }
 		private CefFocusHandlerGlue FocusGlue { get; set; }
 		private CefDialogHandlerGlue DialogGlue { get; set; }
+		private CefCommandHandlerGlue CommandGlue { get; set; }
 
 		public WebViewGlue(IChromiumWebViewPrivate view)
 		{
@@ -63,6 +64,7 @@ namespace CefNet.Internal
 			CreateOrDestroyDragGlue();
 			CreateOrDestroyFocusGlue();
 			CreateOrDestroyDialogGlue();
+			CreateOrDestroyCommandGlue();
 		}
 
 

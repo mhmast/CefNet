@@ -419,6 +419,23 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
+		/// void (*)(_cef_drag_data_t* self)*
+		/// </summary>
+		public void* clear_filenames;
+
+		/// <summary>
+		/// Clear list of filenames.
+		/// </summary>
+		[NativeName("clear_filenames")]
+		public unsafe void ClearFilenames()
+		{
+			fixed (cef_drag_data_t* self = &this)
+			{
+				((delegate* unmanaged[Stdcall]<cef_drag_data_t*, void>)clear_filenames)(self);
+			}
+		}
+
+		/// <summary>
 		/// _cef_image_t* (*)(_cef_drag_data_t* self)*
 		/// </summary>
 		public void* get_image;

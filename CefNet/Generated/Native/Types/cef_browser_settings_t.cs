@@ -106,12 +106,6 @@ namespace CefNet.CApi
 		public CefState javascript_dom_paste;
 
 		/// <summary>
-		/// Controls whether any plugins will be loaded. Also configurable using the
-		/// &quot;disable-plugins&quot; command-line switch.
-		/// </summary>
-		public CefState plugins;
-
-		/// <summary>
 		/// Controls whether image URLs will be loaded from the network. A cached image
 		/// will still be rendered if requested. Also configurable using the
 		/// &quot;disable-image-loading&quot; command-line switch.
@@ -175,6 +169,13 @@ namespace CefNet.CApi
 		/// empty then &quot;en-US,en&quot; will be used.
 		/// </summary>
 		public cef_string_t accept_language_list;
+
+		/// <summary>
+		/// Controls whether the Chrome status bubble will be used. Only supported with
+		/// the Chrome runtime. For details about the status bubble see
+		/// https://www.chromium.org/user-experience/status-bubble/
+		/// </summary>
+		public CefState chrome_status_bubble;
 	}
 }
 

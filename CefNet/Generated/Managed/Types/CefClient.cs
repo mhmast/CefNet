@@ -31,6 +31,8 @@ namespace CefNet
 #if NET_LESS_5_0
 		private static readonly GetAudioHandlerDelegate fnGetAudioHandler = GetAudioHandlerImpl;
 
+		private static readonly GetCommandHandlerDelegate fnGetCommandHandler = GetCommandHandlerImpl;
+
 		private static readonly GetContextMenuHandlerDelegate fnGetContextMenuHandler = GetContextMenuHandlerImpl;
 
 		private static readonly GetDialogHandlerDelegate fnGetDialogHandler = GetDialogHandlerImpl;
@@ -74,6 +76,7 @@ namespace CefNet
 			cef_client_t* self = this.NativeInstance;
 			#if NET_LESS_5_0
 			self->get_audio_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetAudioHandler);
+			self->get_command_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetCommandHandler);
 			self->get_context_menu_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetContextMenuHandler);
 			self->get_dialog_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetDialogHandler);
 			self->get_display_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetDisplayHandler);
@@ -92,6 +95,7 @@ namespace CefNet
 			self->on_process_message_received = (void*)Marshal.GetFunctionPointerForDelegate(fnOnProcessMessageReceived);
 			#else
 			self->get_audio_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_audio_handler_t*>)&GetAudioHandlerImpl;
+			self->get_command_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_command_handler_t*>)&GetCommandHandlerImpl;
 			self->get_context_menu_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_context_menu_handler_t*>)&GetContextMenuHandlerImpl;
 			self->get_dialog_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_dialog_handler_t*>)&GetDialogHandlerImpl;
 			self->get_display_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_display_handler_t*>)&GetDisplayHandlerImpl;
@@ -141,6 +145,37 @@ namespace CefNet
 				return default;
 			}
 			CefAudioHandler rv = instance.GetAudioHandler();
+			if (rv == null)
+				return null;
+			return (rv != null) ? rv.GetNativeInstance() : null;
+		}
+
+		/// <summary>
+		/// Return the handler for commands. If no handler is provided the default
+		/// implementation will be used.
+		/// </summary>
+		protected internal unsafe virtual CefCommandHandler GetCommandHandler()
+		{
+			return default;
+		}
+
+#if NET_LESS_5_0
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		private unsafe delegate cef_command_handler_t* GetCommandHandlerDelegate(cef_client_t* self);
+
+#endif // NET_LESS_5_0
+		// _cef_command_handler_t* (*)(_cef_client_t* self)*
+#if !NET_LESS_5_0
+		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+#endif
+		private static unsafe cef_command_handler_t* GetCommandHandlerImpl(cef_client_t* self)
+		{
+			var instance = GetInstance((IntPtr)self) as CefClient;
+			if (instance == null)
+			{
+				return default;
+			}
+			CefCommandHandler rv = instance.GetCommandHandler();
 			if (rv == null)
 				return null;
 			return (rv != null) ? rv.GetNativeInstance() : null;

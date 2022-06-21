@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Avalonia.LogicalTree;
 using CefNet;
 using CefNet.Avalonia;
 using CefNet.JSInterop;
@@ -85,6 +86,7 @@ namespace AvaloniaApp
 			isFirstLoad = false;
 
 			AddTab(true);
+			SelectedView?.Navigate("https://google.com");			
 		}
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace CefNet
@@ -46,7 +47,19 @@ namespace CefNet
 		/// </summary>
 		public Uri Url
 		{
-			get { return new Uri(Request.Url, UriKind.Absolute); }
+			get
+			{
+				return Uri.TryCreate(Request.Url, UriKind.Absolute, out var url) ? url : null;
+			}
+		}
+
+		/// <summary>
+		/// the fully qualified URL.
+		/// </summary>
+		public string RawUrl
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get { return Request.Url; }
 		}
 
 	}

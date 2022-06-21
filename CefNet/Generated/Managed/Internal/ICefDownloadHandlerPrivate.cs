@@ -22,6 +22,7 @@ namespace CefNet.Internal
 {
 	public interface ICefDownloadHandlerPrivate
 	{
+		bool AvoidCanDownload();
 		bool AvoidOnBeforeDownload();
 		bool AvoidOnDownloadUpdated();
 	}

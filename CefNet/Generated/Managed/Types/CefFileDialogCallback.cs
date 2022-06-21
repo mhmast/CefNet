@@ -39,15 +39,13 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Continue the file selection. |selected_accept_filter| should be the 0-based
-		/// index of the value selected from the accept filters array passed to
-		/// cef_dialog_handler_t::OnFileDialog. |file_paths| should be a single value
-		/// or a list of values depending on the dialog mode. An NULL |file_paths|
-		/// value is treated the same as calling cancel().
+		/// Continue the file selection. |file_paths| should be a single value or a
+		/// list of values depending on the dialog mode. An NULL |file_paths| value is
+		/// treated the same as calling cancel().
 		/// </summary>
-		public unsafe virtual void Continue(int selectedAcceptFilter, CefStringList filePaths)
+		public unsafe virtual void Continue(CefStringList filePaths)
 		{
-			NativeInstance->Continue(selectedAcceptFilter, filePaths.GetNativeInstance());
+			NativeInstance->Continue(filePaths.GetNativeInstance());
 			GC.KeepAlive(this);
 		}
 

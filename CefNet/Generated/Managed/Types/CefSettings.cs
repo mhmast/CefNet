@@ -533,10 +533,11 @@ namespace CefNet
 
 		/// <summary>
 		/// Set to a value between 1024 and 65535 to enable remote debugging on the
-		/// specified port. For example, if 8080 is specified the remote debugging URL
-		/// will be http://localhost:8080. CEF can be remotely debugged from any CEF or
-		/// Chrome browser window. Also configurable using the &quot;remote-debugging-port&quot;
-		/// command-line switch.
+		/// specified port. Also configurable using the &quot;remote-debugging-port&quot;
+		/// command-line switch. Remote debugging can be accessed by loading the
+		/// chrome://inspect page in Google Chrome. Port numbers 9222 and 9229 are
+		/// discoverable by default. Other port numbers may need to be configured via
+		/// &quot;Discover network targets&quot; on the Devices tab.
 		/// </summary>
 		public int RemoteDebuggingPort
 		{
@@ -646,24 +647,6 @@ namespace CefNet
 			}
 		}
 
-		/// <summary>
-		/// GUID string used for identifying the application. This is passed to the
-		/// system AV function for scanning downloaded files. By default, the GUID
-		/// will be an empty string and the file will be treated as an untrusted
-		/// file when the GUID is empty.
-		/// </summary>
-		public string ApplicationClientIdForFileScanning
-		{
-			get
-			{
-				return CefString.Read(&_instance->application_client_id_for_file_scanning);
-			}
-			set
-			{
-				CefString.Replace(&_instance->application_client_id_for_file_scanning, value);
-			}
-		}
-
 		public void Dispose()
 		{
 			Dispose(true);
@@ -689,7 +672,6 @@ namespace CefNet
 				LocalesDirPath = null;
 				AcceptLanguageList = null;
 				CookieableSchemesList = null;
-				ApplicationClientIdForFileScanning = null;
 				Marshal.FreeHGlobal((IntPtr)_instance);
 				_instance = null;}
 		}

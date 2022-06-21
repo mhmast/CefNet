@@ -44,8 +44,6 @@ namespace CefNet
 
 		private static readonly OnSelectClientCertificateDelegate fnOnSelectClientCertificate = OnSelectClientCertificateImpl;
 
-		private static readonly OnPluginCrashedDelegate fnOnPluginCrashed = OnPluginCrashedImpl;
-
 		private static readonly OnRenderViewReadyDelegate fnOnRenderViewReady = OnRenderViewReadyImpl;
 
 		private static readonly OnRenderProcessTerminatedDelegate fnOnRenderProcessTerminated = OnRenderProcessTerminatedImpl;
@@ -69,7 +67,6 @@ namespace CefNet
 			self->on_quota_request = (void*)Marshal.GetFunctionPointerForDelegate(fnOnQuotaRequest);
 			self->on_certificate_error = (void*)Marshal.GetFunctionPointerForDelegate(fnOnCertificateError);
 			self->on_select_client_certificate = (void*)Marshal.GetFunctionPointerForDelegate(fnOnSelectClientCertificate);
-			self->on_plugin_crashed = (void*)Marshal.GetFunctionPointerForDelegate(fnOnPluginCrashed);
 			self->on_render_view_ready = (void*)Marshal.GetFunctionPointerForDelegate(fnOnRenderViewReady);
 			self->on_render_process_terminated = (void*)Marshal.GetFunctionPointerForDelegate(fnOnRenderProcessTerminated);
 			self->on_document_available_in_main_frame = (void*)Marshal.GetFunctionPointerForDelegate(fnOnDocumentAvailableInMainFrame);
@@ -81,7 +78,6 @@ namespace CefNet
 			self->on_quota_request = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, long, cef_callback_t*, int>)&OnQuotaRequestImpl;
 			self->on_certificate_error = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefErrorCode, cef_string_t*, cef_sslinfo_t*, cef_callback_t*, int>)&OnCertificateErrorImpl;
 			self->on_select_client_certificate = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, int, cef_string_t*, int, UIntPtr, cef_x509certificate_t**, cef_select_client_certificate_callback_t*, int>)&OnSelectClientCertificateImpl;
-			self->on_plugin_crashed = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, void>)&OnPluginCrashedImpl;
 			self->on_render_view_ready = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, void>)&OnRenderViewReadyImpl;
 			self->on_render_process_terminated = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefTerminationStatus, void>)&OnRenderProcessTerminatedImpl;
 			self->on_document_available_in_main_frame = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, void>)&OnDocumentAvailableInMainFrameImpl;
@@ -393,37 +389,6 @@ namespace CefNet
 				obj_certificates[i] = CefX509Certificate.Wrap(CefX509Certificate.Create, item);
 			}
 			return instance.OnSelectClientCertificate(CefBrowser.Wrap(CefBrowser.Create, browser), isProxy != 0, CefString.Read(host), port, obj_certificates, CefSelectClientCertificateCallback.Wrap(CefSelectClientCertificateCallback.Create, callback)) ? 1 : 0;
-		}
-
-		[MethodImpl(MethodImplOptions.ForwardRef)]
-		extern bool ICefRequestHandlerPrivate.AvoidOnPluginCrashed();
-
-		/// <summary>
-		/// Called on the browser process UI thread when a plugin has crashed.
-		/// |plugin_path| is the path of the plugin that crashed.
-		/// </summary>
-		protected internal unsafe virtual void OnPluginCrashed(CefBrowser browser, string pluginPath)
-		{
-		}
-
-#if NET_LESS_5_0
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnPluginCrashedDelegate(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* plugin_path);
-
-#endif // NET_LESS_5_0
-		// void (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* plugin_path)*
-#if !NET_LESS_5_0
-		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-#endif
-		private static unsafe void OnPluginCrashedImpl(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* plugin_path)
-		{
-			var instance = GetInstance((IntPtr)self) as CefRequestHandler;
-			if (instance == null || ((ICefRequestHandlerPrivate)instance).AvoidOnPluginCrashed())
-			{
-				ReleaseIfNonNull((cef_base_ref_counted_t*)browser);
-				return;
-			}
-			instance.OnPluginCrashed(CefBrowser.Wrap(CefBrowser.Create, browser), CefString.Read(plugin_path));
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

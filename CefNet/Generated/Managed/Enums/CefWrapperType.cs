@@ -54,6 +54,8 @@ namespace CefNet.Unsafe
 
 		Client,
 
+		CommandHandler,
+
 		CommandLine,
 
 		CompletionCallback,
@@ -309,12 +311,6 @@ namespace CefNet.Unsafe
 		ViewDelegate,
 
 		WaitableEvent,
-
-		WebPluginInfo,
-
-		WebPluginInfoVisitor,
-
-		WebPluginUnstableCallback,
 
 		Window,
 

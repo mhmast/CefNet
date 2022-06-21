@@ -324,22 +324,6 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Controls whether any plugins will be loaded. Also configurable using the
-		/// &quot;disable-plugins&quot; command-line switch.
-		/// </summary>
-		public CefState Plugins
-		{
-			get
-			{
-				return _instance->plugins;
-			}
-			set
-			{
-				_instance->plugins = value;
-			}
-		}
-
-		/// <summary>
 		/// Controls whether image URLs will be loaded from the network. A cached image
 		/// will still be rendered if requested. Also configurable using the
 		/// &quot;disable-image-loading&quot; command-line switch.
@@ -491,6 +475,23 @@ namespace CefNet
 			set
 			{
 				CefString.Replace(&_instance->accept_language_list, value);
+			}
+		}
+
+		/// <summary>
+		/// Controls whether the Chrome status bubble will be used. Only supported with
+		/// the Chrome runtime. For details about the status bubble see
+		/// https://www.chromium.org/user-experience/status-bubble/
+		/// </summary>
+		public CefState ChromeStatusBubble
+		{
+			get
+			{
+				return _instance->chrome_status_bubble;
+			}
+			set
+			{
+				_instance->chrome_status_bubble = value;
 			}
 		}
 

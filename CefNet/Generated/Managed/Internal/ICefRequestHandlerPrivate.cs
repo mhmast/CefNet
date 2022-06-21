@@ -29,7 +29,6 @@ namespace CefNet.Internal
 		bool AvoidOnQuotaRequest();
 		bool AvoidOnCertificateError();
 		bool AvoidOnSelectClientCertificate();
-		bool AvoidOnPluginCrashed();
 		bool AvoidOnRenderViewReady();
 		bool AvoidOnRenderProcessTerminated();
 		bool AvoidOnDocumentAvailableInMainFrame();
