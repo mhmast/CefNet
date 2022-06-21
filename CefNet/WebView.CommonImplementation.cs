@@ -286,10 +286,11 @@ namespace CefNet
 
 		protected CefBrowser AliveBrowserObject
 		{
-			get {
+			get
+			{
 				if (!GetState(State.Created))
 					throw new InvalidOperationException("WebView.AliveBrowserObject instance is not yet initialized. Calls that require the browser instance can only be made after the BrowserCreated event has fired.");
-				System.Diagnostics.Debug.Assert(BrowserObject != null);
+				System.Diagnostics.Debug.Assert(BrowserObject is not null);
 				return BrowserObject;
 			}
 		}
