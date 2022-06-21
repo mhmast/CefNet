@@ -144,7 +144,7 @@
     </ItemGroup>
     <PropertyGroup>
       <ILDAsm>$(%(ILDAsmPathPropertyName.Identity))/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/ildasm</ILDAsm>
-      <ILDAsmCmd>$(ILDAsm) /LINENUM /UTF8 /OUT="$(ILFILE)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDAsmCmd>
+      <ILDAsmCmd>$(ILDAsm) -LINENUM -UTF8 -OUT="$(ILFILE)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDAsmCmd>
     </PropertyGroup>
     <Exec Command="$(ILDAsmCmd)" />
     <ItemGroup>
@@ -186,48 +186,48 @@
       <ILAsmPathPropertyName Include="Pkgruntime_$(NETCoreSdkRuntimeIdentifier)_Microsoft_NETCore_ILAsm" />
     </ItemGroup>
     <PropertyGroup>
-      <ILAsmCmd>"$(%(ILAsmPathPropertyName.Identity))/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/ilasm" /NOLOGO /QUIET /OUTPUT:@(IntermediateAssembly->'"%(FullPath)"', ' ')</ILAsmCmd>
+      <ILAsmCmd>"$(%(ILAsmPathPropertyName.Identity))/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/ilasm" -NOLOGO -QUIET -OUTPUT:@(IntermediateAssembly->'"%(FullPath)"', ' ')</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(FileAlignment)' != '' ">
-      <ILAsmCmd>$(ILAsmCmd) /ALIGNMENT=$(FileAlignment)</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -ALIGNMENT=$(FileAlignment)</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(BaseAddress)' != '' ">
-      <ILAsmCmd>$(ILAsmCmd) /BASE=$(BaseAddress)</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -BASE=$(BaseAddress)</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(OutputType)' == 'Library' ">
-      <ILAsmCmd>$(ILAsmCmd) /DLL</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -DLL</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(DebugType)' == 'pdbonly' ">
-      <ILAsmCmd>$(ILAsmCmd) /PDB</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -PDB</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(DebugType)' == 'full' ">
-      <ILAsmCmd>$(ILAsmCmd) /DEBUG</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -DEBUG</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Optimize)' == 'true' ">
-      <ILAsmCmd>$(ILAsmCmd) /OPTIMIZE</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -OPTIMIZE</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Prefer32Bit)' == 'true' ">
-      <ILAsmCmd>$(ILAsmCmd) /32BITPREFERRED</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -32BITPREFERRED</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
-      <ILAsmCmd>$(ILAsmCmd) /PE64 /X64</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -PE64 -X64</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'arm64' ">
-      <ILAsmCmd>$(ILAsmCmd) /PE64 /ARM64</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -PE64 -ARM64</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(AssemblyOriginatorKeyFile)' != '' AND $(SignAssembly) ">
-      <ILAsmCmd>$(ILAsmCmd) /KEY="../cefnetpub.snk"</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -KEY="../cefnetpub.snk"</ILAsmCmd>
       <SDK40ToolsPath Condition="'$(SDK40ToolsPath)'==''">C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools</SDK40ToolsPath>
       <SNSignCmd>"$(SDK40ToolsPath)\sn.exe" -q -R @(IntermediateAssembly->'&quot;%(FullPath)&quot;', ' ') "$(AssemblyOriginatorKeyFile)"</SNSignCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" Exists ( '$(ILResourceObjFile)' ) ">
-      <ILAsmCmd>$(ILAsmCmd) /RESOURCE:"$(ILResourceObjFile)"</ILAsmCmd>
+      <ILAsmCmd>$(ILAsmCmd) -RESOURCE:"$(ILResourceObjFile)"</ILAsmCmd>
     </PropertyGroup>
     <PropertyGroup Condition=" Exists ( '$(ILFile)' ) ">
       <ILAsmCmd>$(ILAsmCmd) "$(ILFile)"</ILAsmCmd>
     </PropertyGroup>
     <Exec Command="$(ILAsmCmd) @(IL->'&quot;%(FullPath)&quot;', ' ')" />
-    <Exec Command="$(SNSignCmd)" />
+    <Exec Condition=" '$(SNSignCmd)'!='' " Command="$(SNSignCmd)" />
     <ItemGroup>
       <FileWrites Include="@(IntermediateAssembly->'%(RootDir)%(Directory)DesignTimeResolveAssemblyReferencesInput.cache', ' ')" />
     </ItemGroup>

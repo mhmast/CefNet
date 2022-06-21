@@ -51,8 +51,15 @@ EOF
 
 BINARYNAME="AvaloniaApp"
 CONFIGURATION="Debug"
-NETTARGET="netcoreapp3.1"
-CEFZIP="cef_binary_99.2.7%2Bg674fc01%2Bchromium-99.0.4844.51_macosx64_minimal.tar.bz2"
+NETTARGET="net6.0"
+OS_ARCH=`/usr/bin/arch`
+
+if [ $OS_ARCH = arm64 ]; then
+  CEFZIP="cef_binary_99.2.7%2Bg674fc01%2Bchromium-99.0.4844.51_macosx64_minimal.tar.bz2"
+else
+  CEFZIP="cef_binary_99.2.15+g71e9523+chromium-99.0.4844.84_macosarm64_minimal.tar.bz2"
+fi
+
 TARGET="bin"
 
 
