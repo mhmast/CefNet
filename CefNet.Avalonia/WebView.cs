@@ -194,16 +194,16 @@ namespace CefNet.Avalonia
 			base.OnAttachedToLogicalTree(e);
 			if (!IsDesignMode && (_state == State.NotInitialized))
 			{
-				Debug.Assert(BrowserObject == null);
+				Debug.Assert(BrowserObject is null);
 				Window window = e.Root as Window;
-				if (window != null)
+				if (window is not null)
 					OnCreateBrowser(window);
 			}
 		}
 
 		protected virtual void OnCreateBrowser()
 		{
-			Window window = (Window)(this.GetLogicalAncestors().FirstOrDefault(a => a is Window));
+			Window window = this.GetLogicalAncestors().OfType<Window>().FirstOrDefault();
 			if (window is null)
 				throw new InvalidOperationException("OnCreateBrowser failed because no window is present in WebViews logical tree! Ensure that a window is present before creating the browser.");
 

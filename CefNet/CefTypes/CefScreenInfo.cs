@@ -3,6 +3,7 @@ using CefNet.Linux;
 using CefNet.WinApi;
 using static CefNet.NativeMethods;
 using static CefNet.Linux.NativeMethods;
+using static CefNet.MacOS.NativeMethods;
 
 namespace CefNet
 {
@@ -42,6 +43,12 @@ namespace CefNet
 				{
 					XCloseDisplay(display);
 				}
+				workingArea = bounds;
+			}
+			else if (PlatformInfo.IsMacOS)
+			{
+				uint display = CGMainDisplayID();
+				bounds = new CefRect(0, 0, (int)CGDisplayPixelsWide(display), (int)CGDisplayPixelsHigh(display));
 				workingArea = bounds;
 			}
 			else

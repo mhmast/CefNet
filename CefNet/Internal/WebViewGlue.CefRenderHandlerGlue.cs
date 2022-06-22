@@ -63,9 +63,6 @@ namespace CefNet.Internal
 			if (WebView.GetCefScreenInfo(ref screenInfo))
 				return true;
 
-			if (!PlatformInfo.IsWindows && !PlatformInfo.IsLinux)
-				return false;
-
 			float devicePixelRatio = WebView.GetDevicePixelRatio();
 			screenInfo = CefScreenInfo.GetPrimaryScreenInfo();
 
