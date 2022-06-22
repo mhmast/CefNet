@@ -57,7 +57,8 @@ namespace AvaloniaApp
 
 			BuildAvaloniaApp()
 			// workaround for https://github.com/AvaloniaUI/Avalonia/issues/3533
-			.With(new AvaloniaNativePlatformOptions { UseGpu = !PlatformInfo.IsMacOS })
+			// this workaround causes crash on M1: https://github.com/AvaloniaUI/Avalonia/issues/3808
+			//.With(new AvaloniaNativePlatformOptions { UseGpu = !PlatformInfo.IsMacOS })
 			.StartWithCefNetApplicationLifetime(args);
 		}
 
