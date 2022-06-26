@@ -227,7 +227,7 @@ namespace CefNet
 			fixed (char* s1 = domainName)
 			{
 				var cstr0 = new cef_string_t { Str = s0, Length = schemeName.Length };
-				var cstr1 = new cef_string_t { Str = s1, Length = domainName.Length };
+				var cstr1 = new cef_string_t { Str = s1, Length = domainName is null ? 0 : domainName.Length };
 				return CefNativeApi.cef_register_scheme_handler_factory(&cstr0, &cstr1, factory.GetNativeInstance()) != 0;
 			}
 		}
