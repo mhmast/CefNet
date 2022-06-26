@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net45;net5.0-windows;net6.0-windows</TargetFrameworks>
+    <LangVersion>10.0</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Configurations>Debug;Release;Nuget_Release</Configurations>
