@@ -497,6 +497,8 @@ namespace CefNet
 		DnsNameHttpsOnly = -809,
 
 		DnsRequestCancelled = -810,
+
+		DnsNoMachingSupportedAlpn = -811,
 	}
 }
 

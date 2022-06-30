@@ -144,9 +144,9 @@ namespace CefNet
 		extern bool ICefRenderHandlerPrivate.AvoidGetRootScreenRect();
 
 		/// <summary>
-		/// Called to retrieve the root window rectangle in screen coordinates. Return
-		/// true (1) if the rectangle was provided. If this function returns false (0)
-		/// the rectangle from GetViewRect will be used.
+		/// Called to retrieve the root window rectangle in screen DIP coordinates.
+		/// Return true (1) if the rectangle was provided. If this function returns
+		/// false (0) the rectangle from GetViewRect will be used.
 		/// </summary>
 		protected internal unsafe virtual bool GetRootScreenRect(CefBrowser browser, ref CefRect rect)
 		{
@@ -177,8 +177,8 @@ namespace CefNet
 		extern bool ICefRenderHandlerPrivate.AvoidGetViewRect();
 
 		/// <summary>
-		/// Called to retrieve the view rectangle which is relative to screen
-		/// coordinates. This function must always provide a non-NULL rectangle.
+		/// Called to retrieve the view rectangle in screen DIP coordinates. This
+		/// function must always provide a non-NULL rectangle.
 		/// </summary>
 		protected internal unsafe virtual void GetViewRect(CefBrowser browser, ref CefRect rect)
 		{
@@ -208,8 +208,10 @@ namespace CefNet
 		extern bool ICefRenderHandlerPrivate.AvoidGetScreenPoint();
 
 		/// <summary>
-		/// Called to retrieve the translation from view coordinates to actual screen
-		/// coordinates. Return true (1) if the screen coordinates were provided.
+		/// Called to retrieve the translation from view DIP coordinates to screen
+		/// coordinates. Windows/Linux should provide screen device (pixel) coordinates
+		/// and MacOS should provide screen DIP coordinates. Return true (1) if the
+		/// requested coordinates were provided.
 		/// </summary>
 		protected internal unsafe virtual bool GetScreenPoint(CefBrowser browser, int viewX, int viewY, ref int screenX, ref int screenY)
 		{
