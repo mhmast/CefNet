@@ -60,6 +60,8 @@ namespace WinFormsCoreApp
 					messagePump = new System.Threading.Timer(_ => UIContext.Post(_ => CefApi.DoMessageLoopWork(), null), null, messagePumpDelay, messagePumpDelay);
 				}
 
+				CefApi.RegisterSchemeHandlerFactory("myapp", null, new CustomShemeHandlerFactory());
+
 				Application.Run(new MainForm());
 
 				using (var ev = new ManualResetEvent(false))
