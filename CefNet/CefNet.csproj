@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net6.0</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net45;net48</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <NoWarn>$(NoWarn),IDE1006,IDE0017,IDE0016</NoWarn>
     <DefineConstants>$(DefineConstants);TRACE;WINDOWLESS</DefineConstants>
     <Configurations>Debug;Release;Nuget_Release</Configurations>
