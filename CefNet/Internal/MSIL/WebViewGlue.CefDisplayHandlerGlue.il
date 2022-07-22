@@ -70,4 +70,14 @@
 		ret
 	}
 
+	.method assembly hidebysig instance bool AvoidOnMediaAccessChange()
+	{
+		.maxstack 2
+		ldarg.0
+		ldvirtftn instance void CefNet.Internal.WebViewGlue::OnMediaAccessChange(class CefNet.CefBrowser, bool, bool)
+		ldftn instance void CefNet.Internal.WebViewGlue::OnMediaAccessChange(class CefNet.CefBrowser, bool, bool)
+		ceq
+		ret
+	}
+
 }

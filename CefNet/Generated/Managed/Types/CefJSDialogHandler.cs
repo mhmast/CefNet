@@ -184,7 +184,7 @@ namespace CefNet
 		extern bool ICefJSDialogHandlerPrivate.AvoidOnDialogClosed();
 
 		/// <summary>
-		/// Called when the default implementation dialog is closed.
+		/// Called when the dialog is closed.
 		/// </summary>
 		protected internal unsafe virtual void OnDialogClosed(CefBrowser browser)
 		{

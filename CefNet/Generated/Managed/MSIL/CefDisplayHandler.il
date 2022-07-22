@@ -124,5 +124,16 @@
 			ret
 		}
 
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefDisplayHandlerPrivate.AvoidOnMediaAccessChange()
+		{
+			.override method instance bool CefNet.Internal.ICefDisplayHandlerPrivate::AvoidOnMediaAccessChange()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance void CefNet.CefDisplayHandler::OnMediaAccessChange(class CefNet.CefBrowser, bool, bool)
+			ldftn instance void CefNet.CefDisplayHandler::OnMediaAccessChange(class CefNet.CefBrowser, bool, bool)
+			ceq
+			ret
+		}
+
 	}
 }

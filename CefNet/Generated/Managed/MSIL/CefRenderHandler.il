@@ -102,6 +102,28 @@
 			ret
 		}
 
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefRenderHandlerPrivate.AvoidGetTouchHandleSize()
+		{
+			.override method instance bool CefNet.Internal.ICefRenderHandlerPrivate::AvoidGetTouchHandleSize()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance void CefNet.CefRenderHandler::GetTouchHandleSize(class CefNet.CefBrowser, valuetype CefNet.CefHorizontalAlignment, valuetype CefNet.CefSize&)
+			ldftn instance void CefNet.CefRenderHandler::GetTouchHandleSize(class CefNet.CefBrowser, valuetype CefNet.CefHorizontalAlignment, valuetype CefNet.CefSize&)
+			ceq
+			ret
+		}
+
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefRenderHandlerPrivate.AvoidOnTouchHandleStateChanged()
+		{
+			.override method instance bool CefNet.Internal.ICefRenderHandlerPrivate::AvoidOnTouchHandleStateChanged()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance void CefNet.CefRenderHandler::OnTouchHandleStateChanged(class CefNet.CefBrowser, valuetype CefNet.CefTouchHandleState)
+			ldftn instance void CefNet.CefRenderHandler::OnTouchHandleStateChanged(class CefNet.CefBrowser, valuetype CefNet.CefTouchHandleState)
+			ceq
+			ret
+		}
+
 		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefRenderHandlerPrivate.AvoidStartDragging()
 		{
 			.override method instance bool CefNet.Internal.ICefRenderHandlerPrivate::AvoidStartDragging()

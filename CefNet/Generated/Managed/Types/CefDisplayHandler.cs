@@ -50,6 +50,8 @@ namespace CefNet
 
 		private static readonly OnCursorChangeDelegate fnOnCursorChange = OnCursorChangeImpl;
 
+		private static readonly OnMediaAccessChangeDelegate fnOnMediaAccessChange = OnMediaAccessChangeImpl;
+
 #endif // NET_LESS_5_0
 		internal static unsafe CefDisplayHandler Create(IntPtr instance)
 		{
@@ -70,6 +72,7 @@ namespace CefNet
 			self->on_auto_resize = (void*)Marshal.GetFunctionPointerForDelegate(fnOnAutoResize);
 			self->on_loading_progress_change = (void*)Marshal.GetFunctionPointerForDelegate(fnOnLoadingProgressChange);
 			self->on_cursor_change = (void*)Marshal.GetFunctionPointerForDelegate(fnOnCursorChange);
+			self->on_media_access_change = (void*)Marshal.GetFunctionPointerForDelegate(fnOnMediaAccessChange);
 			#else
 			self->on_address_change = (delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, cef_frame_t*, cef_string_t*, void>)&OnAddressChangeImpl;
 			self->on_title_change = (delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, cef_string_t*, void>)&OnTitleChangeImpl;
@@ -81,6 +84,7 @@ namespace CefNet
 			self->on_auto_resize = (delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, cef_size_t*, int>)&OnAutoResizeImpl;
 			self->on_loading_progress_change = (delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, double, void>)&OnLoadingProgressChangeImpl;
 			self->on_cursor_change = (delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, IntPtr, CefCursorType, cef_cursor_info_t*, int>)&OnCursorChangeImpl;
+			self->on_media_access_change = (delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, int, int, void>)&OnMediaAccessChangeImpl;
 			#endif
 		}
 
@@ -415,6 +419,37 @@ namespace CefNet
 				return default;
 			}
 			return instance.OnCursorChange(CefBrowser.Wrap(CefBrowser.Create, browser), cursor, type, *(CefCursorInfo*)custom_cursor_info) ? 1 : 0;
+		}
+
+		[MethodImpl(MethodImplOptions.ForwardRef)]
+		extern bool ICefDisplayHandlerPrivate.AvoidOnMediaAccessChange();
+
+		/// <summary>
+		/// Called when the browser&apos;s access to an audio and/or video source has
+		/// changed.
+		/// </summary>
+		protected internal unsafe virtual void OnMediaAccessChange(CefBrowser browser, bool hasVideoAccess, bool hasAudioAccess)
+		{
+		}
+
+#if NET_LESS_5_0
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		private unsafe delegate void OnMediaAccessChangeDelegate(cef_display_handler_t* self, cef_browser_t* browser, int has_video_access, int has_audio_access);
+
+#endif // NET_LESS_5_0
+		// void (*)(_cef_display_handler_t* self, _cef_browser_t* browser, int has_video_access, int has_audio_access)*
+#if !NET_LESS_5_0
+		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+#endif
+		private static unsafe void OnMediaAccessChangeImpl(cef_display_handler_t* self, cef_browser_t* browser, int has_video_access, int has_audio_access)
+		{
+			var instance = GetInstance((IntPtr)self) as CefDisplayHandler;
+			if (instance == null || ((ICefDisplayHandlerPrivate)instance).AvoidOnMediaAccessChange())
+			{
+				ReleaseIfNonNull((cef_base_ref_counted_t*)browser);
+				return;
+			}
+			instance.OnMediaAccessChange(CefBrowser.Wrap(CefBrowser.Create, browser), has_video_access != 0, has_audio_access != 0);
 		}
 	}
 }

@@ -108,7 +108,7 @@ namespace CefNet.CApi
 		public void* on_dialog_closed;
 
 		/// <summary>
-		/// Called when the default implementation dialog is closed.
+		/// Called when the dialog is closed.
 		/// </summary>
 		[NativeName("on_dialog_closed")]
 		public unsafe void OnDialogClosed(cef_browser_t* browser)

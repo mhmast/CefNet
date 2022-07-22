@@ -49,6 +49,8 @@ namespace CefNet
 
 		private static readonly GetFrameHandlerDelegate fnGetFrameHandler = GetFrameHandlerImpl;
 
+		private static readonly GetPermissionHandlerDelegate fnGetPermissionHandler = GetPermissionHandlerImpl;
+
 		private static readonly GetJSDialogHandlerDelegate fnGetJSDialogHandler = GetJSDialogHandlerImpl;
 
 		private static readonly GetKeyboardHandlerDelegate fnGetKeyboardHandler = GetKeyboardHandlerImpl;
@@ -85,6 +87,7 @@ namespace CefNet
 			self->get_find_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetFindHandler);
 			self->get_focus_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetFocusHandler);
 			self->get_frame_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetFrameHandler);
+			self->get_permission_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetPermissionHandler);
 			self->get_jsdialog_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetJSDialogHandler);
 			self->get_keyboard_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetKeyboardHandler);
 			self->get_life_span_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetLifeSpanHandler);
@@ -104,6 +107,7 @@ namespace CefNet
 			self->get_find_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_find_handler_t*>)&GetFindHandlerImpl;
 			self->get_focus_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_focus_handler_t*>)&GetFocusHandlerImpl;
 			self->get_frame_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_frame_handler_t*>)&GetFrameHandlerImpl;
+			self->get_permission_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_permission_handler_t*>)&GetPermissionHandlerImpl;
 			self->get_jsdialog_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_jsdialog_handler_t*>)&GetJSDialogHandlerImpl;
 			self->get_keyboard_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_keyboard_handler_t*>)&GetKeyboardHandlerImpl;
 			self->get_life_span_handler = (delegate* unmanaged[Stdcall]<cef_client_t*, cef_life_span_handler_t*>)&GetLifeSpanHandlerImpl;
@@ -421,6 +425,36 @@ namespace CefNet
 				return default;
 			}
 			CefFrameHandler rv = instance.GetFrameHandler();
+			if (rv == null)
+				return null;
+			return (rv != null) ? rv.GetNativeInstance() : null;
+		}
+
+		/// <summary>
+		/// Return the handler for permission requests.
+		/// </summary>
+		protected internal unsafe virtual CefPermissionHandler GetPermissionHandler()
+		{
+			return default;
+		}
+
+#if NET_LESS_5_0
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		private unsafe delegate cef_permission_handler_t* GetPermissionHandlerDelegate(cef_client_t* self);
+
+#endif // NET_LESS_5_0
+		// _cef_permission_handler_t* (*)(_cef_client_t* self)*
+#if !NET_LESS_5_0
+		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+#endif
+		private static unsafe cef_permission_handler_t* GetPermissionHandlerImpl(cef_client_t* self)
+		{
+			var instance = GetInstance((IntPtr)self) as CefClient;
+			if (instance == null)
+			{
+				return default;
+			}
+			CefPermissionHandler rv = instance.GetPermissionHandler();
 			if (rv == null)
 				return null;
 			return (rv != null) ? rv.GetNativeInstance() : null;

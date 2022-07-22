@@ -69,5 +69,35 @@ namespace CefNet.Internal
 			_implementation.OnContextMenuDismissed(browser, frame);
 		}
 
+		bool ICefContextMenuHandlerPrivate.AvoidRunQuickMenu()
+		{
+			return _implementation.AvoidRunQuickMenu();
+		}
+
+		protected internal unsafe override bool RunQuickMenu(CefBrowser browser, CefFrame frame, CefPoint location, CefSize size, CefQuickMenuEditStateFlags editStateFlags, CefRunQuickMenuCallback callback)
+		{
+			return _implementation.RunQuickMenu(browser, frame, location, size, editStateFlags, callback);
+		}
+
+		bool ICefContextMenuHandlerPrivate.AvoidOnQuickMenuCommand()
+		{
+			return _implementation.AvoidOnQuickMenuCommand();
+		}
+
+		protected internal unsafe override bool OnQuickMenuCommand(CefBrowser browser, CefFrame frame, int commandId, CefEventFlags eventFlags)
+		{
+			return _implementation.OnQuickMenuCommand(browser, frame, commandId, eventFlags);
+		}
+
+		bool ICefContextMenuHandlerPrivate.AvoidOnQuickMenuDismissed()
+		{
+			return _implementation.AvoidOnQuickMenuDismissed();
+		}
+
+		protected internal unsafe override void OnQuickMenuDismissed(CefBrowser browser, CefFrame frame)
+		{
+			_implementation.OnQuickMenuDismissed(browser, frame);
+		}
+
 	}
 }

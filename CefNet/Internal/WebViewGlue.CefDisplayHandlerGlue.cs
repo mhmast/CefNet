@@ -177,5 +177,20 @@ namespace CefNet.Internal
 			return false;
 		}
 
+		[MethodImpl(MethodImplOptions.ForwardRef)]
+		internal extern bool AvoidOnMediaAccessChange();
+
+		/// <summary>
+		/// Called when the browser&apos;s access to an audio and/or video source has
+		/// changed.
+		/// </summary>
+		/// <param name="browser">The browser.</param>
+		/// <param name="hasAudioAccess"></param>
+		/// <param name="hasVideoAccess"></param>
+		internal protected virtual void OnMediaAccessChange(CefBrowser browser, bool hasVideoAccess, bool hasAudioAccess)
+		{
+
+		}
+
 	}
 }

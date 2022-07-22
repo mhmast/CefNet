@@ -206,6 +206,23 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
+		/// _cef_permission_handler_t* (*)(_cef_client_t* self)*
+		/// </summary>
+		public void* get_permission_handler;
+
+		/// <summary>
+		/// Return the handler for permission requests.
+		/// </summary>
+		[NativeName("get_permission_handler")]
+		public unsafe cef_permission_handler_t* GetPermissionHandler()
+		{
+			fixed (cef_client_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_client_t*, cef_permission_handler_t*>)get_permission_handler)(self);
+			}
+		}
+
+		/// <summary>
 		/// _cef_jsdialog_handler_t* (*)(_cef_client_t* self)*
 		/// </summary>
 		public void* get_jsdialog_handler;

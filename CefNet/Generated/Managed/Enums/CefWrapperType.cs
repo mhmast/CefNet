@@ -138,6 +138,8 @@ namespace CefNet.Unsafe
 
 		LoadHandler,
 
+		MediaAccessCallback,
+
 		MediaObserver,
 
 		MediaRoute,
@@ -173,6 +175,8 @@ namespace CefNet.Unsafe
 		PanelDelegate,
 
 		PdfPrintCallback,
+
+		PermissionHandler,
 
 		PostData,
 
@@ -225,6 +229,8 @@ namespace CefNet.Unsafe
 		RunContextMenuCallback,
 
 		RunFileDialogCallback,
+
+		RunQuickMenuCallback,
 
 		SSLInfo,
 

@@ -58,5 +58,38 @@
 			ret
 		}
 
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefContextMenuHandlerPrivate.AvoidRunQuickMenu()
+		{
+			.override method instance bool CefNet.Internal.ICefContextMenuHandlerPrivate::AvoidRunQuickMenu()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance bool CefNet.CefContextMenuHandler::RunQuickMenu(class CefNet.CefBrowser, class CefNet.CefFrame, valuetype CefNet.CefPoint, valuetype CefNet.CefSize, valuetype CefNet.CefQuickMenuEditStateFlags, class CefNet.CefRunQuickMenuCallback)
+			ldftn instance bool CefNet.CefContextMenuHandler::RunQuickMenu(class CefNet.CefBrowser, class CefNet.CefFrame, valuetype CefNet.CefPoint, valuetype CefNet.CefSize, valuetype CefNet.CefQuickMenuEditStateFlags, class CefNet.CefRunQuickMenuCallback)
+			ceq
+			ret
+		}
+
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefContextMenuHandlerPrivate.AvoidOnQuickMenuCommand()
+		{
+			.override method instance bool CefNet.Internal.ICefContextMenuHandlerPrivate::AvoidOnQuickMenuCommand()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance bool CefNet.CefContextMenuHandler::OnQuickMenuCommand(class CefNet.CefBrowser, class CefNet.CefFrame, int32, valuetype CefNet.CefEventFlags)
+			ldftn instance bool CefNet.CefContextMenuHandler::OnQuickMenuCommand(class CefNet.CefBrowser, class CefNet.CefFrame, int32, valuetype CefNet.CefEventFlags)
+			ceq
+			ret
+		}
+
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefContextMenuHandlerPrivate.AvoidOnQuickMenuDismissed()
+		{
+			.override method instance bool CefNet.Internal.ICefContextMenuHandlerPrivate::AvoidOnQuickMenuDismissed()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance void CefNet.CefContextMenuHandler::OnQuickMenuDismissed(class CefNet.CefBrowser, class CefNet.CefFrame)
+			ldftn instance void CefNet.CefContextMenuHandler::OnQuickMenuDismissed(class CefNet.CefBrowser, class CefNet.CefFrame)
+			ceq
+			ret
+		}
+
 	}
 }

@@ -212,6 +212,42 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
+		/// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, cef_horizontal_alignment_t orientation, cef_size_t* size)*
+		/// </summary>
+		public void* get_touch_handle_size;
+
+		/// <summary>
+		/// Called to retrieve the size of the touch handle for the specified
+		/// |orientation|.
+		/// </summary>
+		[NativeName("get_touch_handle_size")]
+		public unsafe void GetTouchHandleSize(cef_browser_t* browser, CefHorizontalAlignment orientation, cef_size_t* size)
+		{
+			fixed (cef_render_handler_t* self = &this)
+			{
+				((delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefHorizontalAlignment, cef_size_t*, void>)get_touch_handle_size)(self, browser, orientation, size);
+			}
+		}
+
+		/// <summary>
+		/// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, const const _cef_touch_handle_state_t* state)*
+		/// </summary>
+		public void* on_touch_handle_state_changed;
+
+		/// <summary>
+		/// Called when touch handle state is updated. The client is responsible for
+		/// rendering the touch handles.
+		/// </summary>
+		[NativeName("on_touch_handle_state_changed")]
+		public unsafe void OnTouchHandleStateChanged(cef_browser_t* browser, [Immutable]cef_touch_handle_state_t* state)
+		{
+			fixed (cef_render_handler_t* self = &this)
+			{
+				((delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_touch_handle_state_t*, void>)on_touch_handle_state_changed)(self, browser, state);
+			}
+		}
+
+		/// <summary>
 		/// int (*)(_cef_render_handler_t* self, _cef_browser_t* browser, _cef_drag_data_t* drag_data, cef_drag_operations_mask_t allowed_ops, int x, int y)*
 		/// </summary>
 		public void* start_dragging;

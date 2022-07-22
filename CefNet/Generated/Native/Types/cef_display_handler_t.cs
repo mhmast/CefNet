@@ -217,6 +217,24 @@ namespace CefNet.CApi
 				return ((delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, IntPtr, CefCursorType, cef_cursor_info_t*, int>)on_cursor_change)(self, browser, cursor, type, custom_cursor_info);
 			}
 		}
+
+		/// <summary>
+		/// void (*)(_cef_display_handler_t* self, _cef_browser_t* browser, int has_video_access, int has_audio_access)*
+		/// </summary>
+		public void* on_media_access_change;
+
+		/// <summary>
+		/// Called when the browser&apos;s access to an audio and/or video source has
+		/// changed.
+		/// </summary>
+		[NativeName("on_media_access_change")]
+		public unsafe void OnMediaAccessChange(cef_browser_t* browser, int has_video_access, int has_audio_access)
+		{
+			fixed (cef_display_handler_t* self = &this)
+			{
+				((delegate* unmanaged[Stdcall]<cef_display_handler_t*, cef_browser_t*, int, int, void>)on_media_access_change)(self, browser, has_video_access, has_audio_access);
+			}
+		}
 	}
 }
 

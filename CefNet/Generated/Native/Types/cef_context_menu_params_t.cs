@@ -19,7 +19,7 @@ using CefNet.WinApi;
 namespace CefNet.CApi
 {
 	/// <summary>
-	/// Provides information about the context menu state. The ethods of this
+	/// Provides information about the context menu state. The functions of this
 	/// structure can only be accessed on browser process the UI thread.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]

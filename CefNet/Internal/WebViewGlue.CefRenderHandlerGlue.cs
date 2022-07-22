@@ -177,5 +177,34 @@ namespace CefNet.Internal
 		{
 
 		}
+
+		internal bool AvoidGetTouchHandleSize()
+		{
+			return false;
+		}
+
+		/// <summary>
+		/// Called to retrieve the size of the touch handle for the specified
+		/// <paramref name="orientation"/>
+		/// </summary>
+		/// <param name="browser"></param>
+		/// <param name="orientation"></param>
+		/// <param name="size"></param>
+		internal protected virtual void GetTouchHandleSize(CefBrowser browser, CefHorizontalAlignment orientation, ref CefSize size)
+		{
+			size = default;
+		}
+
+		[MethodImpl(MethodImplOptions.ForwardRef)]
+		internal extern bool AvoidOnTouchHandleStateChanged();
+
+		/// <summary>
+		/// Called when touch handle state is updated. The client is responsible for
+		/// rendering the touch handles.
+		/// </summary>
+		internal protected virtual void OnTouchHandleStateChanged(CefBrowser browser, CefTouchHandleState state)
+		{
+
+		}
 	}
 }

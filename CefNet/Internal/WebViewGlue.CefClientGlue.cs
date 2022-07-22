@@ -91,6 +91,11 @@ namespace CefNet.Internal
 			return RequestGlue;
 		}
 
+		internal CefPermissionHandler GetPermissionHandler()
+		{
+			return PermissionGlue;
+		}
+
 		internal bool AvoidOnProcessMessageReceived()
 		{
 			return false;

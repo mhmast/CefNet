@@ -28,6 +28,7 @@ namespace CefNet.Internal
 		private CefResourceRequestHandler ResourceRequestGlue { get; }
 		private CefCookieAccessFilter CookieAccessFilterGlue { get; }
 		private CefFrameHandlerGlue FrameGlue { get; }
+		private CefPermissionHandlerGlue PermissionGlue { get; }
 
 		// optional
 		private CefDownloadHandlerGlue DownloadGlue { get; set; }
@@ -57,6 +58,7 @@ namespace CefNet.Internal
 			this.DownloadGlue = new CefDownloadHandlerGlue(this);
 			this.CookieAccessFilterGlue = new CefCookieAccessFilterGlue(this);
 			this.ResourceRequestGlue = new CefResourceRequestHandlerGlue(this);
+			this.PermissionGlue = new CefPermissionHandlerGlue(this);
 
 			CreateOrDestroyAudioGlue();
 			CreateOrDestroyJSDialogGlue();

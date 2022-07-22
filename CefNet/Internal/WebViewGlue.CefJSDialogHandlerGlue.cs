@@ -101,7 +101,7 @@ namespace CefNet.Internal
 		internal extern bool AvoidOnDialogClosed();
 
 		/// <summary>
-		/// Called when the default implementation dialog is closed.
+		/// Called when the dialog is closed.
 		/// </summary>
 		/// <param name="browser"></param>
 		internal protected virtual void OnDialogClosed(CefBrowser browser)

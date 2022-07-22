@@ -48,6 +48,10 @@ namespace CefNet
 
 		private static readonly OnAcceleratedPaintDelegate fnOnAcceleratedPaint = OnAcceleratedPaintImpl;
 
+		private static readonly GetTouchHandleSizeDelegate fnGetTouchHandleSize = GetTouchHandleSizeImpl;
+
+		private static readonly OnTouchHandleStateChangedDelegate fnOnTouchHandleStateChanged = OnTouchHandleStateChangedImpl;
+
 		private static readonly StartDraggingDelegate fnStartDragging = StartDraggingImpl;
 
 		private static readonly UpdateDragCursorDelegate fnUpdateDragCursor = UpdateDragCursorImpl;
@@ -79,6 +83,8 @@ namespace CefNet
 			self->on_popup_size = (void*)Marshal.GetFunctionPointerForDelegate(fnOnPopupSize);
 			self->on_paint = (void*)Marshal.GetFunctionPointerForDelegate(fnOnPaint);
 			self->on_accelerated_paint = (void*)Marshal.GetFunctionPointerForDelegate(fnOnAcceleratedPaint);
+			self->get_touch_handle_size = (void*)Marshal.GetFunctionPointerForDelegate(fnGetTouchHandleSize);
+			self->on_touch_handle_state_changed = (void*)Marshal.GetFunctionPointerForDelegate(fnOnTouchHandleStateChanged);
 			self->start_dragging = (void*)Marshal.GetFunctionPointerForDelegate(fnStartDragging);
 			self->update_drag_cursor = (void*)Marshal.GetFunctionPointerForDelegate(fnUpdateDragCursor);
 			self->on_scroll_offset_changed = (void*)Marshal.GetFunctionPointerForDelegate(fnOnScrollOffsetChanged);
@@ -95,6 +101,8 @@ namespace CefNet
 			self->on_popup_size = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_rect_t*, void>)&OnPopupSizeImpl;
 			self->on_paint = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefPaintElementType, UIntPtr, cef_rect_t*, void*, int, int, void>)&OnPaintImpl;
 			self->on_accelerated_paint = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefPaintElementType, UIntPtr, cef_rect_t*, void*, void>)&OnAcceleratedPaintImpl;
+			self->get_touch_handle_size = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefHorizontalAlignment, cef_size_t*, void>)&GetTouchHandleSizeImpl;
+			self->on_touch_handle_state_changed = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_touch_handle_state_t*, void>)&OnTouchHandleStateChangedImpl;
 			self->start_dragging = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_drag_data_t*, CefDragOperationsMask, int, int, int>)&StartDraggingImpl;
 			self->update_drag_cursor = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefDragOperationsMask, void>)&UpdateDragCursorImpl;
 			self->on_scroll_offset_changed = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, double, double, void>)&OnScrollOffsetChangedImpl;
@@ -418,6 +426,68 @@ namespace CefNet
 				obj_dirtyRects[i] = *(CefRect*)(dirtyRects + i);
 			}
 			instance.OnAcceleratedPaint(CefBrowser.Wrap(CefBrowser.Create, browser), type, obj_dirtyRects, unchecked((IntPtr)shared_handle));
+		}
+
+		[MethodImpl(MethodImplOptions.ForwardRef)]
+		extern bool ICefRenderHandlerPrivate.AvoidGetTouchHandleSize();
+
+		/// <summary>
+		/// Called to retrieve the size of the touch handle for the specified
+		/// |orientation|.
+		/// </summary>
+		protected internal unsafe virtual void GetTouchHandleSize(CefBrowser browser, CefHorizontalAlignment orientation, ref CefSize size)
+		{
+		}
+
+#if NET_LESS_5_0
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		private unsafe delegate void GetTouchHandleSizeDelegate(cef_render_handler_t* self, cef_browser_t* browser, CefHorizontalAlignment orientation, cef_size_t* size);
+
+#endif // NET_LESS_5_0
+		// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, cef_horizontal_alignment_t orientation, cef_size_t* size)*
+#if !NET_LESS_5_0
+		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+#endif
+		private static unsafe void GetTouchHandleSizeImpl(cef_render_handler_t* self, cef_browser_t* browser, CefHorizontalAlignment orientation, cef_size_t* size)
+		{
+			var instance = GetInstance((IntPtr)self) as CefRenderHandler;
+			if (instance == null || ((ICefRenderHandlerPrivate)instance).AvoidGetTouchHandleSize())
+			{
+				ReleaseIfNonNull((cef_base_ref_counted_t*)browser);
+				return;
+			}
+			instance.GetTouchHandleSize(CefBrowser.Wrap(CefBrowser.Create, browser), orientation, ref *(CefSize*)size);
+		}
+
+		[MethodImpl(MethodImplOptions.ForwardRef)]
+		extern bool ICefRenderHandlerPrivate.AvoidOnTouchHandleStateChanged();
+
+		/// <summary>
+		/// Called when touch handle state is updated. The client is responsible for
+		/// rendering the touch handles.
+		/// </summary>
+		protected internal unsafe virtual void OnTouchHandleStateChanged(CefBrowser browser, CefTouchHandleState state)
+		{
+		}
+
+#if NET_LESS_5_0
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		private unsafe delegate void OnTouchHandleStateChangedDelegate(cef_render_handler_t* self, cef_browser_t* browser, cef_touch_handle_state_t* state);
+
+#endif // NET_LESS_5_0
+		// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, const const _cef_touch_handle_state_t* state)*
+#if !NET_LESS_5_0
+		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+#endif
+		private static unsafe void OnTouchHandleStateChangedImpl(cef_render_handler_t* self, cef_browser_t* browser, cef_touch_handle_state_t* state)
+		{
+			var instance = GetInstance((IntPtr)self) as CefRenderHandler;
+			if (instance == null || ((ICefRenderHandlerPrivate)instance).AvoidOnTouchHandleStateChanged())
+			{
+				ReleaseIfNonNull((cef_base_ref_counted_t*)browser);
+				return;
+			}
+			instance.OnTouchHandleStateChanged(CefBrowser.Wrap(CefBrowser.Create, browser), *(CefTouchHandleState*)state);
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

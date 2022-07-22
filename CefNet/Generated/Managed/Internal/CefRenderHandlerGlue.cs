@@ -114,6 +114,26 @@ namespace CefNet.Internal
 			_implementation.OnAcceleratedPaint(browser, type, dirtyRects, sharedHandle);
 		}
 
+		bool ICefRenderHandlerPrivate.AvoidGetTouchHandleSize()
+		{
+			return _implementation.AvoidGetTouchHandleSize();
+		}
+
+		protected internal unsafe override void GetTouchHandleSize(CefBrowser browser, CefHorizontalAlignment orientation, ref CefSize size)
+		{
+			_implementation.GetTouchHandleSize(browser, orientation, ref size);
+		}
+
+		bool ICefRenderHandlerPrivate.AvoidOnTouchHandleStateChanged()
+		{
+			return _implementation.AvoidOnTouchHandleStateChanged();
+		}
+
+		protected internal unsafe override void OnTouchHandleStateChanged(CefBrowser browser, CefTouchHandleState state)
+		{
+			_implementation.OnTouchHandleStateChanged(browser, state);
+		}
+
 		bool ICefRenderHandlerPrivate.AvoidStartDragging()
 		{
 			return _implementation.AvoidStartDragging();

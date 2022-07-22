@@ -20,4 +20,14 @@
 		ret
 	}
 
+	.method assembly hidebysig instance bool AvoidOnTouchHandleStateChanged()
+	{
+		.maxstack 2
+		ldarg.0
+		ldvirtftn instance void CefNet.Internal.WebViewGlue::OnTouchHandleStateChanged(class CefNet.CefBrowser, valuetype CefNet.CefTouchHandleState state)
+		ldftn instance void CefNet.Internal.WebViewGlue::OnTouchHandleStateChanged(class CefNet.CefBrowser, valuetype CefNet.CefTouchHandleState state)
+		ceq
+		ret
+	}
+
 }

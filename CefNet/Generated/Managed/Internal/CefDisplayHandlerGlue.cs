@@ -129,5 +129,15 @@ namespace CefNet.Internal
 			return _implementation.OnCursorChange(browser, cursor, type, customCursorInfo);
 		}
 
+		bool ICefDisplayHandlerPrivate.AvoidOnMediaAccessChange()
+		{
+			return _implementation.AvoidOnMediaAccessChange();
+		}
+
+		protected internal unsafe override void OnMediaAccessChange(CefBrowser browser, bool hasVideoAccess, bool hasAudioAccess)
+		{
+			_implementation.OnMediaAccessChange(browser, hasVideoAccess, hasAudioAccess);
+		}
+
 	}
 }

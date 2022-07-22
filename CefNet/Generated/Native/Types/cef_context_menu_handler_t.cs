@@ -103,7 +103,7 @@ namespace CefNet.CApi
 
 		/// <summary>
 		/// Called when the context menu is dismissed irregardless of whether the menu
-		/// was NULL or a command was selected.
+		/// was canceled or a command was selected.
 		/// </summary>
 		[NativeName("on_context_menu_dismissed")]
 		public unsafe void OnContextMenuDismissed(cef_browser_t* browser, cef_frame_t* frame)
@@ -111,6 +111,67 @@ namespace CefNet.CApi
 			fixed (cef_context_menu_handler_t* self = &this)
 			{
 				((delegate* unmanaged[Stdcall]<cef_context_menu_handler_t*, cef_browser_t*, cef_frame_t*, void>)on_context_menu_dismissed)(self, browser, frame);
+			}
+		}
+
+		/// <summary>
+		/// int (*)(_cef_context_menu_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, const cef_point_t* location, const cef_size_t* size, cef_quick_menu_edit_state_flags_t edit_state_flags, _cef_run_quick_menu_callback_t* callback)*
+		/// </summary>
+		public void* run_quick_menu;
+
+		/// <summary>
+		/// Called to allow custom display of the quick menu for a windowless browser.
+		/// |location| is the top left corner of the selected region. |size| is the
+		/// size of the selected region. |edit_state_flags| is a combination of flags
+		/// that represent the state of the quick menu. Return true (1) if the menu
+		/// will be handled and execute |callback| either synchronously or
+		/// asynchronously with the selected command ID. Return false (0) to cancel the
+		/// menu.
+		/// </summary>
+		[NativeName("run_quick_menu")]
+		public unsafe int RunQuickMenu(cef_browser_t* browser, cef_frame_t* frame, [Immutable]cef_point_t* location, [Immutable]cef_size_t* size, CefQuickMenuEditStateFlags edit_state_flags, cef_run_quick_menu_callback_t* callback)
+		{
+			fixed (cef_context_menu_handler_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_context_menu_handler_t*, cef_browser_t*, cef_frame_t*, cef_point_t*, cef_size_t*, CefQuickMenuEditStateFlags, cef_run_quick_menu_callback_t*, int>)run_quick_menu)(self, browser, frame, location, size, edit_state_flags, callback);
+			}
+		}
+
+		/// <summary>
+		/// int (*)(_cef_context_menu_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, int command_id, cef_event_flags_t event_flags)*
+		/// </summary>
+		public void* on_quick_menu_command;
+
+		/// <summary>
+		/// Called to execute a command selected from the quick menu for a windowless
+		/// browser. Return true (1) if the command was handled or false (0) for the
+		/// default implementation. See cef_menu_id_t for command IDs that have default
+		/// implementations.
+		/// </summary>
+		[NativeName("on_quick_menu_command")]
+		public unsafe int OnQuickMenuCommand(cef_browser_t* browser, cef_frame_t* frame, int command_id, CefEventFlags event_flags)
+		{
+			fixed (cef_context_menu_handler_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_context_menu_handler_t*, cef_browser_t*, cef_frame_t*, int, CefEventFlags, int>)on_quick_menu_command)(self, browser, frame, command_id, event_flags);
+			}
+		}
+
+		/// <summary>
+		/// void (*)(_cef_context_menu_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame)*
+		/// </summary>
+		public void* on_quick_menu_dismissed;
+
+		/// <summary>
+		/// Called when the quick menu for a windowless browser is dismissed
+		/// irregardless of whether the menu was canceled or a command was selected.
+		/// </summary>
+		[NativeName("on_quick_menu_dismissed")]
+		public unsafe void OnQuickMenuDismissed(cef_browser_t* browser, cef_frame_t* frame)
+		{
+			fixed (cef_context_menu_handler_t* self = &this)
+			{
+				((delegate* unmanaged[Stdcall]<cef_context_menu_handler_t*, cef_browser_t*, cef_frame_t*, void>)on_quick_menu_dismissed)(self, browser, frame);
 			}
 		}
 	}
