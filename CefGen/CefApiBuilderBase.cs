@@ -87,8 +87,11 @@ namespace CefGen
 			}
 		}
 
-		protected string ResolveCefType(string type)
+		protected string ResolveCefType(string type, bool isRetval = false)
 		{
+			if (isRetval && type == "void*")
+				return "IntPtr";
+
 			if (type.EndsWith('*'))
 			{
 				return ResolveCefType(type.Remove(type.Length - 1)) + "*";

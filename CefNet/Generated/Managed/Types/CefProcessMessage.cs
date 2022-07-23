@@ -75,7 +75,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the list of arguments.
+		/// Gets the list of arguments. Returns nullptr when message contains a
+		/// shared memory region.
 		/// </summary>
 		public unsafe virtual CefListValue ArgumentList
 		{
@@ -86,7 +87,20 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Returns a writable copy of this object.
+		/// Gets the shared memory region. Returns nullptr when message contains an
+		/// argument list.
+		/// </summary>
+		public unsafe virtual CefSharedMemoryRegion SharedMemoryRegion
+		{
+			get
+			{
+				return SafeCall(CefSharedMemoryRegion.Wrap(CefSharedMemoryRegion.Create, NativeInstance->GetSharedMemoryRegion()));
+			}
+		}
+
+		/// <summary>
+		/// Returns a writable copy of this object. Returns nullptr when message
+		/// contains a shared memory region.
 		/// </summary>
 		public unsafe virtual CefProcessMessage Copy()
 		{

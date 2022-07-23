@@ -20,7 +20,7 @@ namespace CefNet.CApi
 {
 	public static partial class CefNativeApi
 	{
-		public static readonly string ApiHash = "794a4cf2ad83db17558bd2ca2d721487875a37e8";
+		public static readonly string ApiHash = "1f35577ebd00c5e6cc03a172bb41e3c0d820f3d1";
 
 		/// <summary>
 		/// Add an entry to the cross-origin access whitelist.
@@ -1044,6 +1044,17 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern void cef_set_osmodal_loop(int osModalLoop);
+
+		/// <summary>
+		/// Creates a new cef_shared_process_message_builder_t with the specified |name|
+		/// and shared memory region of specified |byte_size|.
+		/// </summary>
+		/// <remarks>
+		/// Defined in include/capi/cef_shared_process_message_builder_capi.h as
+		/// cef_shared_process_message_builder_t* cef_shared_process_message_builder_create(const cef_string_t* name, size_t byte_size)
+		/// </remarks>
+		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
+		public static unsafe extern cef_shared_process_message_builder_t* cef_shared_process_message_builder_create(cef_string_t* name, UIntPtr byte_size);
 
 		/// <summary>
 		/// This function should be called on the main application thread to shut down

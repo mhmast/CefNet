@@ -34,9 +34,29 @@ namespace CefNet.Internal
 			return _implementation.AvoidOnRequestMediaAccessPermission();
 		}
 
-		protected internal unsafe override bool OnRequestMediaAccessPermission(CefBrowser browser, CefFrame frame, string requestingUrl, uint requestedPermissions, CefMediaAccessCallback callback)
+		protected internal unsafe override bool OnRequestMediaAccessPermission(CefBrowser browser, CefFrame frame, string requestingOrigin, uint requestedPermissions, CefMediaAccessCallback callback)
 		{
-			return _implementation.OnRequestMediaAccessPermission(browser, frame, requestingUrl, requestedPermissions, callback);
+			return _implementation.OnRequestMediaAccessPermission(browser, frame, requestingOrigin, requestedPermissions, callback);
+		}
+
+		bool ICefPermissionHandlerPrivate.AvoidOnShowPermissionPrompt()
+		{
+			return _implementation.AvoidOnShowPermissionPrompt();
+		}
+
+		protected internal unsafe override bool OnShowPermissionPrompt(CefBrowser browser, ulong promptId, string requestingOrigin, uint requestedPermissions, CefPermissionPromptCallback callback)
+		{
+			return _implementation.OnShowPermissionPrompt(browser, promptId, requestingOrigin, requestedPermissions, callback);
+		}
+
+		bool ICefPermissionHandlerPrivate.AvoidOnDismissPermissionPrompt()
+		{
+			return _implementation.AvoidOnDismissPermissionPrompt();
+		}
+
+		protected internal unsafe override void OnDismissPermissionPrompt(CefBrowser browser, ulong promptId, CefPermissionRequestResult result)
+		{
+			_implementation.OnDismissPermissionPrompt(browser, promptId, result);
 		}
 
 	}

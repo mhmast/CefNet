@@ -25,5 +25,27 @@
 			ret
 		}
 
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefPermissionHandlerPrivate.AvoidOnShowPermissionPrompt()
+		{
+			.override method instance bool CefNet.Internal.ICefPermissionHandlerPrivate::AvoidOnShowPermissionPrompt()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance bool CefNet.CefPermissionHandler::OnShowPermissionPrompt(class CefNet.CefBrowser, uint64, string, uint32, class CefNet.CefPermissionPromptCallback)
+			ldftn instance bool CefNet.CefPermissionHandler::OnShowPermissionPrompt(class CefNet.CefBrowser, uint64, string, uint32, class CefNet.CefPermissionPromptCallback)
+			ceq
+			ret
+		}
+
+		.method private final hidebysig newslot virtual instance bool CefNet.Internal.ICefPermissionHandlerPrivate.AvoidOnDismissPermissionPrompt()
+		{
+			.override method instance bool CefNet.Internal.ICefPermissionHandlerPrivate::AvoidOnDismissPermissionPrompt()
+			.maxstack 2
+			ldarg.0
+			ldvirtftn instance void CefNet.CefPermissionHandler::OnDismissPermissionPrompt(class CefNet.CefBrowser, uint64, valuetype CefNet.CefPermissionRequestResult)
+			ldftn instance void CefNet.CefPermissionHandler::OnDismissPermissionPrompt(class CefNet.CefBrowser, uint64, valuetype CefNet.CefPermissionRequestResult)
+			ceq
+			ret
+		}
+
 	}
 }

@@ -178,6 +178,8 @@ namespace CefNet.Unsafe
 
 		PermissionHandler,
 
+		PermissionPromptCallback,
+
 		PostData,
 
 		PostDataElement,
@@ -249,6 +251,10 @@ namespace CefNet.Unsafe
 		ServerHandler,
 
 		SetCookieCallback,
+
+		SharedMemoryRegion,
+
+		SharedProcessMessageBuilder,
 
 		StreamReader,
 

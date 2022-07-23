@@ -71,7 +71,8 @@ namespace CefNet.CApi
 		public void* copy;
 
 		/// <summary>
-		/// Returns a writable copy of this object.
+		/// Returns a writable copy of this object. Returns nullptr when message
+		/// contains a shared memory region.
 		/// </summary>
 		[NativeName("copy")]
 		public unsafe cef_process_message_t* Copy()
@@ -106,7 +107,8 @@ namespace CefNet.CApi
 		public void* get_argument_list;
 
 		/// <summary>
-		/// Returns the list of arguments.
+		/// Returns the list of arguments. Returns nullptr when message contains a
+		/// shared memory region.
 		/// </summary>
 		[NativeName("get_argument_list")]
 		public unsafe cef_list_value_t* GetArgumentList()
@@ -114,6 +116,24 @@ namespace CefNet.CApi
 			fixed (cef_process_message_t* self = &this)
 			{
 				return ((delegate* unmanaged[Stdcall]<cef_process_message_t*, cef_list_value_t*>)get_argument_list)(self);
+			}
+		}
+
+		/// <summary>
+		/// _cef_shared_memory_region_t* (*)(_cef_process_message_t* self)*
+		/// </summary>
+		public void* get_shared_memory_region;
+
+		/// <summary>
+		/// Returns the shared memory region. Returns nullptr when message contains an
+		/// argument list.
+		/// </summary>
+		[NativeName("get_shared_memory_region")]
+		public unsafe cef_shared_memory_region_t* GetSharedMemoryRegion()
+		{
+			fixed (cef_process_message_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_process_message_t*, cef_shared_memory_region_t*>)get_shared_memory_region)(self);
 			}
 		}
 	}

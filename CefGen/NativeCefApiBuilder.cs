@@ -303,12 +303,18 @@ namespace CefGen
 				TypeDesc retType = GetTypeDesc(fnType.ReturnType);
 				caller = new CodeMethod(field.Name.ToUpperCamel(false, fnType.Parameters.Count).EscapeName());
 				var rvtype = new CodeMethodParameter(null);
-				rvtype.Type = ResolveCefType(retType.ToString());
 				if (retType.Name == "char16" || retType.Name == "wchar")
 				{
 					rvtype.CustomAttributes.Add(new CustomCodeAttribute("return: MarshalAs(UnmanagedType.U2)"));
 					throw new NotImplementedException(); // TODO: check it
 				}
+				string retvalType = retType.ToString();
+				if (retvalType.StartsWith("const "))
+				{
+					retvalType = retvalType.Substring(6);
+					rvtype.CustomAttributes.Add(new CustomCodeAttribute("Immutable"));
+				}
+				rvtype.Type = ResolveCefType(retvalType, true);
 				caller.RetVal = rvtype;
 				caller.Attributes = CodeAttributes.Public| CodeAttributes.Unsafe;
 				//caller.CustomAttributes.AddMethodImplForwardRefAttribute();
