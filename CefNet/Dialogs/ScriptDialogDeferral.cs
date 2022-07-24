@@ -48,7 +48,7 @@ namespace CefNet
 			if (_viewGlueRef.TryGetTarget(out WebViewGlue viewGlue)
 				&& viewGlue.ReleaseScriptDialogDeferral(this))
 			{
-				Interlocked.Exchange(ref _callback, null)?.Continue(true, null);
+				Interlocked.Exchange(ref _callback, null)?.Continue(true, input);
 			}
 			else
 			{
