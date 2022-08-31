@@ -168,7 +168,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// cef_time_t (*)(_cef_download_item_t* self)*
+		/// cef_basetime_t (*)(_cef_download_item_t* self)*
 		/// </summary>
 		public void* get_start_time;
 
@@ -176,16 +176,16 @@ namespace CefNet.CApi
 		/// Returns the time that the download started.
 		/// </summary>
 		[NativeName("get_start_time")]
-		public unsafe cef_time_t GetStartTime()
+		public unsafe cef_basetime_t GetStartTime()
 		{
 			fixed (cef_download_item_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_download_item_t*, cef_time_t>)get_start_time)(self);
+				return ((delegate* unmanaged[Stdcall]<cef_download_item_t*, cef_basetime_t>)get_start_time)(self);
 			}
 		}
 
 		/// <summary>
-		/// cef_time_t (*)(_cef_download_item_t* self)*
+		/// cef_basetime_t (*)(_cef_download_item_t* self)*
 		/// </summary>
 		public void* get_end_time;
 
@@ -193,11 +193,11 @@ namespace CefNet.CApi
 		/// Returns the time that the download ended.
 		/// </summary>
 		[NativeName("get_end_time")]
-		public unsafe cef_time_t GetEndTime()
+		public unsafe cef_basetime_t GetEndTime()
 		{
 			fixed (cef_download_item_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_download_item_t*, cef_time_t>)get_end_time)(self);
+				return ((delegate* unmanaged[Stdcall]<cef_download_item_t*, cef_basetime_t>)get_end_time)(self);
 			}
 		}
 

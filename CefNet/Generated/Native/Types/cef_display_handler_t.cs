@@ -199,7 +199,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// int (*)(_cef_display_handler_t* self, _cef_browser_t* browser, HCURSOR cursor, cef_cursor_type_t type, const const _cef_cursor_info_t* custom_cursor_info)*
+		/// int (*)(_cef_display_handler_t* self, _cef_browser_t* browser, HCURSOR cursor, cef_cursor_type_t type, const cef_cursor_info_t* custom_cursor_info)*
 		/// </summary>
 		public void* on_cursor_change;
 

@@ -61,20 +61,20 @@ namespace CefNet.CApi
 		/// The cookie creation date. This is automatically populated by the system on
 		/// cookie creation.
 		/// </summary>
-		public cef_time_t creation;
+		public cef_basetime_t creation;
 
 		/// <summary>
 		/// The cookie last access date. This is automatically populated by the system
 		/// on access.
 		/// </summary>
-		public cef_time_t last_access;
+		public cef_basetime_t last_access;
 
 		/// <summary>
 		/// The cookie expiration date is only valid if |has_expires| is true.
 		/// </summary>
 		public int has_expires;
 
-		public cef_time_t expires;
+		public cef_basetime_t expires;
 
 		/// <summary>
 		/// Same site.

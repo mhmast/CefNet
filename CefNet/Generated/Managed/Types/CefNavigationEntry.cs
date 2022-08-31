@@ -127,7 +127,7 @@ namespace CefNet
 		/// navigation may be completed more than once if the page is reloaded. May be
 		/// 0 if the navigation has not yet completed.
 		/// </summary>
-		public unsafe virtual CefTime CompletionTime
+		public unsafe virtual CefBaseTime CompletionTime
 		{
 			get
 			{

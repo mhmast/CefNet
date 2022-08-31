@@ -266,6 +266,12 @@ namespace CefNet.Unsafe
 
 		TaskRunner,
 
+		TestServer,
+
+		TestServerConnection,
+
+		TestServerHandler,
+
 		Textfield,
 
 		TextfieldDelegate,

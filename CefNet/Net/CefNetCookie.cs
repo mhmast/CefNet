@@ -56,11 +56,11 @@ namespace CefNet.Net
 			this.Domain = cookie.Domain;
 			this.Secure = cookie.Secure;
 			this.HttpOnly = cookie.HttpOnly;
-			this.TimeStamp = cookie.Creation.ToDateTime();
-			this.LastAccess = cookie.LastAccess.ToDateTime();
+			this.TimeStamp = cookie.Creation;
+			this.LastAccess = cookie.LastAccess;
 
 			if (cookie.HasExpires)
-				this.Expires = cookie.Expires.ToDateTime();
+				this.Expires = cookie.Expires;
 			this.SameSite = cookie.SameSite;
 			this.Priority = cookie.Priority;
 		}
@@ -216,12 +216,12 @@ namespace CefNet.Net
 				Domain = this.Domain,
 				Secure = this.Secure,
 				HttpOnly = this.HttpOnly,
-				Creation = CefTime.FromDateTime(this.TimeStamp),
-				LastAccess = CefTime.FromDateTime(this.LastAccess),
+				Creation = this.TimeStamp,
+				LastAccess = this.LastAccess,
 				SameSite = this.SameSite,
 				Priority = this.Priority,
 				HasExpires = this.Expires.HasValue,
-				Expires = this.Expires.HasValue ? CefTime.FromDateTime(this.Expires.Value) : default
+				Expires = this.Expires.HasValue ? this.Expires.Value : default
 			};
 		}
 

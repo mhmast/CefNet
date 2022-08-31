@@ -151,7 +151,7 @@ namespace CefNet
 		/// The cookie creation date. This is automatically populated by the system on
 		/// cookie creation.
 		/// </summary>
-		public CefTime Creation
+		public CefBaseTime Creation
 		{
 			get
 			{
@@ -167,7 +167,7 @@ namespace CefNet
 		/// The cookie last access date. This is automatically populated by the system
 		/// on access.
 		/// </summary>
-		public CefTime LastAccess
+		public CefBaseTime LastAccess
 		{
 			get
 			{
@@ -194,7 +194,7 @@ namespace CefNet
 			}
 		}
 
-		public CefTime Expires
+		public CefBaseTime Expires
 		{
 			get
 			{

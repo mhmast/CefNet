@@ -57,7 +57,7 @@ namespace CefNet.Internal
 		private void Build(CefMenuModel model, ToolStripItemCollection menu)
 		{
 			CefColor color = default;
-			int count = model.Count;
+			long count = model.Count;
 			for (int i = 0; i < count; i++)
 			{
 				ToolStripMenuItem menuItem;

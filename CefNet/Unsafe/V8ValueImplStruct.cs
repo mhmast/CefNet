@@ -50,7 +50,7 @@ namespace CefNet.Unsafe
 		[FieldOffset(0)]
 		public double double_value_;
 		[FieldOffset(0)]
-		public cef_time_t date_value_;
+		public cef_basetime_t date_value_;
 		[FieldOffset(0)]
 		public cef_string_t string_value_;
 	}

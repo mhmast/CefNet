@@ -77,7 +77,7 @@ namespace CefNet
 		private unsafe delegate int OnPreKeyEventDelegate(cef_keyboard_handler_t* self, cef_browser_t* browser, cef_key_event_t* @event, CefEventHandle os_event, int* is_keyboard_shortcut);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const const _cef_key_event_t* event, CefEventHandle os_event, int* is_keyboard_shortcut)*
+		// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const cef_key_event_t* event, CefEventHandle os_event, int* is_keyboard_shortcut)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
@@ -111,7 +111,7 @@ namespace CefNet
 		private unsafe delegate int OnKeyEventDelegate(cef_keyboard_handler_t* self, cef_browser_t* browser, cef_key_event_t* @event, CefEventHandle os_event);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const const _cef_key_event_t* event, CefEventHandle os_event)*
+		// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const cef_key_event_t* event, CefEventHandle os_event)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif

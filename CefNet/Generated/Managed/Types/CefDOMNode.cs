@@ -243,7 +243,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the bounds of the element.
+		/// Gets the bounds of the element in device pixels. Use
+		/// &quot;window.devicePixelRatio&quot; to convert to/from CSS pixels.
 		/// </summary>
 		public unsafe virtual CefRect ElementBounds
 		{

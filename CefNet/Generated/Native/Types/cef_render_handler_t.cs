@@ -106,7 +106,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// int (*)(_cef_render_handler_t* self, _cef_browser_t* browser, _cef_screen_info_t* screen_info)*
+		/// int (*)(_cef_render_handler_t* self, _cef_browser_t* browser, cef_screen_info_t* screen_info)*
 		/// </summary>
 		public void* get_screen_info;
 
@@ -230,7 +230,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, const const _cef_touch_handle_state_t* state)*
+		/// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, const cef_touch_handle_state_t* state)*
 		/// </summary>
 		public void* on_touch_handle_state_changed;
 

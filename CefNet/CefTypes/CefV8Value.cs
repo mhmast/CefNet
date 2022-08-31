@@ -61,15 +61,9 @@ namespace CefNet
 		/// </summary>
 		/// <param name="value">The value of type <see cref="DateTime"/>.</param>
 		public CefV8Value(DateTime value)
-			: this(CreateDateInternal(value))
+			: this(CefNativeApi.cef_v8value_create_date(cef_basetime_t.FromDateTime(value)))
 		{
 
-		}
-
-		private static cef_v8value_t* CreateDateInternal(DateTime date)
-		{
-			CefTime t = CefTime.FromDateTime(date);
-			return CefNativeApi.cef_v8value_create_date((cef_time_t*)&t);
 		}
 
 		/// <summary>

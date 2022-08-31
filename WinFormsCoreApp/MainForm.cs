@@ -390,6 +390,9 @@ namespace WinFormsCoreApp
 
 		private async void Button2_Click(object sender, EventArgs e)
 		{
+			DateTime t1 = new CefBaseTime(CefNet.CApi.CefNativeApi.cef_basetime_now());
+			DateTime t2 = DateTime.UtcNow;
+
 			WebView view = ((WebView)SelectedView);
 
 			if (frame1 is null)

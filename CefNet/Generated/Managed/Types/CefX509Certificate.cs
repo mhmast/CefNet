@@ -76,9 +76,9 @@ namespace CefNet
 
 		/// <summary>
 		/// Gets the date before which the X.509 certificate is invalid.
-		/// CefTime.GetTimeT() will return 0 if no date was specified.
+		/// CefBaseTime.GetTimeT() will return 0 if no date was specified.
 		/// </summary>
-		public unsafe virtual CefTime ValidStart
+		public unsafe virtual CefBaseTime ValidStart
 		{
 			get
 			{
@@ -88,9 +88,9 @@ namespace CefNet
 
 		/// <summary>
 		/// Gets the date after which the X.509 certificate is invalid.
-		/// CefTime.GetTimeT() will return 0 if no date was specified.
+		/// CefBaseTime.GetTimeT() will return 0 if no date was specified.
 		/// </summary>
-		public unsafe virtual CefTime ValidExpiry
+		public unsafe virtual CefBaseTime ValidExpiry
 		{
 			get
 			{

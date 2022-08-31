@@ -45,7 +45,7 @@ namespace WinFormsCoreApp
 			CefMenuModel submenu = model.AddSubMenu(0, "Submenu Test");
 			submenu.AddItem((int)CefMenuId.Copy, "Copy");
 			submenu.AddItem((int)CefMenuId.Paste, "Paste");
-			submenu.SetColorAt(submenu.Count - 1, CefMenuColorType.Text, CefColor.FromArgb(Color.Blue.ToArgb()));
+			submenu.SetColorAt((int)submenu.Count - 1, CefMenuColorType.Text, CefColor.FromArgb(Color.Blue.ToArgb()));
 			submenu.AddCheckItem(0, "Checked Test");
 			submenu.SetCheckedAt(submenu.Count - 1, true);
 			submenu.AddRadioItem(0, "Radio Off", 0);

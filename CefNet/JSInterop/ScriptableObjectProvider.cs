@@ -715,7 +715,7 @@ namespace CefNet.JSInterop
 					return v;
 				case CefV8ValueType.Date:
 					v = new CefValue();
-					v.SetBinary(XrayHandle.FromDateTime(value.GetDateValue().ToDateTime()).ToCfxBinaryValue());
+					v.SetBinary(XrayHandle.FromDateTime(value.GetDateValue()).ToCfxBinaryValue());
 					return v;
 				case CefV8ValueType.String:
 					v = new CefValue();
@@ -837,7 +837,7 @@ namespace CefNet.JSInterop
 				case CefV8ValueType.Double:
 					return value.GetDoubleValue();
 				case CefV8ValueType.Date:
-					return value.GetDateValue().ToDateTime();
+					return value.GetDateValue();
 				case CefV8ValueType.String:
 					return value.GetStringValue();
 				case CefV8ValueType.Object:

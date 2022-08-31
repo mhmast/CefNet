@@ -73,6 +73,8 @@ namespace CefGen
 				case "CefString":
 				case "CefStringUserfree":
 					return "string";
+				case "CefBasetime":
+					return "CefBaseTime";
 				case "UIntPtr":
 					return "long";
 				case "Char":

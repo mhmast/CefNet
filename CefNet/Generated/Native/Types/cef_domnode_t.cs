@@ -470,7 +470,8 @@ namespace CefNet.CApi
 		public void* get_element_bounds;
 
 		/// <summary>
-		/// Returns the bounds of the element.
+		/// Returns the bounds of the element in device pixels. Use
+		/// &quot;window.devicePixelRatio&quot; to convert to/from CSS pixels.
 		/// </summary>
 		[NativeName("get_element_bounds")]
 		public unsafe cef_rect_t GetElementBounds()

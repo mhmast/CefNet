@@ -131,7 +131,7 @@ namespace CefNet
 		/// <summary>
 		/// Gets the time that the download started.
 		/// </summary>
-		public unsafe virtual CefTime StartTime
+		public unsafe virtual CefBaseTime StartTime
 		{
 			get
 			{
@@ -142,7 +142,7 @@ namespace CefNet
 		/// <summary>
 		/// Gets the time that the download ended.
 		/// </summary>
-		public unsafe virtual CefTime EndTime
+		public unsafe virtual CefBaseTime EndTime
 		{
 			get
 			{

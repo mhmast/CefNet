@@ -254,7 +254,7 @@ namespace CefNet
 		/// <summary>
 		/// Return a Date value.
 		/// </summary>
-		public unsafe virtual CefTime GetDateValue()
+		public unsafe virtual CefBaseTime GetDateValue()
 		{
 			return SafeCall(NativeInstance->GetDateValue());
 		}

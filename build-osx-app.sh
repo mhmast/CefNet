@@ -55,10 +55,10 @@ NETTARGET="net6.0"
 OS_ARCH=`/usr/bin/arch`
 
 if [ $OS_ARCH = arm64 ]; then
-  CEFZIP="cef_binary_104.4.13%2Bg44748db%2Bchromium-104.0.5112.57_macosarm64_beta_minimal.tar.bz2"
+  CEFZIP="cef_binary_105.3.18%2Bgbfea4e1%2Bchromium-105.0.5195.52_macosarm64_beta_minimal.tar.bz2"
   RID="osx-arm64"
 else
-  CEFZIP="cef_binary_104.4.13%2Bg44748db%2Bchromium-104.0.5112.57_macosx64_beta_minimal.tar.bz2"
+  CEFZIP="cef_binary_105.3.18%2Bgbfea4e1%2Bchromium-105.0.5195.52_macosx64_beta_minimal.tar.bz2"
   RID="osx-x64"
 fi
 

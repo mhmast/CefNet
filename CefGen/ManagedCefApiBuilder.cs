@@ -78,6 +78,8 @@ namespace CefGen
 					continue;
 				if (symbol.Name == "CefEventHandle")
 					continue;
+				if (symbol.Name == "cef_basetime_t")
+					continue;
 
 				TypeSymbol = symbol;
 				TypeSymbolKind = CefTypeKind.Simple;

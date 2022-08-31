@@ -713,7 +713,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, const const _cef_key_event_t* event)*
+		/// void (*)(_cef_browser_host_t* self, const cef_key_event_t* event)*
 		/// </summary>
 		public void* send_key_event;
 
@@ -730,7 +730,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, const const _cef_mouse_event_t* event, cef_mouse_button_type_t type, int mouseUp, int clickCount)*
+		/// void (*)(_cef_browser_host_t* self, const cef_mouse_event_t* event, cef_mouse_button_type_t type, int mouseUp, int clickCount)*
 		/// </summary>
 		public void* send_mouse_click_event;
 
@@ -748,7 +748,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, const const _cef_mouse_event_t* event, int mouseLeave)*
+		/// void (*)(_cef_browser_host_t* self, const cef_mouse_event_t* event, int mouseLeave)*
 		/// </summary>
 		public void* send_mouse_move_event;
 
@@ -766,7 +766,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, const const _cef_mouse_event_t* event, int deltaX, int deltaY)*
+		/// void (*)(_cef_browser_host_t* self, const cef_mouse_event_t* event, int deltaX, int deltaY)*
 		/// </summary>
 		public void* send_mouse_wheel_event;
 
@@ -787,7 +787,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, const const _cef_touch_event_t* event)*
+		/// void (*)(_cef_browser_host_t* self, const cef_touch_event_t* event)*
 		/// </summary>
 		public void* send_touch_event;
 
@@ -978,7 +978,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, _cef_drag_data_t* drag_data, const const _cef_mouse_event_t* event, cef_drag_operations_mask_t allowed_ops)*
+		/// void (*)(_cef_browser_host_t* self, _cef_drag_data_t* drag_data, const cef_mouse_event_t* event, cef_drag_operations_mask_t allowed_ops)*
 		/// </summary>
 		public void* drag_target_drag_enter;
 
@@ -1001,7 +1001,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, const const _cef_mouse_event_t* event, cef_drag_operations_mask_t allowed_ops)*
+		/// void (*)(_cef_browser_host_t* self, const cef_mouse_event_t* event, cef_drag_operations_mask_t allowed_ops)*
 		/// </summary>
 		public void* drag_target_drag_over;
 
@@ -1040,7 +1040,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// void (*)(_cef_browser_host_t* self, const const _cef_mouse_event_t* event)*
+		/// void (*)(_cef_browser_host_t* self, const cef_mouse_event_t* event)*
 		/// </summary>
 		public void* drag_target_drop;
 

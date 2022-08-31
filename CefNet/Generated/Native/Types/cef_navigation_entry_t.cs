@@ -156,7 +156,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// cef_time_t (*)(_cef_navigation_entry_t* self)*
+		/// cef_basetime_t (*)(_cef_navigation_entry_t* self)*
 		/// </summary>
 		public void* get_completion_time;
 
@@ -166,11 +166,11 @@ namespace CefNet.CApi
 		/// 0 if the navigation has not yet completed.
 		/// </summary>
 		[NativeName("get_completion_time")]
-		public unsafe cef_time_t GetCompletionTime()
+		public unsafe cef_basetime_t GetCompletionTime()
 		{
 			fixed (cef_navigation_entry_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_navigation_entry_t*, cef_time_t>)get_completion_time)(self);
+				return ((delegate* unmanaged[Stdcall]<cef_navigation_entry_t*, cef_basetime_t>)get_completion_time)(self);
 			}
 		}
 

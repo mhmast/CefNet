@@ -140,7 +140,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// cef_time_t (*)(_cef_zip_reader_t* self)*
+		/// cef_basetime_t (*)(_cef_zip_reader_t* self)*
 		/// </summary>
 		public void* get_file_last_modified;
 
@@ -148,11 +148,11 @@ namespace CefNet.CApi
 		/// Returns the last modified timestamp for the file.
 		/// </summary>
 		[NativeName("get_file_last_modified")]
-		public unsafe cef_time_t GetFileLastModified()
+		public unsafe cef_basetime_t GetFileLastModified()
 		{
 			fixed (cef_zip_reader_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_zip_reader_t*, cef_time_t>)get_file_last_modified)(self);
+				return ((delegate* unmanaged[Stdcall]<cef_zip_reader_t*, cef_basetime_t>)get_file_last_modified)(self);
 			}
 		}
 

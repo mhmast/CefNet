@@ -56,6 +56,7 @@ namespace CefGen
 			syntaxTrees.Add(SyntaxFactory.ParseSyntaxTree(SourceText.From(File.ReadAllText(Path.Combine(_basePath, "..", "CefTypes", "CefColor.cs")))));
 			syntaxTrees.Add(SyntaxFactory.ParseSyntaxTree(SourceText.From(File.ReadAllText(Path.Combine(_basePath, "..", "CefTypes", "CefStringList.cs")))));
 			syntaxTrees.Add(SyntaxFactory.ParseSyntaxTree(SourceText.From(File.ReadAllText(Path.Combine(_basePath, "..", "CefTypes", "CefStringMap.cs")))));
+			syntaxTrees.Add(SyntaxFactory.ParseSyntaxTree(SourceText.From(File.ReadAllText(Path.Combine(_basePath, "..", "CefTypes", "CefBaseTime.cs")))));
 			syntaxTrees.Add(SyntaxFactory.ParseSyntaxTree(SourceText.From(File.ReadAllText(Path.Combine(_basePath, "..", "CefString.cs")))));
 			syntaxTrees.Add(SyntaxFactory.ParseSyntaxTree(SourceText.From(File.ReadAllText(Path.Combine(_basePath, "..", "CefStructure.cs")))));
 			syntaxTrees.Add(SyntaxFactory.ParseSyntaxTree(SourceText.From(File.ReadAllText(Path.Combine(_basePath, "..", "CefTypes", "CApi", "cef_string_t.cs")))));

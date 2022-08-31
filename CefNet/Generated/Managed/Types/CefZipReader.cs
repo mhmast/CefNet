@@ -66,7 +66,7 @@ namespace CefNet
 		/// <summary>
 		/// Gets the last modified timestamp for the file.
 		/// </summary>
-		public unsafe virtual CefTime FileLastModified
+		public unsafe virtual CefBaseTime FileLastModified
 		{
 			get
 			{

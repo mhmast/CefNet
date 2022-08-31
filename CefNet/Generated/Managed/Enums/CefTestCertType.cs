@@ -19,30 +19,27 @@ using CefNet.WinApi;
 namespace CefNet
 {
 	/// <summary>
-	/// Result codes for CefMediaRouter::CreateRoute. Should be kept in sync with
-	/// Chromium&apos;s media_router::mojom::RouteRequestResultCode type.
+	/// Certificate types supported by CefTestServer::CreateAndStart. The matching
+	/// certificate file must exist in the &quot;net/data/ssl/certificates&quot; directory.
+	/// See CefSetDataDirectoryForTests() for related configuration.
 	/// </summary>
-	public enum CefMediaRouteCreateResult
+	public enum CefTestCertType
 	{
-		UnknownError = 0,
+		/// <summary>
+		/// Valid certificate using the IP (127.0.0.1). Loads the &quot;ok_cert.pem&quot; file.
+		/// </summary>
+		OkIp = 0,
 
-		Ok = 1,
+		/// <summary>
+		/// Valid certificate using the domain (&quot;localhost&quot;). Loads the
+		/// &quot;localhost_cert.pem&quot; file.
+		/// </summary>
+		OkDomain = 1,
 
-		TimedOut = 2,
-
-		RouteNotFound = 3,
-
-		SinkNotFound = 4,
-
-		InvalidOrigin = 5,
-
-		NoSupportedProvider = 7,
-
-		Cancelled = 8,
-
-		RouteAlreadyExists = 9,
-
-		RouteAlreadyTerminated = 11,
+		/// <summary>
+		/// Expired certificate. Loads the &quot;expired_cert.pem&quot; file.
+		/// </summary>
+		Expired = 2,
 	}
 }
 

@@ -20,7 +20,7 @@ namespace CefNet.CApi
 {
 	public static partial class CefNativeApi
 	{
-		public static readonly string ApiHash = "1f35577ebd00c5e6cc03a172bb41e3c0d820f3d1";
+		public static readonly string ApiHash = "44197292401010f8fce5b053733edd8642d01095";
 
 		/// <summary>
 		/// Add an entry to the cross-origin access whitelist.
@@ -96,6 +96,16 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern cef_string_userfree_t cef_base64encode(void* data, UIntPtr data_size);
+
+		/// <summary>
+		/// Retrieve the current system time.
+		/// </summary>
+		/// <remarks>
+		/// Defined in include/internal/cef_time.h as
+		/// cef_basetime_t cef_basetime_now()
+		/// </remarks>
+		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
+		public static unsafe extern cef_basetime_t cef_basetime_now();
 
 		/// <summary>
 		/// Start tracing events on all processes. Tracing is initialized asynchronously
@@ -516,7 +526,7 @@ namespace CefNet.CApi
 		/// </summary>
 		/// <remarks>
 		/// Defined in include/capi/cef_app_capi.h as
-		/// int cef_execute_process(const const _cef_main_args_t* args, cef_app_t* application, void* windows_sandbox_info)
+		/// int cef_execute_process(const cef_main_args_t* args, cef_app_t* application, void* windows_sandbox_info)
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern int cef_execute_process(cef_main_args_t* args, cef_app_t* application, void* windows_sandbox_info);
@@ -619,7 +629,7 @@ namespace CefNet.CApi
 		/// </summary>
 		/// <remarks>
 		/// Defined in include/capi/cef_app_capi.h as
-		/// int cef_initialize(const const _cef_main_args_t* args, const const _cef_settings_t* settings, cef_app_t* application, void* windows_sandbox_info)
+		/// int cef_initialize(const cef_main_args_t* args, const const _cef_settings_t* settings, cef_app_t* application, void* windows_sandbox_info)
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern int cef_initialize(cef_main_args_t* args, cef_settings_t* settings, cef_app_t* application, void* windows_sandbox_info);
@@ -1608,7 +1618,8 @@ namespace CefNet.CApi
 		public static unsafe extern cef_thread_t* cef_thread_create(cef_string_t* display_name, CefThreadPriority priority, CefMessageLoopType message_loop_type, int stoppable, CefComInitMode com_init_mode);
 
 		/// <summary>
-		/// Retrieve the delta in milliseconds between two time values.
+		/// Retrieve the delta in milliseconds between two time values. Returns true (1)
+		/// on success and false (0) on failure.
 		/// </summary>
 		/// <remarks>
 		/// Defined in include/internal/cef_time.h as
@@ -1616,6 +1627,17 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern int cef_time_delta(cef_time_t* cef_time1, cef_time_t* cef_time2, long* delta);
+
+		/// <summary>
+		/// Converts cef_basetime_t to cef_time_t. Returns true (1) on success and
+		/// false (0) on failure.
+		/// </summary>
+		/// <remarks>
+		/// Defined in include/internal/cef_time.h as
+		/// int cef_time_from_basetime(const cef_basetime_t from, cef_time_t* to)
+		/// </remarks>
+		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
+		public static unsafe extern int cef_time_from_basetime(cef_basetime_t from, cef_time_t* to);
 
 		/// <remarks>
 		/// Defined in include/internal/cef_time.h as
@@ -1632,7 +1654,8 @@ namespace CefNet.CApi
 		public static unsafe extern int cef_time_from_timet(IntPtr time, cef_time_t* cef_time);
 
 		/// <summary>
-		/// Retrieve the current system time.
+		/// Retrieve the current system time. Returns true (1) on success and false (0)
+		/// on failure.
 		/// </summary>
 		/// <remarks>
 		/// Defined in include/internal/cef_time.h as
@@ -1640,6 +1663,17 @@ namespace CefNet.CApi
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
 		public static unsafe extern int cef_time_now(cef_time_t* cef_time);
+
+		/// <summary>
+		/// Converts cef_time_t to cef_basetime_t. Returns true (1) on success and
+		/// false (0) on failure.
+		/// </summary>
+		/// <remarks>
+		/// Defined in include/internal/cef_time.h as
+		/// int cef_time_to_basetime(const cef_time_t* from, cef_basetime_t* to)
+		/// </remarks>
+		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
+		public static unsafe extern int cef_time_to_basetime(cef_time_t* from, cef_basetime_t* to);
 
 		/// <summary>
 		/// Converts cef_time_t to/from a double which is the number of seconds since
@@ -1808,10 +1842,10 @@ namespace CefNet.CApi
 		/// </summary>
 		/// <remarks>
 		/// Defined in include/capi/cef_v8_capi.h as
-		/// cef_v8value_t* cef_v8value_create_date(const cef_time_t* date)
+		/// cef_v8value_t* cef_v8value_create_date(cef_basetime_t date)
 		/// </remarks>
 		[DllImport("libcef", CallingConvention = CallingConvention.Cdecl)]
-		public static unsafe extern cef_v8value_t* cef_v8value_create_date(cef_time_t* date);
+		public static unsafe extern cef_v8value_t* cef_v8value_create_date(cef_basetime_t date);
 
 		/// <summary>
 		/// Create a new cef_v8value_t object of type double.

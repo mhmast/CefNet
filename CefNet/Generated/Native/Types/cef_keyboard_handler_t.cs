@@ -31,7 +31,7 @@ namespace CefNet.CApi
 		public cef_base_ref_counted_t @base;
 
 		/// <summary>
-		/// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const const _cef_key_event_t* event, CefEventHandle os_event, int* is_keyboard_shortcut)*
+		/// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const cef_key_event_t* event, CefEventHandle os_event, int* is_keyboard_shortcut)*
 		/// </summary>
 		public void* on_pre_key_event;
 
@@ -52,7 +52,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const const _cef_key_event_t* event, CefEventHandle os_event)*
+		/// int (*)(_cef_keyboard_handler_t* self, _cef_browser_t* browser, const cef_key_event_t* event, CefEventHandle os_event)*
 		/// </summary>
 		public void* on_key_event;
 

@@ -17,7 +17,7 @@ namespace CefNet
 		{
 			_completion = new TaskCompletionSource<bool>((TaskCreationOptions)64); // TaskCreationOptions.RunContinuationsAsynchronously
 			this.Id = (int)downloadItem.Id;
-			this.StartTime = downloadItem.StartTime.ToDateTime();
+			this.StartTime = downloadItem.StartTime;
 			//this.FullPath = downloadItem.FullPath;
 			this.Url = downloadItem.Url;
 			this.OriginalUrl = downloadItem.OriginalUrl;
@@ -157,7 +157,7 @@ namespace CefNet
 			this.PercentComplete = downloadItem.PercentComplete;
 			this.TotalBytes = downloadItem.TotalBytes;
 			this.ReceivedBytes = downloadItem.ReceivedBytes;
-			this.EndTime = this.IsComplete ? downloadItem.EndTime.ToDateTime() : null;
+			this.EndTime = this.IsComplete ? downloadItem.EndTime : null;
 			this.FullPath = downloadItem.FullPath;
 
 			if (this.SuggestedFileName is null)

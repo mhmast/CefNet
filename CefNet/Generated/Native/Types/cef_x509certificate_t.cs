@@ -84,38 +84,38 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// cef_time_t (*)(_cef_x509certificate_t* self)*
+		/// cef_basetime_t (*)(_cef_x509certificate_t* self)*
 		/// </summary>
 		public void* get_valid_start;
 
 		/// <summary>
 		/// Returns the date before which the X.509 certificate is invalid.
-		/// CefTime.GetTimeT() will return 0 if no date was specified.
+		/// CefBaseTime.GetTimeT() will return 0 if no date was specified.
 		/// </summary>
 		[NativeName("get_valid_start")]
-		public unsafe cef_time_t GetValidStart()
+		public unsafe cef_basetime_t GetValidStart()
 		{
 			fixed (cef_x509certificate_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_x509certificate_t*, cef_time_t>)get_valid_start)(self);
+				return ((delegate* unmanaged[Stdcall]<cef_x509certificate_t*, cef_basetime_t>)get_valid_start)(self);
 			}
 		}
 
 		/// <summary>
-		/// cef_time_t (*)(_cef_x509certificate_t* self)*
+		/// cef_basetime_t (*)(_cef_x509certificate_t* self)*
 		/// </summary>
 		public void* get_valid_expiry;
 
 		/// <summary>
 		/// Returns the date after which the X.509 certificate is invalid.
-		/// CefTime.GetTimeT() will return 0 if no date was specified.
+		/// CefBaseTime.GetTimeT() will return 0 if no date was specified.
 		/// </summary>
 		[NativeName("get_valid_expiry")]
-		public unsafe cef_time_t GetValidExpiry()
+		public unsafe cef_basetime_t GetValidExpiry()
 		{
 			fixed (cef_x509certificate_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_x509certificate_t*, cef_time_t>)get_valid_expiry)(self);
+				return ((delegate* unmanaged[Stdcall]<cef_x509certificate_t*, cef_basetime_t>)get_valid_expiry)(self);
 			}
 		}
 

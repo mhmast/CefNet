@@ -343,7 +343,7 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
-		/// cef_time_t (*)(_cef_v8value_t* self)*
+		/// cef_basetime_t (*)(_cef_v8value_t* self)*
 		/// </summary>
 		public void* get_date_value;
 
@@ -351,11 +351,11 @@ namespace CefNet.CApi
 		/// Return a Date value.
 		/// </summary>
 		[NativeName("get_date_value")]
-		public unsafe cef_time_t GetDateValue()
+		public unsafe cef_basetime_t GetDateValue()
 		{
 			fixed (cef_v8value_t* self = &this)
 			{
-				return ((delegate* unmanaged[Stdcall]<cef_v8value_t*, cef_time_t>)get_date_value)(self);
+				return ((delegate* unmanaged[Stdcall]<cef_v8value_t*, cef_basetime_t>)get_date_value)(self);
 			}
 		}
 

@@ -104,7 +104,7 @@ namespace CefNet
 		private unsafe delegate int OnBeforePopupDelegate(cef_life_span_handler_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_string_t* target_url, cef_string_t* target_frame_name, CefWindowOpenDisposition target_disposition, int user_gesture, cef_popup_features_t* popupFeatures, cef_window_info_t* windowInfo, cef_client_t** client, cef_browser_settings_t* settings, cef_dictionary_value_t** extra_info, int* no_javascript_access);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_life_span_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, const cef_string_t* target_url, const cef_string_t* target_frame_name, cef_window_open_disposition_t target_disposition, int user_gesture, const const _cef_popup_features_t* popupFeatures, _cef_window_info_t* windowInfo, _cef_client_t** client, _cef_browser_settings_t* settings, _cef_dictionary_value_t** extra_info, int* no_javascript_access)*
+		// int (*)(_cef_life_span_handler_t* self, _cef_browser_t* browser, _cef_frame_t* frame, const cef_string_t* target_url, const cef_string_t* target_frame_name, cef_window_open_disposition_t target_disposition, int user_gesture, const cef_popup_features_t* popupFeatures, _cef_window_info_t* windowInfo, _cef_client_t** client, _cef_browser_settings_t* settings, _cef_dictionary_value_t** extra_info, int* no_javascript_access)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
