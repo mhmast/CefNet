@@ -1,6 +1,4 @@
 ﻿using CefNet.CApi;
-using System;
-using System.Runtime.InteropServices;
 
 namespace CefNet
 {
@@ -15,5 +13,18 @@ namespace CefNet
 
 		}
 
+		/// <summary>
+		/// Gets an array containing the keys in this dictionary.
+		/// </summary>
+		/// <returns></returns>
+		public string[] GetKeys()
+		{
+			using (var list = new CefStringList())
+			{
+				if (GetKeys(list) == 0)
+					return new string[0];
+				return list.ToArray();
+			}
+		}
 	}
 }
