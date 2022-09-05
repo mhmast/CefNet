@@ -1,4 +1,4 @@
-using CefNet.Input;
+﻿using CefNet.Input;
 using CefNet.Internal;
 
 
@@ -113,6 +113,9 @@ namespace CefNet
 		/// Occurs when a new browser is created.
 		/// </summary>
 		public event EventHandler BrowserCreated;
+
+		/// <inheritdoc />
+		public event EventHandler<RenderProcessTerminatedEventArgs> RenderProcessTerminated;
 
 		/// <summary>
 		/// Occurs when the page title changes.
@@ -1044,6 +1047,19 @@ namespace CefNet
 		protected virtual void OnScriptDialogOpening(IScriptDialogOpeningEventArgs e)
 		{
 			ScriptDialogOpeningEvent?.Invoke(this, e);
+		}
+
+		void IChromiumWebViewPrivate.RaiseRenderProcessTerminated(RenderProcessTerminatedEventArgs e)
+		{
+			RaiseCrossThreadEvent(OnRenderProcessTerminated, e, false);
+		}
+
+		/// <summary>
+		/// Raises the <see cref="RenderProcessTerminated"/> event.
+		/// </summary>
+		protected virtual void OnRenderProcessTerminated(RenderProcessTerminatedEventArgs e)
+		{
+			RenderProcessTerminated?.Invoke(this, e);
 		}
 
 		void IChromiumWebViewPrivate.RaiseDownload(DownloadEventArgs e)

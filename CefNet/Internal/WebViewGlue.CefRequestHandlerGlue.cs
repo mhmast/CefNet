@@ -105,7 +105,7 @@ namespace CefNet.Internal
 
 		internal protected virtual void OnRenderProcessTerminated(CefBrowser browser, CefTerminationStatus status)
 		{
-
+			WebView.RaiseRenderProcessTerminated(new RenderProcessTerminatedEventArgs(status));
 		}
 
 		internal bool AvoidOnDocumentAvailableInMainFrame()

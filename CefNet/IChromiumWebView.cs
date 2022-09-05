@@ -141,6 +141,11 @@ namespace CefNet
 		event EventHandler<DownloadEventArgs> Download;
 
 		/// <summary>
+		/// Occurs when a render process terminates unexpectedly.
+		/// </summary>
+		event EventHandler<RenderProcessTerminatedEventArgs> RenderProcessTerminated;
+
+		/// <summary>
 		/// Gets and sets a default URL.
 		/// </summary>
 		/// <remarks>

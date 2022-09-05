@@ -36,5 +36,6 @@ namespace CefNet.Internal
 		void RaiseCefFrameAttached(FrameEventArgs e);
 		void RaiseCefFrameDetached(FrameEventArgs e);
 		void RaiseDownload(DownloadEventArgs e);
+		void RaiseRenderProcessTerminated(RenderProcessTerminatedEventArgs e);
 	}
 }
