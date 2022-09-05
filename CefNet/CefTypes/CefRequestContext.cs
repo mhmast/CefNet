@@ -141,6 +141,27 @@ namespace CefNet
 		/// </param>
 		/// <param name="cancellationToken"></param>
 		/// <exception cref="InvalidOperationException">Setting the preference fails.</exception>
+		public async Task SetPreferenceAsync(string name, string value)
+		{
+			using (var v = new CefValue())
+			{
+				if (value is null)
+					v.SetNull();
+				else
+					v.SetString(value);
+				await SetPreferenceAsync(name, v).ConfigureAwait(false);
+			}
+		}
+
+		/// <summary>
+		/// Sets the <paramref name="value"/> associated with preference <paramref name="name"/>.
+		/// </summary>
+		/// <param name="name">The name of the preference.</param>
+		/// <param name="value">
+		/// If <paramref name="value"/> is NULL the preference will be restored to its default value.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <exception cref="InvalidOperationException">Setting the preference fails.</exception>
 		public Task SetPreferenceAsync(string name, CefValue value)
 		{
 			if (CefApi.CurrentlyOn(CefThreadId.UI))
@@ -156,6 +177,25 @@ namespace CefNet
 			var tcs = new TaskCompletionSource<bool>();
 			CefNetApi.Post(CefThreadId.UI, () => SetPreferenceInternal(name, value, tcs));
 			return tcs.Task;
+		}
+
+		/// <summary>
+		/// Sets the <paramref name="value"/> associated with preference <paramref name="name"/>.
+		/// </summary>
+		/// <param name="name">The name of the preference.</param>
+		/// <param name="value">
+		/// If <paramref name="value"/> is NULL the preference will be restored to its default value.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		/// <exception cref="InvalidOperationException">Setting the preference fails.</exception>
+		/// <remarks>This function must be called on the browser process UI thread.</remarks>
+		public void SetPreference(string name, string value)
+		{
+			using (var v = new CefValue())
+			{
+				v.SetString(value);
+				SetPreference(name, v);
+			}
 		}
 
 		/// <summary>
