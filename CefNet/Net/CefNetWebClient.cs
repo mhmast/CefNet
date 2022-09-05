@@ -922,8 +922,8 @@ namespace CefNet.Net
 		/// <param name="request">The request for testing.</param>
 		protected virtual void AssertSuccess(CefNetWebRequest request)
 		{
-			if (request.RequestStatus != CefUrlRequestStatus.Success)
-				throw new WebException("Error: " + request.RequestError.ToString());
+			if (request.RequestStatus != CefUrlRequestStatus.Success || request.RequestError != CefErrorCode.None)
+				throw new WebException($"Request failed (status: {request.RequestStatus}; code: {request.RequestError}).");
 		}
 
 		/// <summary>
