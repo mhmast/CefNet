@@ -109,7 +109,7 @@ namespace CefNet.JSInterop
 			switch(value.Type)
 			{
 				case CefValueType.String:
-					return value.GetString();
+					return value.GetString() ?? string.Empty;
 				case CefValueType.Int:
 					return value.GetInt();
 				case CefValueType.Bool:
