@@ -68,8 +68,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the extension manifest contents as a cef_dictionary_value_t object.
-		/// See https://developer.chrome.com/extensions/manifest for details.
+		/// Gets the extension manifest contents as a cef_dictionary_value_t
+		/// object. See https://developer.chrome.com/extensions/manifest for details.
 		/// </summary>
 		public unsafe virtual CefDictionaryValue Manifest
 		{
@@ -102,7 +102,7 @@ namespace CefNet
 		{
 			get
 			{
-				return SafeCall(CefRequestContext.Wrap(CefRequestContext.Create, NativeInstance->GetLoaderContext()));
+				return SafeCall(NativeInstance->GetLoaderContext());
 			}
 		}
 

@@ -63,10 +63,10 @@ namespace CefNet
 
 		/// <summary>
 		/// Called on the IO thread before a resource request is sent. The |browser|
-		/// and |frame| values represent the source of the request, and may be NULL for
-		/// requests originating from service workers or cef_urlrequest_t. |request|
-		/// cannot be modified in this callback. Return true (1) if the specified
-		/// cookie can be sent with the request or false (0) otherwise.
+		/// and |frame| values represent the source of the request, and may be NULL
+		/// for requests originating from service workers or cef_urlrequest_t.
+		/// |request| cannot be modified in this callback. Return true (1) if the
+		/// specified cookie can be sent with the request or false (0) otherwise.
 		/// </summary>
 		protected internal unsafe virtual bool CanSendCookie(CefBrowser browser, CefFrame frame, CefRequest request, CefCookie cookie)
 		{
@@ -78,7 +78,7 @@ namespace CefNet
 		private unsafe delegate int CanSendCookieDelegate(cef_cookie_access_filter_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_cookie_t* cookie);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_cookie_access_filter_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, const const _cef_cookie_t* cookie)*
+		// int (*)(_cef_cookie_access_filter_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, const _cef_cookie_t* cookie)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
@@ -116,7 +116,7 @@ namespace CefNet
 		private unsafe delegate int CanSaveCookieDelegate(cef_cookie_access_filter_t* self, cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, cef_response_t* response, cef_cookie_t* cookie);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_cookie_access_filter_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, _cef_response_t* response, const const _cef_cookie_t* cookie)*
+		// int (*)(_cef_cookie_access_filter_t* self, _cef_browser_t* browser, _cef_frame_t* frame, _cef_request_t* request, _cef_response_t* response, const _cef_cookie_t* cookie)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif

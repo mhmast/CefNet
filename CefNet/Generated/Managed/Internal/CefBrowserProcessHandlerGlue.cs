@@ -29,6 +29,16 @@ namespace CefNet.Internal
 			_implementation = impl;
 		}
 
+		bool ICefBrowserProcessHandlerPrivate.AvoidOnRegisterCustomPreferences()
+		{
+			return _implementation.AvoidOnRegisterCustomPreferences();
+		}
+
+		protected internal unsafe override void OnRegisterCustomPreferences(CefPreferencesType type, CefPreferenceRegistrar registrar)
+		{
+			_implementation.OnRegisterCustomPreferences(type, registrar);
+		}
+
 		protected internal unsafe override void OnContextInitialized()
 		{
 			_implementation.OnContextInitialized();

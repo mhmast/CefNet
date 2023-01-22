@@ -188,6 +188,17 @@ namespace CefNet
 		}
 
 		/// <summary>
+		/// Gets a value indicating whether the value type is a Promise.
+		/// </summary>
+		public unsafe virtual bool IsPromise
+		{
+			get
+			{
+				return SafeCall(NativeInstance->IsPromise() != 0);
+			}
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether this is a user created object.
 		/// </summary>
 		public unsafe virtual bool IsUserCreated
@@ -269,8 +280,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Returns the exception resulting from the last function call. This attribute
-		/// exists only in the scope of the current CEF value object.
+		/// Returns the exception resulting from the last function call. This
+		/// attribute exists only in the scope of the current CEF value object.
 		/// </summary>
 		public unsafe virtual CefV8Exception GetException()
 		{
@@ -343,9 +354,9 @@ namespace CefNet
 
 		/// <summary>
 		/// Deletes the value with the specified identifier and returns true (1) on
-		/// success. Returns false (0) if this function is called incorrectly, deletion
-		/// fails or an exception is thrown. For read-only and don&apos;t-delete values this
-		/// function will return true (1) even though deletion failed.
+		/// success. Returns false (0) if this function is called incorrectly,
+		/// deletion fails or an exception is thrown. For read-only and don&apos;t-delete
+		/// values this function will return true (1) even though deletion failed.
 		/// </summary>
 		public unsafe virtual bool DeleteValueByIndex(int index)
 		{
@@ -353,8 +364,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Returns the value with the specified identifier on success. Returns NULL if
-		/// this function is called incorrectly or an exception is thrown.
+		/// Returns the value with the specified identifier on success. Returns NULL
+		/// if this function is called incorrectly or an exception is thrown.
 		/// </summary>
 		public unsafe virtual CefV8Value GetValueByKey(string key)
 		{
@@ -366,8 +377,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Returns the value with the specified identifier on success. Returns NULL if
-		/// this function is called incorrectly or an exception is thrown.
+		/// Returns the value with the specified identifier on success. Returns NULL
+		/// if this function is called incorrectly or an exception is thrown.
 		/// </summary>
 		public unsafe virtual CefV8Value GetValueByIndex(int index)
 		{
@@ -426,9 +437,9 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Sets the user data for this object and returns true (1) on success. Returns
-		/// false (0) if this function is called incorrectly. This function can only be
-		/// called on user created objects.
+		/// Sets the user data for this object and returns true (1) on success.
+		/// Returns false (0) if this function is called incorrectly. This function
+		/// can only be called on user created objects.
 		/// </summary>
 		public unsafe virtual bool SetUserData(CefBaseRefCounted userData)
 		{
@@ -459,8 +470,8 @@ namespace CefNet
 		/// to perform global garbage collection. Each cef_v8value_t tracks the amount
 		/// of external memory associated with it and automatically decreases the
 		/// global total by the appropriate amount on its destruction.
-		/// |change_in_bytes| specifies the number of bytes to adjust by. This function
-		/// returns the number of bytes associated with the object after the
+		/// |change_in_bytes| specifies the number of bytes to adjust by. This
+		/// function returns the number of bytes associated with the object after the
 		/// adjustment. This function can only be called on user created objects.
 		/// </summary>
 		public unsafe virtual int AdjustExternallyAllocatedMemory(int changeInBytes)
@@ -525,42 +536,63 @@ namespace CefNet
 		/// Returns NULL if this function is called incorrectly or an exception is
 		/// thrown.
 		/// </summary>
-		public unsafe virtual CefV8Value ExecuteFunction(CefV8Value @object, CefV8Value[] arguments)
+		public unsafe virtual CefV8Value ExecuteFunction(CefV8Value @object, long argumentsCount, ref CefV8Value arguments)
 		{
 			
-			cef_v8value_t** arr2 = (cef_v8value_t**)Marshal.AllocHGlobal(sizeof(cef_v8value_t*) * arguments.Length);
-			for (int i = 0; i < arguments.Length; i++)
-			{
-				var e2 = arguments[i];
-				*(arr2 + i) = e2 != null ? e2.GetNativeInstance() : null;
-			}
-			var rv = CefV8Value.Wrap(CefV8Value.Create, NativeInstance->ExecuteFunction((@object != null) ? @object.GetNativeInstance() : null, new UIntPtr((uint)arguments.Length), arr2));
-			Marshal.FreeHGlobal((IntPtr)arr2);
+			cef_v8value_t* p2 = (arguments != null) ? arguments.GetNativeInstance() : null;
+			cef_v8value_t** pp2 = &p2;
+			var rv = CefV8Value.Wrap(CefV8Value.Create, NativeInstance->ExecuteFunction((@object != null) ? @object.GetNativeInstance() : null, argumentsCount, pp2));
+			arguments = CefV8Value.Wrap(CefV8Value.Create, p2);
 			GC.KeepAlive(this);
 			return rv;
 		}
 
 		/// <summary>
 		/// Execute the function using the specified V8 context. |object| is the
-		/// receiver (&apos;this&apos; object) of the function. If |object| is NULL the specified
-		/// context&apos;s global object will be used. |arguments| is the list of arguments
-		/// that will be passed to the function. Returns the function return value on
-		/// success. Returns NULL if this function is called incorrectly or an
-		/// exception is thrown.
+		/// receiver (&apos;this&apos; object) of the function. If |object| is NULL the
+		/// specified context&apos;s global object will be used. |arguments| is the list of
+		/// arguments that will be passed to the function. Returns the function return
+		/// value on success. Returns NULL if this function is called incorrectly or
+		/// an exception is thrown.
 		/// </summary>
-		public unsafe virtual CefV8Value ExecuteFunctionWithContext(CefV8Context context, CefV8Value @object, CefV8Value[] arguments)
+		public unsafe virtual CefV8Value ExecuteFunctionWithContext(CefV8Context context, CefV8Value @object, long argumentsCount, ref CefV8Value arguments)
 		{
 			
-			cef_v8value_t** arr3 = (cef_v8value_t**)Marshal.AllocHGlobal(sizeof(cef_v8value_t*) * arguments.Length);
-			for (int i = 0; i < arguments.Length; i++)
-			{
-				var e3 = arguments[i];
-				*(arr3 + i) = e3 != null ? e3.GetNativeInstance() : null;
-			}
-			var rv = CefV8Value.Wrap(CefV8Value.Create, NativeInstance->ExecuteFunctionWithContext((context != null) ? context.GetNativeInstance() : null, (@object != null) ? @object.GetNativeInstance() : null, new UIntPtr((uint)arguments.Length), arr3));
-			Marshal.FreeHGlobal((IntPtr)arr3);
+			cef_v8value_t* p3 = (arguments != null) ? arguments.GetNativeInstance() : null;
+			cef_v8value_t** pp3 = &p3;
+			var rv = CefV8Value.Wrap(CefV8Value.Create, NativeInstance->ExecuteFunctionWithContext((context != null) ? context.GetNativeInstance() : null, (@object != null) ? @object.GetNativeInstance() : null, argumentsCount, pp3));
+			arguments = CefV8Value.Wrap(CefV8Value.Create, p3);
 			GC.KeepAlive(this);
 			return rv;
+		}
+
+		/// <summary>
+		/// Resolve the Promise using the current V8 context. This function should
+		/// only be called from within the scope of a cef_v8handler_t or
+		/// cef_v8accessor_t callback, or in combination with calling enter() and
+		/// exit() on a stored cef_v8context_t reference. |arg| is the argument passed
+		/// to the resolved promise. Returns true (1) on success. Returns false (0) if
+		/// this function is called incorrectly or an exception is thrown.
+		/// </summary>
+		public unsafe virtual bool ResolvePromise(CefV8Value arg)
+		{
+			return SafeCall(NativeInstance->ResolvePromise((arg != null) ? arg.GetNativeInstance() : null) != 0);
+		}
+
+		/// <summary>
+		/// Reject the Promise using the current V8 context. This function should only
+		/// be called from within the scope of a cef_v8handler_t or cef_v8accessor_t
+		/// callback, or in combination with calling enter() and exit() on a stored
+		/// cef_v8context_t reference. Returns true (1) on success. Returns false (0)
+		/// if this function is called incorrectly or an exception is thrown.
+		/// </summary>
+		public unsafe virtual bool RejectPromise(string errorMsg)
+		{
+			fixed (char* s0 = errorMsg)
+			{
+				var cstr0 = new cef_string_t { Str = s0, Length = errorMsg != null ? errorMsg.Length : 0 };
+				return SafeCall(NativeInstance->RejectPromise(&cstr0) != 0);
+			}
 		}
 	}
 }

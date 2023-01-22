@@ -99,8 +99,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the globally unique identifier for this browser. This value is also
-		/// used as the tabId for extension APIs.
+		/// Gets the globally unique identifier for this browser. This value is
+		/// also used as the tabId for extension APIs.
 		/// </summary>
 		public unsafe virtual int Identifier
 		{
@@ -248,14 +248,12 @@ namespace CefNet
 		/// <summary>
 		/// Returns the identifiers of all existing frames.
 		/// </summary>
-		public unsafe virtual void GetFrameIdentifiers(ref long identifiersCount, ref long[] identifiers)
+		public unsafe virtual void GetFrameIdentifiers(ref long identifiersCount, ref long identifiers)
 		{
-			fixed (long* p1 = identifiers)
+			fixed (long* p0 = &identifiersCount)
+			fixed (long* p1 = &identifiers)
 			{
-				UIntPtr c1 = new UIntPtr((uint)identifiers.Length);
-				NativeInstance->GetFrameIdentifiers(&c1, p1);
-				identifiersCount = (long)c1;
-				Array.Resize(ref identifiers, (int)c1);
+				NativeInstance->GetFrameIdentifiers(p0, p1);
 			}
 			GC.KeepAlive(this);
 		}

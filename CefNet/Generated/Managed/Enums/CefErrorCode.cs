@@ -19,7 +19,8 @@ using CefNet.WinApi;
 namespace CefNet
 {
 	/// <summary>
-	/// Supported error code values.
+	/// Supported error code values. For the complete list of error values see
+	/// &quot;include/base/internal/cef_net_error_list.h&quot;.
 	/// </summary>
 	public enum CefErrorCode
 	{
@@ -87,6 +88,8 @@ namespace CefNet
 		BlockedByCsp = -30,
 
 		H2OrQuicRequired = -31,
+
+		BlockedByOrb = -32,
 
 		ConnectionClosed = -100,
 
@@ -395,6 +398,8 @@ namespace CefNet
 		TooManyAcceptChRestarts = -382,
 
 		InconsistentIpAddressSpace = -383,
+
+		CachedIpAddressSpaceBlockedByPrivateNetworkAccessPolicy = -384,
 
 		CacheMiss = -400,
 

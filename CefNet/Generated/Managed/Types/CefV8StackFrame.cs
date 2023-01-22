@@ -70,9 +70,7 @@ namespace CefNet
 		/// <summary>
 		/// Gets the name of the resource script that contains the function or the
 		/// sourceURL value if the script name is undefined and its source ends with a
-		/// &quot;//
-		/// @
-		/// sourceURL=...&quot; string.
+		/// &quot;//@ sourceURL=...&quot; string.
 		/// The resulting string must be freed by calling cef_string_userfree_free().
 		/// </summary>
 		public unsafe virtual string ScriptNameOrSourceUrl
@@ -107,8 +105,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the 1-based column offset on the line for the function call or 0 if
-		/// unknown.
+		/// Gets the 1-based column offset on the line for the function call or 0
+		/// if unknown.
 		/// </summary>
 		public unsafe virtual int Column
 		{

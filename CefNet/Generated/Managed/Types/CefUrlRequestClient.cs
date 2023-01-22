@@ -60,7 +60,7 @@ namespace CefNet
 			self->on_request_complete = (delegate* unmanaged[Stdcall]<cef_urlrequest_client_t*, cef_urlrequest_t*, void>)&OnRequestCompleteImpl;
 			self->on_upload_progress = (delegate* unmanaged[Stdcall]<cef_urlrequest_client_t*, cef_urlrequest_t*, long, long, void>)&OnUploadProgressImpl;
 			self->on_download_progress = (delegate* unmanaged[Stdcall]<cef_urlrequest_client_t*, cef_urlrequest_t*, long, long, void>)&OnDownloadProgressImpl;
-			self->on_download_data = (delegate* unmanaged[Stdcall]<cef_urlrequest_client_t*, cef_urlrequest_t*, void*, UIntPtr, void>)&OnDownloadDataImpl;
+			self->on_download_data = (delegate* unmanaged[Stdcall]<cef_urlrequest_client_t*, cef_urlrequest_t*, void*, nuint, void>)&OnDownloadDataImpl;
 			self->get_auth_credentials = (delegate* unmanaged[Stdcall]<cef_urlrequest_client_t*, int, cef_string_t*, int, cef_string_t*, cef_string_t*, cef_auth_callback_t*, int>)&GetAuthCredentialsImpl;
 			#endif
 		}
@@ -75,8 +75,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Notifies the client that the request has completed. Use the
-		/// cef_urlrequest_t::GetRequestStatus function to determine if the request was
-		/// successful or not.
+		/// cef_urlrequest_t::GetRequestStatus function to determine if the request
+		/// was successful or not.
 		/// </summary>
 		protected internal unsafe virtual void OnRequestComplete(CefUrlRequest request)
 		{
@@ -107,8 +107,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Notifies the client of upload progress. |current| denotes the number of
-		/// bytes sent so far and |total| is the total size of uploading data (or -1 if
-		/// chunked upload is enabled). This function will only be called if the
+		/// bytes sent so far and |total| is the total size of uploading data (or -1
+		/// if chunked upload is enabled). This function will only be called if the
 		/// UR_FLAG_REPORT_UPLOAD_PROGRESS flag is set on the request.
 		/// </summary>
 		protected internal unsafe virtual void OnUploadProgress(CefUrlRequest request, long current, long total)
@@ -140,8 +140,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Notifies the client of download progress. |current| denotes the number of
-		/// bytes received up to the call and |total| is the expected total size of the
-		/// response (or -1 if not determined).
+		/// bytes received up to the call and |total| is the expected total size of
+		/// the response (or -1 if not determined).
 		/// </summary>
 		protected internal unsafe virtual void OnDownloadProgress(CefUrlRequest request, long current, long total)
 		{
@@ -172,8 +172,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Called when some part of the response is read. |data| contains the current
-		/// bytes received since the last call. This function will not be called if the
-		/// UR_FLAG_NO_DOWNLOAD_DATA flag is set on the request.
+		/// bytes received since the last call. This function will not be called if
+		/// the UR_FLAG_NO_DOWNLOAD_DATA flag is set on the request.
 		/// </summary>
 		protected internal unsafe virtual void OnDownloadData(CefUrlRequest request, IntPtr data, long dataLength)
 		{
@@ -181,14 +181,14 @@ namespace CefNet
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnDownloadDataDelegate(cef_urlrequest_client_t* self, cef_urlrequest_t* request, void* data, UIntPtr data_length);
+		private unsafe delegate void OnDownloadDataDelegate(cef_urlrequest_client_t* self, cef_urlrequest_t* request, void* data, nuint data_length);
 
 #endif // NET_LESS_5_0
 		// void (*)(_cef_urlrequest_client_t* self, _cef_urlrequest_t* request, const void* data, size_t data_length)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe void OnDownloadDataImpl(cef_urlrequest_client_t* self, cef_urlrequest_t* request, void* data, UIntPtr data_length)
+		private static unsafe void OnDownloadDataImpl(cef_urlrequest_client_t* self, cef_urlrequest_t* request, void* data, nuint data_length)
 		{
 			var instance = GetInstance((IntPtr)self) as CefUrlRequestClient;
 			if (instance == null || ((ICefUrlRequestClientPrivate)instance).AvoidOnDownloadData())
@@ -204,14 +204,15 @@ namespace CefNet
 
 		/// <summary>
 		/// Called on the IO thread when the browser needs credentials from the user.
-		/// |isProxy| indicates whether the host is a proxy server. |host| contains the
-		/// hostname and |port| contains the port number. Return true (1) to continue
-		/// the request and call cef_auth_callback_t::cont() when the authentication
-		/// information is available. If the request has an associated browser/frame
-		/// then returning false (0) will result in a call to GetAuthCredentials on the
-		/// cef_request_handler_t associated with that browser, if any. Otherwise,
-		/// returning false (0) will cancel the request immediately. This function will
-		/// only be called for requests initiated from the browser process.
+		/// |isProxy| indicates whether the host is a proxy server. |host| contains
+		/// the hostname and |port| contains the port number. Return true (1) to
+		/// continue the request and call cef_auth_callback_t::cont() when the
+		/// authentication information is available. If the request has an associated
+		/// browser/frame then returning false (0) will result in a call to
+		/// GetAuthCredentials on the cef_request_handler_t associated with that
+		/// browser, if any. Otherwise, returning false (0) will cancel the request
+		/// immediately. This function will only be called for requests initiated from
+		/// the browser process.
 		/// </summary>
 		protected internal unsafe virtual bool GetAuthCredentials(bool isProxy, string host, int port, string realm, string scheme, CefAuthCallback callback)
 		{

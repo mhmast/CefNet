@@ -1015,7 +1015,7 @@ namespace CefGen
 			if (returnSymbolInfo.IsPointedType)
 			{
 				if (typeKind != CefTypeKind.RefCounted && typeKind != CefTypeKind.Scoped
-					&& returnSymbolInfo.AsClrTypeName() != "CefBaseRefCounted")
+					&& !returnSymbolInfo.AsClrTypeName().StartsWith("Cef"))
 				{
 					throw new NotImplementedException();
 				}

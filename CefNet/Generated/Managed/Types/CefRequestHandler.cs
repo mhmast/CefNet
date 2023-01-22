@@ -38,8 +38,6 @@ namespace CefNet
 
 		private static readonly GetAuthCredentialsDelegate fnGetAuthCredentials = GetAuthCredentialsImpl;
 
-		private static readonly OnQuotaRequestDelegate fnOnQuotaRequest = OnQuotaRequestImpl;
-
 		private static readonly OnCertificateErrorDelegate fnOnCertificateError = OnCertificateErrorImpl;
 
 		private static readonly OnSelectClientCertificateDelegate fnOnSelectClientCertificate = OnSelectClientCertificateImpl;
@@ -64,7 +62,6 @@ namespace CefNet
 			self->on_open_urlfrom_tab = (void*)Marshal.GetFunctionPointerForDelegate(fnOnOpenUrlFromTab);
 			self->get_resource_request_handler = (void*)Marshal.GetFunctionPointerForDelegate(fnGetResourceRequestHandler);
 			self->get_auth_credentials = (void*)Marshal.GetFunctionPointerForDelegate(fnGetAuthCredentials);
-			self->on_quota_request = (void*)Marshal.GetFunctionPointerForDelegate(fnOnQuotaRequest);
 			self->on_certificate_error = (void*)Marshal.GetFunctionPointerForDelegate(fnOnCertificateError);
 			self->on_select_client_certificate = (void*)Marshal.GetFunctionPointerForDelegate(fnOnSelectClientCertificate);
 			self->on_render_view_ready = (void*)Marshal.GetFunctionPointerForDelegate(fnOnRenderViewReady);
@@ -75,9 +72,8 @@ namespace CefNet
 			self->on_open_urlfrom_tab = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_string_t*, CefWindowOpenDisposition, int, int>)&OnOpenUrlFromTabImpl;
 			self->get_resource_request_handler = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_frame_t*, cef_request_t*, int, int, cef_string_t*, int*, cef_resource_request_handler_t*>)&GetResourceRequestHandlerImpl;
 			self->get_auth_credentials = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, int, cef_string_t*, int, cef_string_t*, cef_string_t*, cef_auth_callback_t*, int>)&GetAuthCredentialsImpl;
-			self->on_quota_request = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, long, cef_callback_t*, int>)&OnQuotaRequestImpl;
 			self->on_certificate_error = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefErrorCode, cef_string_t*, cef_sslinfo_t*, cef_callback_t*, int>)&OnCertificateErrorImpl;
-			self->on_select_client_certificate = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, int, cef_string_t*, int, UIntPtr, cef_x509certificate_t**, cef_select_client_certificate_callback_t*, int>)&OnSelectClientCertificateImpl;
+			self->on_select_client_certificate = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, int, cef_string_t*, int, nuint, cef_x509certificate_t**, cef_select_client_certificate_callback_t*, int>)&OnSelectClientCertificateImpl;
 			self->on_render_view_ready = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, void>)&OnRenderViewReadyImpl;
 			self->on_render_process_terminated = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, CefTerminationStatus, void>)&OnRenderProcessTerminatedImpl;
 			self->on_document_available_in_main_frame = (delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, void>)&OnDocumentAvailableInMainFrameImpl;
@@ -96,13 +92,14 @@ namespace CefNet
 		/// Called on the UI thread before browser navigation. Return true (1) to
 		/// cancel the navigation or false (0) to allow the navigation to proceed. The
 		/// |request| object cannot be modified in this callback.
-		/// cef_load_handler_t::OnLoadingStateChange will be called twice in all cases.
-		/// If the navigation is allowed cef_load_handler_t::OnLoadStart and
-		/// cef_load_handler_t::OnLoadEnd will be called. If the navigation is canceled
-		/// cef_load_handler_t::OnLoadError will be called with an |errorCode| value of
-		/// ERR_ABORTED. The |user_gesture| value will be true (1) if the browser
-		/// navigated via explicit user gesture (e.g. clicking a link) or false (0) if
-		/// it navigated automatically (e.g. via the DomContentLoaded event).
+		/// cef_load_handler_t::OnLoadingStateChange will be called twice in all
+		/// cases. If the navigation is allowed cef_load_handler_t::OnLoadStart and
+		/// cef_load_handler_t::OnLoadEnd will be called. If the navigation is
+		/// canceled cef_load_handler_t::OnLoadError will be called with an
+		/// |errorCode| value of ERR_ABORTED. The |user_gesture| value will be true
+		/// (1) if the browser navigated via explicit user gesture (e.g. clicking a
+		/// link) or false (0) if it navigated automatically (e.g. via the
+		/// DomContentLoaded event).
 		/// </summary>
 		protected internal unsafe virtual bool OnBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, bool userGesture, bool isRedirect)
 		{
@@ -185,12 +182,12 @@ namespace CefNet
 		/// request. |request| represents the request contents and cannot be modified
 		/// in this callback. |is_navigation| will be true (1) if the resource request
 		/// is a navigation. |is_download| will be true (1) if the resource request is
-		/// a download. |request_initiator| is the origin (scheme + domain) of the page
-		/// that initiated the request. Set |disable_default_handling| to true (1) to
-		/// disable default handling of the request, in which case it will need to be
-		/// handled via cef_resource_request_handler_t::GetResourceHandler or it will
-		/// be canceled. To allow the resource load to proceed with default handling
-		/// return NULL. To specify a handler for the resource return a
+		/// a download. |request_initiator| is the origin (scheme + domain) of the
+		/// page that initiated the request. Set |disable_default_handling| to true
+		/// (1) to disable default handling of the request, in which case it will need
+		/// to be handled via cef_resource_request_handler_t::GetResourceHandler or it
+		/// will be canceled. To allow the resource load to proceed with default
+		/// handling return NULL. To specify a handler for the resource return a
 		/// cef_resource_request_handler_t object. If this callback returns NULL the
 		/// same function will be called on the associated
 		/// cef_request_context_handler_t, if any.
@@ -236,9 +233,9 @@ namespace CefNet
 		/// and may be NULL. |scheme| is the authentication scheme used, such as
 		/// &quot;basic&quot; or &quot;digest&quot;, and will be NULL if the source of the request is an
 		/// FTP server. Return true (1) to continue the request and call
-		/// cef_auth_callback_t::cont() either in this function or at a later time when
-		/// the authentication information is available. Return false (0) to cancel the
-		/// request immediately.
+		/// cef_auth_callback_t::cont() either in this function or at a later time
+		/// when the authentication information is available. Return false (0) to
+		/// cancel the request immediately.
 		/// </summary>
 		protected internal unsafe virtual bool GetAuthCredentials(CefBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, CefAuthCallback callback)
 		{
@@ -267,44 +264,6 @@ namespace CefNet
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]
-		extern bool ICefRequestHandlerPrivate.AvoidOnQuotaRequest();
-
-		/// <summary>
-		/// Called on the IO thread when JavaScript requests a specific storage quota
-		/// size via the webkitStorageInfo.requestQuota function. |origin_url| is the
-		/// origin of the page making the request. |new_size| is the requested quota
-		/// size in bytes. Return true (1) to continue the request and call
-		/// cef_callback_t functions either in this function or at a later time to
-		/// grant or deny the request. Return false (0) to cancel the request
-		/// immediately.
-		/// </summary>
-		protected internal unsafe virtual bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefCallback callback)
-		{
-			return default;
-		}
-
-#if NET_LESS_5_0
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate int OnQuotaRequestDelegate(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, long new_size, cef_callback_t* callback);
-
-#endif // NET_LESS_5_0
-		// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* origin_url, int64 new_size, _cef_callback_t* callback)*
-#if !NET_LESS_5_0
-		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-#endif
-		private static unsafe int OnQuotaRequestImpl(cef_request_handler_t* self, cef_browser_t* browser, cef_string_t* origin_url, long new_size, cef_callback_t* callback)
-		{
-			var instance = GetInstance((IntPtr)self) as CefRequestHandler;
-			if (instance == null || ((ICefRequestHandlerPrivate)instance).AvoidOnQuotaRequest())
-			{
-				ReleaseIfNonNull((cef_base_ref_counted_t*)browser);
-				ReleaseIfNonNull((cef_base_ref_counted_t*)callback);
-				return default;
-			}
-			return instance.OnQuotaRequest(CefBrowser.Wrap(CefBrowser.Create, browser), CefString.Read(origin_url), new_size, CefCallback.Wrap(CefCallback.Create, callback)) ? 1 : 0;
-		}
-
-		[MethodImpl(MethodImplOptions.ForwardRef)]
 		extern bool ICefRequestHandlerPrivate.AvoidOnCertificateError();
 
 		/// <summary>
@@ -312,8 +271,8 @@ namespace CefNet
 		/// certificate. Return true (1) and call cef_callback_t functions either in
 		/// this function or at a later time to continue or cancel the request. Return
 		/// false (0) to cancel the request immediately. If
-		/// CefSettings.ignore_certificate_errors is set all invalid certificates will
-		/// be accepted without calling this function.
+		/// cef_settings_t.ignore_certificate_errors is set all invalid certificates
+		/// will be accepted without calling this function.
 		/// </summary>
 		protected internal unsafe virtual bool OnCertificateError(CefBrowser browser, CefErrorCode certError, string requestUrl, CefSSLInfo sSLInfo, CefCallback callback)
 		{
@@ -353,10 +312,10 @@ namespace CefNet
 		/// function or at a later time to select a certificate. Do not call Select or
 		/// call it with NULL to continue without using any certificate. |isProxy|
 		/// indicates whether the host is an HTTPS proxy or the origin server. |host|
-		/// and |port| contains the hostname and port of the SSL server. |certificates|
-		/// is the list of certificates to choose from; this list has already been
-		/// pruned by Chromium so that it only contains certificates from issuers that
-		/// the server trusts.
+		/// and |port| contains the hostname and port of the SSL server.
+		/// |certificates| is the list of certificates to choose from; this list has
+		/// already been pruned by Chromium so that it only contains certificates from
+		/// issuers that the server trusts.
 		/// </summary>
 		protected internal unsafe virtual bool OnSelectClientCertificate(CefBrowser browser, bool isProxy, string host, int port, CefX509Certificate[] certificates, CefSelectClientCertificateCallback callback)
 		{
@@ -365,14 +324,14 @@ namespace CefNet
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate int OnSelectClientCertificateDelegate(cef_request_handler_t* self, cef_browser_t* browser, int isProxy, cef_string_t* host, int port, UIntPtr certificatesCount, cef_x509certificate_t** certificates, cef_select_client_certificate_callback_t* callback);
+		private unsafe delegate int OnSelectClientCertificateDelegate(cef_request_handler_t* self, cef_browser_t* browser, int isProxy, cef_string_t* host, int port, nuint certificatesCount, cef_x509certificate_t** certificates, cef_select_client_certificate_callback_t* callback);
 
 #endif // NET_LESS_5_0
 		// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, int isProxy, const cef_string_t* host, int port, size_t certificatesCount, const _cef_x509certificate_t** certificates, _cef_select_client_certificate_callback_t* callback)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe int OnSelectClientCertificateImpl(cef_request_handler_t* self, cef_browser_t* browser, int isProxy, cef_string_t* host, int port, UIntPtr certificatesCount, cef_x509certificate_t** certificates, cef_select_client_certificate_callback_t* callback)
+		private static unsafe int OnSelectClientCertificateImpl(cef_request_handler_t* self, cef_browser_t* browser, int isProxy, cef_string_t* host, int port, nuint certificatesCount, cef_x509certificate_t** certificates, cef_select_client_certificate_callback_t* callback)
 		{
 			var instance = GetInstance((IntPtr)self) as CefRequestHandler;
 			if (instance == null || ((ICefRequestHandlerPrivate)instance).AvoidOnSelectClientCertificate())

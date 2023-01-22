@@ -66,7 +66,7 @@ namespace CefNet
 
 		VrSession = 1 << 18,
 
-		WindowPlacement = 1 << 19,
+		WindowManagement = 1 << 19,
 	}
 }
 

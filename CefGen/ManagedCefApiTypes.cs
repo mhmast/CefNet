@@ -77,7 +77,6 @@ namespace CefGen
 				{
 					foreach(var diag in emitResult.Diagnostics)
 						Console.WriteLine(diag);
-					Debugger.Break();
 					Environment.Exit(-1);
 				}
 			}

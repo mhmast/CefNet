@@ -78,9 +78,7 @@ namespace CefNet.CApi
 		/// <summary>
 		/// Returns the name of the resource script that contains the function or the
 		/// sourceURL value if the script name is undefined and its source ends with a
-		/// &quot;//
-		/// @
-		/// sourceURL=...&quot; string.
+		/// &quot;//@ sourceURL=...&quot; string.
 		/// The resulting string must be freed by calling cef_string_userfree_free().
 		/// </summary>
 		[NativeName("get_script_name_or_source_url")]
@@ -133,8 +131,8 @@ namespace CefNet.CApi
 		public void* get_column;
 
 		/// <summary>
-		/// Returns the 1-based column offset on the line for the function call or 0 if
-		/// unknown.
+		/// Returns the 1-based column offset on the line for the function call or 0
+		/// if unknown.
 		/// </summary>
 		[NativeName("get_column")]
 		public unsafe int GetColumn()

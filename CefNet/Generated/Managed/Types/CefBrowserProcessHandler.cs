@@ -31,6 +31,8 @@ namespace CefNet
 	public unsafe partial class CefBrowserProcessHandler : CefBaseRefCounted<cef_browser_process_handler_t>, ICefBrowserProcessHandlerPrivate
 	{
 #if NET_LESS_5_0
+		private static readonly OnRegisterCustomPreferencesDelegate fnOnRegisterCustomPreferences = OnRegisterCustomPreferencesImpl;
+
 		private static readonly OnContextInitializedDelegate fnOnContextInitialized = OnContextInitializedImpl;
 
 		private static readonly OnBeforeChildProcessLaunchDelegate fnOnBeforeChildProcessLaunch = OnBeforeChildProcessLaunchImpl;
@@ -49,11 +51,13 @@ namespace CefNet
 		{
 			cef_browser_process_handler_t* self = this.NativeInstance;
 			#if NET_LESS_5_0
+			self->on_register_custom_preferences = (void*)Marshal.GetFunctionPointerForDelegate(fnOnRegisterCustomPreferences);
 			self->on_context_initialized = (void*)Marshal.GetFunctionPointerForDelegate(fnOnContextInitialized);
 			self->on_before_child_process_launch = (void*)Marshal.GetFunctionPointerForDelegate(fnOnBeforeChildProcessLaunch);
 			self->on_schedule_message_pump_work = (void*)Marshal.GetFunctionPointerForDelegate(fnOnScheduleMessagePumpWork);
 			self->get_default_client = (void*)Marshal.GetFunctionPointerForDelegate(fnGetDefaultClient);
 			#else
+			self->on_register_custom_preferences = (delegate* unmanaged[Stdcall]<cef_browser_process_handler_t*, CefPreferencesType, cef_preference_registrar_t*, void>)&OnRegisterCustomPreferencesImpl;
 			self->on_context_initialized = (delegate* unmanaged[Stdcall]<cef_browser_process_handler_t*, void>)&OnContextInitializedImpl;
 			self->on_before_child_process_launch = (delegate* unmanaged[Stdcall]<cef_browser_process_handler_t*, cef_command_line_t*, void>)&OnBeforeChildProcessLaunchImpl;
 			self->on_schedule_message_pump_work = (delegate* unmanaged[Stdcall]<cef_browser_process_handler_t*, long, void>)&OnScheduleMessagePumpWorkImpl;
@@ -64,6 +68,51 @@ namespace CefNet
 		public CefBrowserProcessHandler(cef_browser_process_handler_t* instance)
 			: base((cef_base_ref_counted_t*)instance)
 		{
+		}
+
+		[MethodImpl(MethodImplOptions.ForwardRef)]
+		extern bool ICefBrowserProcessHandlerPrivate.AvoidOnRegisterCustomPreferences();
+
+		/// <summary>
+		/// Provides an opportunity to register custom preferences prior to global and
+		/// request context initialization.
+		/// If |type| is CEF_PREFERENCES_TYPE_GLOBAL the registered preferences can be
+		/// accessed via cef_preference_manager_t::GetGlobalPreferences after
+		/// OnContextInitialized is called. Global preferences are registered a single
+		/// time at application startup. See related cef_settings_t.cache_path and
+		/// cef_settings_t.persist_user_preferences configuration.
+		/// If |type| is CEF_PREFERENCES_TYPE_REQUEST_CONTEXT the preferences can be
+		/// accessed via the cef_request_context_t after
+		/// cef_request_context_handler_t::OnRequestContextInitialized is called.
+		/// Request context preferences are registered each time a new
+		/// cef_request_context_t is created. It is intended but not required that all
+		/// request contexts have the same registered preferences. See related
+		/// cef_request_context_settings_t.cache_path and
+		/// cef_request_context_settings_t.persist_user_preferences configuration.
+		/// Do not keep a reference to the |registrar| object. This function is called
+		/// on the browser process UI thread.
+		/// </summary>
+		protected internal unsafe virtual void OnRegisterCustomPreferences(CefPreferencesType type, CefPreferenceRegistrar registrar)
+		{
+		}
+
+#if NET_LESS_5_0
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		private unsafe delegate void OnRegisterCustomPreferencesDelegate(cef_browser_process_handler_t* self, CefPreferencesType type, cef_preference_registrar_t* registrar);
+
+#endif // NET_LESS_5_0
+		// void (*)(_cef_browser_process_handler_t* self, cef_preferences_type_t type, _cef_preference_registrar_t* registrar)*
+#if !NET_LESS_5_0
+		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+#endif
+		private static unsafe void OnRegisterCustomPreferencesImpl(cef_browser_process_handler_t* self, CefPreferencesType type, cef_preference_registrar_t* registrar)
+		{
+			var instance = GetInstance((IntPtr)self) as CefBrowserProcessHandler;
+			if (instance == null || ((ICefBrowserProcessHandlerPrivate)instance).AvoidOnRegisterCustomPreferences())
+			{
+				return;
+			}
+			instance.OnRegisterCustomPreferences(type, CefPreferenceRegistrar.Wrap(CefPreferenceRegistrar.Create, registrar));
 		}
 
 		/// <summary>
@@ -131,19 +180,19 @@ namespace CefNet
 		extern bool ICefBrowserProcessHandlerPrivate.AvoidOnScheduleMessagePumpWork();
 
 		/// <summary>
-		/// Called from any thread when work has been scheduled for the browser process
-		/// main (UI) thread. This callback is used in combination with CefSettings.
-		/// external_message_pump and cef_do_message_loop_work() in cases where the CEF
-		/// message loop must be integrated into an existing application message loop
-		/// (see additional comments and warnings on CefDoMessageLoopWork). This
-		/// callback should schedule a cef_do_message_loop_work() call to happen on the
-		/// main (UI) thread. |delay_ms| is the requested delay in milliseconds. If
-		/// |delay_ms| is
+		/// Called from any thread when work has been scheduled for the browser
+		/// process main (UI) thread. This callback is used in combination with
+		/// cef_settings_t.external_message_pump and cef_do_message_loop_work() in
+		/// cases where the CEF message loop must be integrated into an existing
+		/// application message loop (see additional comments and warnings on
+		/// CefDoMessageLoopWork). This callback should schedule a
+		/// cef_do_message_loop_work() call to happen on the main (UI) thread.
+		/// |delay_ms| is the requested delay in milliseconds. If |delay_ms| is
 		/// &lt;
-		/// = 0 then the call should happen reasonably soon. If
-		/// |delay_ms| is &gt; 0 then the call should be scheduled to happen after the
-		/// specified delay and any currently pending scheduled call should be
-		/// cancelled.
+		/// = 0
+		/// then the call should happen reasonably soon. If |delay_ms| is &gt; 0 then the
+		/// call should be scheduled to happen after the specified delay and any
+		/// currently pending scheduled call should be cancelled.
 		/// </summary>
 		protected internal unsafe virtual void OnScheduleMessagePumpWork(long delayMs)
 		{
@@ -172,8 +221,8 @@ namespace CefNet
 		/// Return the default client for use with a newly created browser window. If
 		/// null is returned the browser will be unmanaged (no callbacks will be
 		/// executed for that browser) and application shutdown will be blocked until
-		/// the browser window is closed manually. This function is currently only used
-		/// with the chrome runtime.
+		/// the browser window is closed manually. This function is currently only
+		/// used with the chrome runtime.
 		/// </summary>
 		protected internal unsafe virtual CefClient GetDefaultClient()
 		{

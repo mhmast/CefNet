@@ -99,7 +99,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual void SetToBytes(long size, IntPtr bytes)
 		{
-			NativeInstance->SetToBytes(new UIntPtr((ulong)size), (void*)bytes);
+			NativeInstance->SetToBytes(size, (void*)bytes);
 			GC.KeepAlive(this);
 		}
 
@@ -109,7 +109,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual long GetBytes(long size, IntPtr bytes)
 		{
-			return SafeCall((long)NativeInstance->GetBytes(new UIntPtr((ulong)size), (void*)bytes));
+			return SafeCall((long)NativeInstance->GetBytes(size, (void*)bytes));
 		}
 
 		/// <summary>

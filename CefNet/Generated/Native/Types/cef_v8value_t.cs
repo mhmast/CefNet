@@ -257,6 +257,23 @@ namespace CefNet.CApi
 		}
 
 		/// <summary>
+		/// int (*)(_cef_v8value_t* self)*
+		/// </summary>
+		public void* is_promise;
+
+		/// <summary>
+		/// True if the value type is a Promise.
+		/// </summary>
+		[NativeName("is_promise")]
+		public unsafe int IsPromise()
+		{
+			fixed (cef_v8value_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_v8value_t*, int>)is_promise)(self);
+			}
+		}
+
+		/// <summary>
 		/// int (*)(_cef_v8value_t* self, _cef_v8value_t* that)*
 		/// </summary>
 		public void* is_same;
@@ -418,8 +435,8 @@ namespace CefNet.CApi
 		public void* get_exception;
 
 		/// <summary>
-		/// Returns the exception resulting from the last function call. This attribute
-		/// exists only in the scope of the current CEF value object.
+		/// Returns the exception resulting from the last function call. This
+		/// attribute exists only in the scope of the current CEF value object.
 		/// </summary>
 		[NativeName("get_exception")]
 		public unsafe cef_v8exception_t* GetException()
@@ -547,9 +564,9 @@ namespace CefNet.CApi
 
 		/// <summary>
 		/// Deletes the value with the specified identifier and returns true (1) on
-		/// success. Returns false (0) if this function is called incorrectly, deletion
-		/// fails or an exception is thrown. For read-only and don&apos;t-delete values this
-		/// function will return true (1) even though deletion failed.
+		/// success. Returns false (0) if this function is called incorrectly,
+		/// deletion fails or an exception is thrown. For read-only and don&apos;t-delete
+		/// values this function will return true (1) even though deletion failed.
 		/// </summary>
 		[NativeName("delete_value_byindex")]
 		public unsafe int DeleteValueByIndex(int index)
@@ -566,8 +583,8 @@ namespace CefNet.CApi
 		public void* get_value_bykey;
 
 		/// <summary>
-		/// Returns the value with the specified identifier on success. Returns NULL if
-		/// this function is called incorrectly or an exception is thrown.
+		/// Returns the value with the specified identifier on success. Returns NULL
+		/// if this function is called incorrectly or an exception is thrown.
 		/// </summary>
 		[NativeName("get_value_bykey")]
 		public unsafe cef_v8value_t* GetValueByKey([Immutable]cef_string_t* key)
@@ -584,8 +601,8 @@ namespace CefNet.CApi
 		public void* get_value_byindex;
 
 		/// <summary>
-		/// Returns the value with the specified identifier on success. Returns NULL if
-		/// this function is called incorrectly or an exception is thrown.
+		/// Returns the value with the specified identifier on success. Returns NULL
+		/// if this function is called incorrectly or an exception is thrown.
 		/// </summary>
 		[NativeName("get_value_byindex")]
 		public unsafe cef_v8value_t* GetValueByIndex(int index)
@@ -681,9 +698,9 @@ namespace CefNet.CApi
 		public void* set_user_data;
 
 		/// <summary>
-		/// Sets the user data for this object and returns true (1) on success. Returns
-		/// false (0) if this function is called incorrectly. This function can only be
-		/// called on user created objects.
+		/// Sets the user data for this object and returns true (1) on success.
+		/// Returns false (0) if this function is called incorrectly. This function
+		/// can only be called on user created objects.
 		/// </summary>
 		[NativeName("set_user_data")]
 		public unsafe int SetUserData(cef_base_ref_counted_t* user_data)
@@ -741,8 +758,8 @@ namespace CefNet.CApi
 		/// to perform global garbage collection. Each cef_v8value_t tracks the amount
 		/// of external memory associated with it and automatically decreases the
 		/// global total by the appropriate amount on its destruction.
-		/// |change_in_bytes| specifies the number of bytes to adjust by. This function
-		/// returns the number of bytes associated with the object after the
+		/// |change_in_bytes| specifies the number of bytes to adjust by. This
+		/// function returns the number of bytes associated with the object after the
 		/// adjustment. This function can only be called on user created objects.
 		/// </summary>
 		[NativeName("adjust_externally_allocated_memory")]
@@ -877,11 +894,11 @@ namespace CefNet.CApi
 
 		/// <summary>
 		/// Execute the function using the specified V8 context. |object| is the
-		/// receiver (&apos;this&apos; object) of the function. If |object| is NULL the specified
-		/// context&apos;s global object will be used. |arguments| is the list of arguments
-		/// that will be passed to the function. Returns the function return value on
-		/// success. Returns NULL if this function is called incorrectly or an
-		/// exception is thrown.
+		/// receiver (&apos;this&apos; object) of the function. If |object| is NULL the
+		/// specified context&apos;s global object will be used. |arguments| is the list of
+		/// arguments that will be passed to the function. Returns the function return
+		/// value on success. Returns NULL if this function is called incorrectly or
+		/// an exception is thrown.
 		/// </summary>
 		[NativeName("execute_function_with_context")]
 		public unsafe cef_v8value_t* ExecuteFunctionWithContext(cef_v8context_t* context, cef_v8value_t* @object, UIntPtr argumentsCount, [Immutable]cef_v8value_t** arguments)
@@ -889,6 +906,49 @@ namespace CefNet.CApi
 			fixed (cef_v8value_t* self = &this)
 			{
 				return ((delegate* unmanaged[Stdcall]<cef_v8value_t*, cef_v8context_t*, cef_v8value_t*, UIntPtr, cef_v8value_t**, cef_v8value_t*>)execute_function_with_context)(self, context, @object, argumentsCount, arguments);
+			}
+		}
+
+		/// <summary>
+		/// int (*)(_cef_v8value_t* self, _cef_v8value_t* arg)*
+		/// </summary>
+		public void* resolve_promise;
+
+		/// <summary>
+		/// Resolve the Promise using the current V8 context. This function should
+		/// only be called from within the scope of a cef_v8handler_t or
+		/// cef_v8accessor_t callback, or in combination with calling enter() and
+		/// exit() on a stored cef_v8context_t reference. |arg| is the argument passed
+		/// to the resolved promise. Returns true (1) on success. Returns false (0) if
+		/// this function is called incorrectly or an exception is thrown.
+		/// </summary>
+		[NativeName("resolve_promise")]
+		public unsafe int ResolvePromise(cef_v8value_t* arg)
+		{
+			fixed (cef_v8value_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_v8value_t*, cef_v8value_t*, int>)resolve_promise)(self, arg);
+			}
+		}
+
+		/// <summary>
+		/// int (*)(_cef_v8value_t* self, const cef_string_t* errorMsg)*
+		/// </summary>
+		public void* reject_promise;
+
+		/// <summary>
+		/// Reject the Promise using the current V8 context. This function should only
+		/// be called from within the scope of a cef_v8handler_t or cef_v8accessor_t
+		/// callback, or in combination with calling enter() and exit() on a stored
+		/// cef_v8context_t reference. Returns true (1) on success. Returns false (0)
+		/// if this function is called incorrectly or an exception is thrown.
+		/// </summary>
+		[NativeName("reject_promise")]
+		public unsafe int RejectPromise([Immutable]cef_string_t* errorMsg)
+		{
+			fixed (cef_v8value_t* self = &this)
+			{
+				return ((delegate* unmanaged[Stdcall]<cef_v8value_t*, cef_string_t*, int>)reject_promise)(self, errorMsg);
 			}
 		}
 	}

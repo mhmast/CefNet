@@ -31,7 +31,7 @@ namespace CefNet.CApi
 		public cef_base_ref_counted_t @base;
 
 		/// <summary>
-		/// int (*)(_cef_cookie_visitor_t* self, const const _cef_cookie_t* cookie, int count, int total, int* deleteCookie)*
+		/// int (*)(_cef_cookie_visitor_t* self, const _cef_cookie_t* cookie, int count, int total, int* deleteCookie)*
 		/// </summary>
 		public void* visit;
 

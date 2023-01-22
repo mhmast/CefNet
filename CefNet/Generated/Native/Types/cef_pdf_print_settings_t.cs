@@ -19,49 +19,44 @@ using CefNet.WinApi;
 namespace CefNet.CApi
 {
 	/// <summary>
-	/// Structure representing PDF print settings.
+	/// Structure representing PDF print settings. These values match the parameters
+	/// supported by the DevTools Page.printToPDF function. See
+	/// https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public unsafe partial struct cef_pdf_print_settings_t
 	{
 		/// <summary>
-		/// Page title to display in the header. Only used if |header_footer_enabled|
-		/// is set to true (1).
+		/// Set to true (1) for landscape mode or false (0) for portrait mode.
 		/// </summary>
-		public cef_string_t header_footer_title;
+		public int landscape;
 
 		/// <summary>
-		/// URL to display in the footer. Only used if |header_footer_enabled| is set
-		/// to true (1).
+		/// Set to true (1) to print background graphics.
 		/// </summary>
-		public cef_string_t header_footer_url;
+		public int print_background;
 
 		/// <summary>
-		/// Output page size in microns. If either of these values is less than or
-		/// equal to zero then the default paper size (A4) will be used.
-		/// </summary>
-		public int page_width;
-
-		public int page_height;
-
-		/// <summary>
-		/// The percentage to scale the PDF by before printing (e.g. 50 is 50%).
-		/// If this value is less than or equal to zero the default value of 100
+		/// The percentage to scale the PDF by before printing (e.g. .5 is 50%).
+		/// If this value is less than or equal to zero the default value of 1.0
 		/// will be used.
 		/// </summary>
-		public int scale_factor;
+		public double scale;
 
 		/// <summary>
-		/// Margins in points. Only used if |margin_type| is set to
-		/// PDF_PRINT_MARGIN_CUSTOM.
+		/// Output paper size in inches. If either of these values is less than or
+		/// equal to zero then the default paper size (letter, 8.5 x 11 inches) will
+		/// be used.
 		/// </summary>
-		public int margin_top;
+		public double paper_width;
 
-		public int margin_right;
+		public double paper_height;
 
-		public int margin_bottom;
-
-		public int margin_left;
+		/// <summary>
+		/// Set to true (1) to prefer page size as defined by css. Defaults to false
+		/// (0), in which case the content will be scaled to fit the paper size.
+		/// </summary>
+		public int prefer_css_page_size;
 
 		/// <summary>
 		/// Margin type.
@@ -69,26 +64,54 @@ namespace CefNet.CApi
 		public CefPdfPrintMarginType margin_type;
 
 		/// <summary>
-		/// Set to true (1) to print headers and footers or false (0) to not print
-		/// headers and footers.
+		/// Margins in inches. Only used if |margin_type| is set to
+		/// PDF_PRINT_MARGIN_CUSTOM.
 		/// </summary>
-		public int header_footer_enabled;
+		public double margin_top;
+
+		public double margin_right;
+
+		public double margin_bottom;
+
+		public double margin_left;
 
 		/// <summary>
-		/// Set to true (1) to print the selection only or false (0) to print all.
+		/// Paper ranges to print, one based, e.g., &apos;1-5, 8, 11-13&apos;. Pages are printed
+		/// in the document order, not in the order specified, and no more than once.
+		/// Defaults to empty string, which implies the entire document is printed.
+		/// The page numbers are quietly capped to actual page count of the document,
+		/// and ranges beyond the end of the document are ignored. If this results in
+		/// no pages to print, an error is reported. It is an error to specify a range
+		/// with start greater than end.
 		/// </summary>
-		public int selection_only;
+		public cef_string_t page_ranges;
 
 		/// <summary>
-		/// Set to true (1) for landscape mode or false (0) for portrait mode.
+		/// Set to true (1) to display the header and/or footer. Modify
+		/// |header_template| and/or |footer_template| to customize the display.
 		/// </summary>
-		public int landscape;
+		public int display_header_footer;
 
 		/// <summary>
-		/// Set to true (1) to print background graphics or false (0) to not print
-		/// background graphics.
+		/// HTML template for the print header. Only displayed if
+		/// |display_header_footer| is true (1). Should be valid HTML markup with
+		/// the following classes used to inject printing values into them:
+		/// - date: formatted print date
+		/// - title: document title
+		/// - url: document location
+		/// - pageNumber: current page number
+		/// - totalPages: total pages in the document
+		/// For example, &quot;&lt;span class=title&gt;&lt;/span&gt;&quot; would generate a span containing
+		/// the title.
 		/// </summary>
-		public int backgrounds_enabled;
+		public cef_string_t header_template;
+
+		/// <summary>
+		/// HTML template for the print footer. Only displayed if
+		/// |display_header_footer| is true (1). Uses the same format as
+		/// |header_template|.
+		/// </summary>
+		public cef_string_t footer_template;
 	}
 }
 

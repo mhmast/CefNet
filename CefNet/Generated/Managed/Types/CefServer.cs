@@ -123,7 +123,7 @@ namespace CefNet
 			fixed (char* s1 = contentType)
 			{
 				var cstr1 = new cef_string_t { Str = s1, Length = contentType != null ? contentType.Length : 0 };
-				NativeInstance->SendHttp200response(connectionId, &cstr1, (void*)data, new UIntPtr((ulong)dataSize));
+				NativeInstance->SendHttp200response(connectionId, &cstr1, (void*)data, dataSize);
 			}
 			GC.KeepAlive(this);
 		}
@@ -158,8 +158,8 @@ namespace CefNet
 		/// <summary>
 		/// Send a custom HTTP response to the connection identified by
 		/// |connection_id|. |response_code| is the HTTP response code sent in the
-		/// status line (e.g. 200), |content_type| is the response content type sent as
-		/// the &quot;Content-Type&quot; header (e.g. &quot;text/html&quot;), |content_length| is the
+		/// status line (e.g. 200), |content_type| is the response content type sent
+		/// as the &quot;Content-Type&quot; header (e.g. &quot;text/html&quot;), |content_length| is the
 		/// expected content length, and |extra_headers| is the map of extra response
 		/// headers. If |content_length| is &gt;= 0 then the &quot;Content-Length&quot; header will
 		/// be sent. If |content_length| is 0 then no content is expected and the
@@ -191,7 +191,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual void SendRawData(int connectionId, IntPtr data, long dataSize)
 		{
-			NativeInstance->SendRawData(connectionId, (void*)data, new UIntPtr((ulong)dataSize));
+			NativeInstance->SendRawData(connectionId, (void*)data, dataSize);
 			GC.KeepAlive(this);
 		}
 
@@ -213,7 +213,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual void SendWebSocketMessage(int connectionId, IntPtr data, long dataSize)
 		{
-			NativeInstance->SendWebSocketMessage(connectionId, (void*)data, new UIntPtr((ulong)dataSize));
+			NativeInstance->SendWebSocketMessage(connectionId, (void*)data, dataSize);
 			GC.KeepAlive(this);
 		}
 	}

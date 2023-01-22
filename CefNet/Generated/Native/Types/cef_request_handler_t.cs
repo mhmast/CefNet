@@ -39,13 +39,14 @@ namespace CefNet.CApi
 		/// Called on the UI thread before browser navigation. Return true (1) to
 		/// cancel the navigation or false (0) to allow the navigation to proceed. The
 		/// |request| object cannot be modified in this callback.
-		/// cef_load_handler_t::OnLoadingStateChange will be called twice in all cases.
-		/// If the navigation is allowed cef_load_handler_t::OnLoadStart and
-		/// cef_load_handler_t::OnLoadEnd will be called. If the navigation is canceled
-		/// cef_load_handler_t::OnLoadError will be called with an |errorCode| value of
-		/// ERR_ABORTED. The |user_gesture| value will be true (1) if the browser
-		/// navigated via explicit user gesture (e.g. clicking a link) or false (0) if
-		/// it navigated automatically (e.g. via the DomContentLoaded event).
+		/// cef_load_handler_t::OnLoadingStateChange will be called twice in all
+		/// cases. If the navigation is allowed cef_load_handler_t::OnLoadStart and
+		/// cef_load_handler_t::OnLoadEnd will be called. If the navigation is
+		/// canceled cef_load_handler_t::OnLoadError will be called with an
+		/// |errorCode| value of ERR_ABORTED. The |user_gesture| value will be true
+		/// (1) if the browser navigated via explicit user gesture (e.g. clicking a
+		/// link) or false (0) if it navigated automatically (e.g. via the
+		/// DomContentLoaded event).
 		/// </summary>
 		[NativeName("on_before_browse")]
 		public unsafe int OnBeforeBrowse(cef_browser_t* browser, cef_frame_t* frame, cef_request_t* request, int user_gesture, int is_redirect)
@@ -97,12 +98,12 @@ namespace CefNet.CApi
 		/// request. |request| represents the request contents and cannot be modified
 		/// in this callback. |is_navigation| will be true (1) if the resource request
 		/// is a navigation. |is_download| will be true (1) if the resource request is
-		/// a download. |request_initiator| is the origin (scheme + domain) of the page
-		/// that initiated the request. Set |disable_default_handling| to true (1) to
-		/// disable default handling of the request, in which case it will need to be
-		/// handled via cef_resource_request_handler_t::GetResourceHandler or it will
-		/// be canceled. To allow the resource load to proceed with default handling
-		/// return NULL. To specify a handler for the resource return a
+		/// a download. |request_initiator| is the origin (scheme + domain) of the
+		/// page that initiated the request. Set |disable_default_handling| to true
+		/// (1) to disable default handling of the request, in which case it will need
+		/// to be handled via cef_resource_request_handler_t::GetResourceHandler or it
+		/// will be canceled. To allow the resource load to proceed with default
+		/// handling return NULL. To specify a handler for the resource return a
 		/// cef_resource_request_handler_t object. If this callback returns NULL the
 		/// same function will be called on the associated
 		/// cef_request_context_handler_t, if any.
@@ -129,9 +130,9 @@ namespace CefNet.CApi
 		/// and may be NULL. |scheme| is the authentication scheme used, such as
 		/// &quot;basic&quot; or &quot;digest&quot;, and will be NULL if the source of the request is an
 		/// FTP server. Return true (1) to continue the request and call
-		/// cef_auth_callback_t::cont() either in this function or at a later time when
-		/// the authentication information is available. Return false (0) to cancel the
-		/// request immediately.
+		/// cef_auth_callback_t::cont() either in this function or at a later time
+		/// when the authentication information is available. Return false (0) to
+		/// cancel the request immediately.
 		/// </summary>
 		[NativeName("get_auth_credentials")]
 		public unsafe int GetAuthCredentials(cef_browser_t* browser, [Immutable]cef_string_t* origin_url, int isProxy, [Immutable]cef_string_t* host, int port, [Immutable]cef_string_t* realm, [Immutable]cef_string_t* scheme, cef_auth_callback_t* callback)
@@ -139,29 +140,6 @@ namespace CefNet.CApi
 			fixed (cef_request_handler_t* self = &this)
 			{
 				return ((delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, int, cef_string_t*, int, cef_string_t*, cef_string_t*, cef_auth_callback_t*, int>)get_auth_credentials)(self, browser, origin_url, isProxy, host, port, realm, scheme, callback);
-			}
-		}
-
-		/// <summary>
-		/// int (*)(_cef_request_handler_t* self, _cef_browser_t* browser, const cef_string_t* origin_url, int64 new_size, _cef_callback_t* callback)*
-		/// </summary>
-		public void* on_quota_request;
-
-		/// <summary>
-		/// Called on the IO thread when JavaScript requests a specific storage quota
-		/// size via the webkitStorageInfo.requestQuota function. |origin_url| is the
-		/// origin of the page making the request. |new_size| is the requested quota
-		/// size in bytes. Return true (1) to continue the request and call
-		/// cef_callback_t functions either in this function or at a later time to
-		/// grant or deny the request. Return false (0) to cancel the request
-		/// immediately.
-		/// </summary>
-		[NativeName("on_quota_request")]
-		public unsafe int OnQuotaRequest(cef_browser_t* browser, [Immutable]cef_string_t* origin_url, long new_size, cef_callback_t* callback)
-		{
-			fixed (cef_request_handler_t* self = &this)
-			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_handler_t*, cef_browser_t*, cef_string_t*, long, cef_callback_t*, int>)on_quota_request)(self, browser, origin_url, new_size, callback);
 			}
 		}
 
@@ -175,8 +153,8 @@ namespace CefNet.CApi
 		/// certificate. Return true (1) and call cef_callback_t functions either in
 		/// this function or at a later time to continue or cancel the request. Return
 		/// false (0) to cancel the request immediately. If
-		/// CefSettings.ignore_certificate_errors is set all invalid certificates will
-		/// be accepted without calling this function.
+		/// cef_settings_t.ignore_certificate_errors is set all invalid certificates
+		/// will be accepted without calling this function.
 		/// </summary>
 		[NativeName("on_certificate_error")]
 		public unsafe int OnCertificateError(cef_browser_t* browser, CefErrorCode cert_error, [Immutable]cef_string_t* request_url, cef_sslinfo_t* ssl_info, cef_callback_t* callback)
@@ -200,10 +178,10 @@ namespace CefNet.CApi
 		/// function or at a later time to select a certificate. Do not call Select or
 		/// call it with NULL to continue without using any certificate. |isProxy|
 		/// indicates whether the host is an HTTPS proxy or the origin server. |host|
-		/// and |port| contains the hostname and port of the SSL server. |certificates|
-		/// is the list of certificates to choose from; this list has already been
-		/// pruned by Chromium so that it only contains certificates from issuers that
-		/// the server trusts.
+		/// and |port| contains the hostname and port of the SSL server.
+		/// |certificates| is the list of certificates to choose from; this list has
+		/// already been pruned by Chromium so that it only contains certificates from
+		/// issuers that the server trusts.
 		/// </summary>
 		[NativeName("on_select_client_certificate")]
 		public unsafe int OnSelectClientCertificate(cef_browser_t* browser, int isProxy, [Immutable]cef_string_t* host, int port, UIntPtr certificatesCount, [Immutable]cef_x509certificate_t** certificates, cef_select_client_certificate_callback_t* callback)

@@ -44,12 +44,13 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual long Read(IntPtr ptr, long size, long n)
 		{
-			return SafeCall((long)NativeInstance->Read((void*)ptr, new UIntPtr((ulong)size), new UIntPtr((ulong)n)));
+			return SafeCall((long)NativeInstance->Read((void*)ptr, size, n));
 		}
 
 		/// <summary>
-		/// Seek to the specified offset position. |whence| may be any one of SEEK_CUR,
-		/// SEEK_END or SEEK_SET. Returns zero on success and non-zero on failure.
+		/// Seek to the specified offset position. |whence| may be any one of
+		/// SEEK_CUR, SEEK_END or SEEK_SET. Returns zero on success and non-zero on
+		/// failure.
 		/// </summary>
 		public unsafe virtual int Seek(long offset, int whence)
 		{
@@ -74,8 +75,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Returns true (1) if this reader performs work like accessing the file
-		/// system which may block. Used as a hint for determining the thread to access
-		/// the reader from.
+		/// system which may block. Used as a hint for determining the thread to
+		/// access the reader from.
 		/// </summary>
 		public unsafe virtual bool MayBlock()
 		{

@@ -39,10 +39,10 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether this object is valid. This object may become invalid if
-		/// the underlying data is owned by another object (e.g. list or dictionary)
-		/// and that other object is then modified or destroyed. Do not call any other
-		/// functions if this property returns false.
+		/// Gets a value indicating whether this object is valid. This object may become invalid
+		/// if the underlying data is owned by another object (e.g. list or
+		/// dictionary) and that other object is then modified or destroyed. Do not
+		/// call any other functions if this property returns false.
 		/// </summary>
 		public unsafe virtual bool IsValid
 		{
@@ -108,7 +108,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual bool SetSize(long size)
 		{
-			return SafeCall(NativeInstance->SetSize(new UIntPtr((ulong)size)) != 0);
+			return SafeCall(NativeInstance->SetSize(size) != 0);
 		}
 
 		/// <summary>
@@ -124,7 +124,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual int Remove(long index)
 		{
-			return SafeCall(NativeInstance->Remove(new UIntPtr((ulong)index)));
+			return SafeCall(NativeInstance->Remove(index));
 		}
 
 		/// <summary>
@@ -132,7 +132,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual CefValueType GetType(long index)
 		{
-			return SafeCall(NativeInstance->GetType(new UIntPtr((ulong)index)));
+			return SafeCall(NativeInstance->GetType(index));
 		}
 
 		/// <summary>
@@ -144,7 +144,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual CefValue GetValue(long index)
 		{
-			return SafeCall(CefValue.Wrap(CefValue.Create, NativeInstance->GetValue(new UIntPtr((ulong)index))));
+			return SafeCall(CefValue.Wrap(CefValue.Create, NativeInstance->GetValue(index)));
 		}
 
 		/// <summary>
@@ -152,7 +152,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual int GetBool(long index)
 		{
-			return SafeCall(NativeInstance->GetBool(new UIntPtr((ulong)index)));
+			return SafeCall(NativeInstance->GetBool(index));
 		}
 
 		/// <summary>
@@ -160,7 +160,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual int GetInt(long index)
 		{
-			return SafeCall(NativeInstance->GetInt(new UIntPtr((ulong)index)));
+			return SafeCall(NativeInstance->GetInt(index));
 		}
 
 		/// <summary>
@@ -168,7 +168,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual double GetDouble(long index)
 		{
-			return SafeCall(NativeInstance->GetDouble(new UIntPtr((ulong)index)));
+			return SafeCall(NativeInstance->GetDouble(index));
 		}
 
 		/// <summary>
@@ -177,16 +177,16 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual string GetString(long index)
 		{
-			return SafeCall(CefString.ReadAndFree(NativeInstance->GetString(new UIntPtr((ulong)index))));
+			return SafeCall(CefString.ReadAndFree(NativeInstance->GetString(index)));
 		}
 
 		/// <summary>
-		/// Returns the value at the specified index as type binary. The returned value
-		/// will reference existing data.
+		/// Returns the value at the specified index as type binary. The returned
+		/// value will reference existing data.
 		/// </summary>
 		public unsafe virtual CefBinaryValue GetBinary(long index)
 		{
-			return SafeCall(CefBinaryValue.Wrap(CefBinaryValue.Create, NativeInstance->GetBinary(new UIntPtr((ulong)index))));
+			return SafeCall(CefBinaryValue.Wrap(CefBinaryValue.Create, NativeInstance->GetBinary(index)));
 		}
 
 		/// <summary>
@@ -196,7 +196,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual CefDictionaryValue GetDictionary(long index)
 		{
-			return SafeCall(CefDictionaryValue.Wrap(CefDictionaryValue.Create, NativeInstance->GetDictionary(new UIntPtr((ulong)index))));
+			return SafeCall(CefDictionaryValue.Wrap(CefDictionaryValue.Create, NativeInstance->GetDictionary(index)));
 		}
 
 		/// <summary>
@@ -206,7 +206,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual CefListValue GetList(long index)
 		{
-			return SafeCall(CefListValue.Wrap(CefListValue.Create, NativeInstance->GetList(new UIntPtr((ulong)index))));
+			return SafeCall(CefListValue.Wrap(CefListValue.Create, NativeInstance->GetList(index)));
 		}
 
 		/// <summary>
@@ -219,25 +219,25 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual bool SetValue(long index, CefValue value)
 		{
-			return SafeCall(NativeInstance->SetValue(new UIntPtr((ulong)index), (value != null) ? value.GetNativeInstance() : null) != 0);
+			return SafeCall(NativeInstance->SetValue(index, (value != null) ? value.GetNativeInstance() : null) != 0);
 		}
 
 		/// <summary>
-		/// Sets the value at the specified index as type null. Returns true (1) if the
-		/// value was set successfully.
+		/// Sets the value at the specified index as type null. Returns true (1) if
+		/// the value was set successfully.
 		/// </summary>
 		public unsafe virtual bool SetNull(long index)
 		{
-			return SafeCall(NativeInstance->SetNull(new UIntPtr((ulong)index)) != 0);
+			return SafeCall(NativeInstance->SetNull(index) != 0);
 		}
 
 		/// <summary>
-		/// Sets the value at the specified index as type bool. Returns true (1) if the
-		/// value was set successfully.
+		/// Sets the value at the specified index as type bool. Returns true (1) if
+		/// the value was set successfully.
 		/// </summary>
 		public unsafe virtual bool SetBool(long index, bool value)
 		{
-			return SafeCall(NativeInstance->SetBool(new UIntPtr((ulong)index), value ? 1 : 0) != 0);
+			return SafeCall(NativeInstance->SetBool(index, value ? 1 : 0) != 0);
 		}
 
 		/// <summary>
@@ -246,7 +246,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual bool SetInt(long index, int value)
 		{
-			return SafeCall(NativeInstance->SetInt(new UIntPtr((ulong)index), value) != 0);
+			return SafeCall(NativeInstance->SetInt(index, value) != 0);
 		}
 
 		/// <summary>
@@ -255,7 +255,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual bool SetDouble(long index, double value)
 		{
-			return SafeCall(NativeInstance->SetDouble(new UIntPtr((ulong)index), value) != 0);
+			return SafeCall(NativeInstance->SetDouble(index, value) != 0);
 		}
 
 		/// <summary>
@@ -267,7 +267,7 @@ namespace CefNet
 			fixed (char* s1 = value)
 			{
 				var cstr1 = new cef_string_t { Str = s1, Length = value != null ? value.Length : 0 };
-				return SafeCall(NativeInstance->SetString(new UIntPtr((ulong)index), &cstr1) != 0);
+				return SafeCall(NativeInstance->SetString(index, &cstr1) != 0);
 			}
 		}
 
@@ -280,31 +280,31 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual bool SetBinary(long index, CefBinaryValue value)
 		{
-			return SafeCall(NativeInstance->SetBinary(new UIntPtr((ulong)index), (value != null) ? value.GetNativeInstance() : null) != 0);
+			return SafeCall(NativeInstance->SetBinary(index, (value != null) ? value.GetNativeInstance() : null) != 0);
 		}
 
 		/// <summary>
-		/// Sets the value at the specified index as type dict. Returns true (1) if the
-		/// value was set successfully. If |value| is currently owned by another object
-		/// then the value will be copied and the |value| reference will not change.
-		/// Otherwise, ownership will be transferred to this object and the |value|
-		/// reference will be invalidated.
+		/// Sets the value at the specified index as type dict. Returns true (1) if
+		/// the value was set successfully. If |value| is currently owned by another
+		/// object then the value will be copied and the |value| reference will not
+		/// change. Otherwise, ownership will be transferred to this object and the
+		/// |value| reference will be invalidated.
 		/// </summary>
 		public unsafe virtual bool SetDictionary(long index, CefDictionaryValue value)
 		{
-			return SafeCall(NativeInstance->SetDictionary(new UIntPtr((ulong)index), (value != null) ? value.GetNativeInstance() : null) != 0);
+			return SafeCall(NativeInstance->SetDictionary(index, (value != null) ? value.GetNativeInstance() : null) != 0);
 		}
 
 		/// <summary>
-		/// Sets the value at the specified index as type list. Returns true (1) if the
-		/// value was set successfully. If |value| is currently owned by another object
-		/// then the value will be copied and the |value| reference will not change.
-		/// Otherwise, ownership will be transferred to this object and the |value|
-		/// reference will be invalidated.
+		/// Sets the value at the specified index as type list. Returns true (1) if
+		/// the value was set successfully. If |value| is currently owned by another
+		/// object then the value will be copied and the |value| reference will not
+		/// change. Otherwise, ownership will be transferred to this object and the
+		/// |value| reference will be invalidated.
 		/// </summary>
 		public unsafe virtual bool SetList(long index, CefListValue value)
 		{
-			return SafeCall(NativeInstance->SetList(new UIntPtr((ulong)index), (value != null) ? value.GetNativeInstance() : null) != 0);
+			return SafeCall(NativeInstance->SetList(index, (value != null) ? value.GetNativeInstance() : null) != 0);
 		}
 
 		/// <summary>

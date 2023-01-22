@@ -73,7 +73,7 @@ namespace CefNet
 		private unsafe delegate int VisitDelegate(cef_cookie_visitor_t* self, cef_cookie_t* cookie, int count, int total, int* deleteCookie);
 
 #endif // NET_LESS_5_0
-		// int (*)(_cef_cookie_visitor_t* self, const const _cef_cookie_t* cookie, int count, int total, int* deleteCookie)*
+		// int (*)(_cef_cookie_visitor_t* self, const _cef_cookie_t* cookie, int count, int total, int* deleteCookie)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif

@@ -48,7 +48,7 @@ namespace CefNet
 			self->filter = (void*)Marshal.GetFunctionPointerForDelegate(fnFilter);
 			#else
 			self->init_filter = (delegate* unmanaged[Stdcall]<cef_response_filter_t*, int>)&InitFilterImpl;
-			self->filter = (delegate* unmanaged[Stdcall]<cef_response_filter_t*, void*, UIntPtr, UIntPtr*, void*, UIntPtr, UIntPtr*, CefResponseFilterStatus>)&FilterImpl;
+			self->filter = (delegate* unmanaged[Stdcall]<cef_response_filter_t*, void*, nuint, nuint*, void*, nuint, nuint*, CefResponseFilterStatus>)&FilterImpl;
 			#endif
 		}
 
@@ -90,28 +90,28 @@ namespace CefNet
 
 		/// <summary>
 		/// Called to filter a chunk of data. Expected usage is as follows:
-		/// A. Read input data from |data_in| and set |data_in_read| to the number of
+		/// 1. Read input data from |data_in| and set |data_in_read| to the number of
 		/// bytes that were read up to a maximum of |data_in_size|. |data_in| will
 		/// be NULL if |data_in_size| is zero.
-		/// B. Write filtered output data to |data_out| and set |data_out_written| to
+		/// 2. Write filtered output data to |data_out| and set |data_out_written| to
 		/// the number of bytes that were written up to a maximum of
 		/// |data_out_size|. If no output data was written then all data must be
 		/// read from |data_in| (user must set |data_in_read| = |data_in_size|).
-		/// C. Return RESPONSE_FILTER_DONE if all output data was written or
+		/// 3. Return RESPONSE_FILTER_DONE if all output data was written or
 		/// RESPONSE_FILTER_NEED_MORE_DATA if output data is still pending.
 		/// This function will be called repeatedly until the input buffer has been
-		/// fully read (user sets |data_in_read| = |data_in_size|) and there is no more
-		/// input data to filter (the resource response is complete). This function may
-		/// then be called an additional time with an NULL input buffer if the user
-		/// filled the output buffer (set |data_out_written| = |data_out_size|) and
-		/// returned RESPONSE_FILTER_NEED_MORE_DATA to indicate that output data is
-		/// still pending.
+		/// fully read (user sets |data_in_read| = |data_in_size|) and there is no
+		/// more input data to filter (the resource response is complete). This
+		/// function may then be called an additional time with an NULL input buffer
+		/// if the user filled the output buffer (set |data_out_written| =
+		/// |data_out_size|) and returned RESPONSE_FILTER_NEED_MORE_DATA to indicate
+		/// that output data is still pending.
 		/// Calls to this function will stop when one of the following conditions is
 		/// met:
-		/// A. There is no more input data to filter (the resource response is
+		/// 1. There is no more input data to filter (the resource response is
 		/// complete) and the user sets |data_out_written| = 0 or returns
 		/// RESPONSE_FILTER_DONE to indicate that all data has been written, or;
-		/// B. The user returns RESPONSE_FILTER_ERROR to indicate an error.
+		/// 2. The user returns RESPONSE_FILTER_ERROR to indicate an error.
 		/// Do not keep a reference to the buffers passed to this function.
 		/// </summary>
 		protected internal unsafe virtual CefResponseFilterStatus Filter(IntPtr dataIn, long dataInSize, ref long dataInRead, IntPtr dataOut, long dataOutSize, ref long dataOutWritten)
@@ -121,26 +121,21 @@ namespace CefNet
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate CefResponseFilterStatus FilterDelegate(cef_response_filter_t* self, void* data_in, UIntPtr data_in_size, UIntPtr* data_in_read, void* data_out, UIntPtr data_out_size, UIntPtr* data_out_written);
+		private unsafe delegate CefResponseFilterStatus FilterDelegate(cef_response_filter_t* self, void* data_in, nuint data_in_size, nuint* data_in_read, void* data_out, nuint data_out_size, nuint* data_out_written);
 
 #endif // NET_LESS_5_0
 		// cef_response_filter_status_t (*)(_cef_response_filter_t* self, void* data_in, size_t data_in_size, size_t* data_in_read, void* data_out, size_t data_out_size, size_t* data_out_written)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe CefResponseFilterStatus FilterImpl(cef_response_filter_t* self, void* data_in, UIntPtr data_in_size, UIntPtr* data_in_read, void* data_out, UIntPtr data_out_size, UIntPtr* data_out_written)
+		private static unsafe CefResponseFilterStatus FilterImpl(cef_response_filter_t* self, void* data_in, nuint data_in_size, nuint* data_in_read, void* data_out, nuint data_out_size, nuint* data_out_written)
 		{
 			var instance = GetInstance((IntPtr)self) as CefResponseFilter;
 			if (instance == null || ((ICefResponseFilterPrivate)instance).AvoidFilter())
 			{
 				return default;
 			}
-			long c3 = (long)(*data_in_read);
-			long c6 = (long)(*data_out_written);
-			CefResponseFilterStatus rv = instance.Filter(unchecked((IntPtr)data_in), (long)data_in_size, ref c3, unchecked((IntPtr)data_out), (long)data_out_size, ref c6);
-			*data_in_read = new UIntPtr((ulong)c3);
-			*data_out_written = new UIntPtr((ulong)c6);
-			return rv;
+			return instance.Filter(unchecked((IntPtr)data_in), (long)data_in_size, ref *data_in_read, unchecked((IntPtr)data_out), (long)data_out_size, ref *data_out_written);
 		}
 	}
 }

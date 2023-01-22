@@ -86,15 +86,15 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Add a bitmap image representation for |scale_factor|. Only 32-bit RGBA/BGRA
-		/// formats are supported. |pixel_width| and |pixel_height| are the bitmap
-		/// representation size in pixel coordinates. |pixel_data| is the array of
-		/// pixel data and should be |pixel_width| x |pixel_height| x 4 bytes in size.
-		/// |color_type| and |alpha_type| values specify the pixel format.
+		/// Add a bitmap image representation for |scale_factor|. Only 32-bit
+		/// RGBA/BGRA formats are supported. |pixel_width| and |pixel_height| are the
+		/// bitmap representation size in pixel coordinates. |pixel_data| is the array
+		/// of pixel data and should be |pixel_width| x |pixel_height| x 4 bytes in
+		/// size. |color_type| and |alpha_type| values specify the pixel format.
 		/// </summary>
 		public unsafe virtual int AddBitmap(float scaleFactor, int pixelWidth, int pixelHeight, CefColorType colorType, CefAlphaType alphaType, IntPtr pixelData, long pixelDataSize)
 		{
-			return SafeCall(NativeInstance->AddBitmap(scaleFactor, pixelWidth, pixelHeight, colorType, alphaType, (void*)pixelData, new UIntPtr((ulong)pixelDataSize)));
+			return SafeCall(NativeInstance->AddBitmap(scaleFactor, pixelWidth, pixelHeight, colorType, alphaType, (void*)pixelData, pixelDataSize));
 		}
 
 		/// <summary>
@@ -104,7 +104,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual int AddPng(float scaleFactor, IntPtr pngData, long pngDataSize)
 		{
-			return SafeCall(NativeInstance->AddPng(scaleFactor, (void*)pngData, new UIntPtr((ulong)pngDataSize)));
+			return SafeCall(NativeInstance->AddPng(scaleFactor, (void*)pngData, pngDataSize));
 		}
 
 		/// <summary>
@@ -114,7 +114,7 @@ namespace CefNet
 		/// </summary>
 		public unsafe virtual int AddJpeg(float scaleFactor, IntPtr jpegData, long jpegDataSize)
 		{
-			return SafeCall(NativeInstance->AddJpeg(scaleFactor, (void*)jpegData, new UIntPtr((ulong)jpegDataSize)));
+			return SafeCall(NativeInstance->AddJpeg(scaleFactor, (void*)jpegData, jpegDataSize));
 		}
 
 		/// <summary>
@@ -127,7 +127,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Removes the representation for |scale_factor|. Returns true (1) on success.
+		/// Removes the representation for |scale_factor|. Returns true (1) on
+		/// success.
 		/// </summary>
 		public unsafe virtual bool RemoveRepresentation(float scaleFactor)
 		{
@@ -151,12 +152,12 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Returns the bitmap representation that most closely matches |scale_factor|.
-		/// Only 32-bit RGBA/BGRA formats are supported. |color_type| and |alpha_type|
-		/// values specify the desired output pixel format. |pixel_width| and
-		/// |pixel_height| are the output representation size in pixel coordinates.
-		/// Returns a cef_binary_value_t containing the pixel data on success or NULL
-		/// on failure.
+		/// Returns the bitmap representation that most closely matches
+		/// |scale_factor|. Only 32-bit RGBA/BGRA formats are supported. |color_type|
+		/// and |alpha_type| values specify the desired output pixel format.
+		/// |pixel_width| and |pixel_height| are the output representation size in
+		/// pixel coordinates. Returns a cef_binary_value_t containing the pixel data
+		/// on success or NULL on failure.
 		/// </summary>
 		public unsafe virtual CefBinaryValue GetAsBitmap(float scaleFactor, CefColorType colorType, CefAlphaType alphaType, ref int pixelWidth, ref int pixelHeight)
 		{
@@ -168,12 +169,12 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Returns the PNG representation that most closely matches |scale_factor|. If
-		/// |with_transparency| is true (1) any alpha transparency in the image will be
-		/// represented in the resulting PNG data. |pixel_width| and |pixel_height| are
-		/// the output representation size in pixel coordinates. Returns a
-		/// cef_binary_value_t containing the PNG image data on success or NULL on
-		/// failure.
+		/// Returns the PNG representation that most closely matches |scale_factor|.
+		/// If |with_transparency| is true (1) any alpha transparency in the image
+		/// will be represented in the resulting PNG data. |pixel_width| and
+		/// |pixel_height| are the output representation size in pixel coordinates.
+		/// Returns a cef_binary_value_t containing the PNG image data on success or
+		/// NULL on failure.
 		/// </summary>
 		public unsafe virtual CefBinaryValue GetAsPng(float scaleFactor, bool withTransparency, ref int pixelWidth, ref int pixelHeight)
 		{

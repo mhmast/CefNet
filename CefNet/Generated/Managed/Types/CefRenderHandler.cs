@@ -99,14 +99,14 @@ namespace CefNet
 			self->get_screen_info = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_screen_info_t*, int>)&GetScreenInfoImpl;
 			self->on_popup_show = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, int, void>)&OnPopupShowImpl;
 			self->on_popup_size = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_rect_t*, void>)&OnPopupSizeImpl;
-			self->on_paint = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefPaintElementType, UIntPtr, cef_rect_t*, void*, int, int, void>)&OnPaintImpl;
-			self->on_accelerated_paint = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefPaintElementType, UIntPtr, cef_rect_t*, void*, void>)&OnAcceleratedPaintImpl;
+			self->on_paint = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefPaintElementType, nuint, cef_rect_t*, void*, int, int, void>)&OnPaintImpl;
+			self->on_accelerated_paint = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefPaintElementType, nuint, cef_rect_t*, void*, void>)&OnAcceleratedPaintImpl;
 			self->get_touch_handle_size = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefHorizontalAlignment, cef_size_t*, void>)&GetTouchHandleSizeImpl;
 			self->on_touch_handle_state_changed = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_touch_handle_state_t*, void>)&OnTouchHandleStateChangedImpl;
 			self->start_dragging = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_drag_data_t*, CefDragOperationsMask, int, int, int>)&StartDraggingImpl;
 			self->update_drag_cursor = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefDragOperationsMask, void>)&UpdateDragCursorImpl;
 			self->on_scroll_offset_changed = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, double, double, void>)&OnScrollOffsetChangedImpl;
-			self->on_ime_composition_range_changed = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_range_t*, UIntPtr, cef_rect_t*, void>)&OnImeCompositionRangeChangedImpl;
+			self->on_ime_composition_range_changed = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_range_t*, nuint, cef_rect_t*, void>)&OnImeCompositionRangeChangedImpl;
 			self->on_text_selection_changed = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, cef_string_t*, cef_range_t*, void>)&OnTextSelectionChangedImpl;
 			self->on_virtual_keyboard_requested = (delegate* unmanaged[Stdcall]<cef_render_handler_t*, cef_browser_t*, CefTextInputMode, void>)&OnVirtualKeyboardRequestedImpl;
 			#endif
@@ -217,9 +217,9 @@ namespace CefNet
 
 		/// <summary>
 		/// Called to retrieve the translation from view DIP coordinates to screen
-		/// coordinates. Windows/Linux should provide screen device (pixel) coordinates
-		/// and MacOS should provide screen DIP coordinates. Return true (1) if the
-		/// requested coordinates were provided.
+		/// coordinates. Windows/Linux should provide screen device (pixel)
+		/// coordinates and MacOS should provide screen DIP coordinates. Return true
+		/// (1) if the requested coordinates were provided.
 		/// </summary>
 		protected internal unsafe virtual bool GetScreenPoint(CefBrowser browser, int viewX, int viewY, ref int screenX, ref int screenY)
 		{
@@ -251,8 +251,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Called to allow the client to fill in the CefScreenInfo object with
-		/// appropriate values. Return true (1) if the |screen_info| structure has been
-		/// modified.
+		/// appropriate values. Return true (1) if the |screen_info| structure has
+		/// been modified.
 		/// If the screen info rectangle is left NULL the rectangle from GetViewRect
 		/// will be used. If the rectangle is still NULL or invalid popups may not be
 		/// drawn correctly.
@@ -353,9 +353,9 @@ namespace CefNet
 		/// CefScreenInfo.device_scale_factor returned from GetScreenInfo. |type|
 		/// indicates whether the element is the view or the popup widget. |buffer|
 		/// contains the pixel data for the whole image. |dirtyRects| contains the set
-		/// of rectangles in pixel coordinates that need to be repainted. |buffer| will
-		/// be |width|*|height|*4 bytes in size and represents a BGRA image with an
-		/// upper-left origin. This function is only called when
+		/// of rectangles in pixel coordinates that need to be repainted. |buffer|
+		/// will be |width|*|height|*4 bytes in size and represents a BGRA image with
+		/// an upper-left origin. This function is only called when
 		/// cef_window_tInfo::shared_texture_enabled is set to false (0).
 		/// </summary>
 		protected internal unsafe virtual void OnPaint(CefBrowser browser, CefPaintElementType type, CefRect[] dirtyRects, IntPtr buffer, int width, int height)
@@ -364,14 +364,14 @@ namespace CefNet
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnPaintDelegate(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, UIntPtr dirtyRectsCount, cef_rect_t* dirtyRects, void* buffer, int width, int height);
+		private unsafe delegate void OnPaintDelegate(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, nuint dirtyRectsCount, cef_rect_t* dirtyRects, void* buffer, int width, int height);
 
 #endif // NET_LESS_5_0
 		// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, cef_paint_element_type_t type, size_t dirtyRectsCount, const cef_rect_t* dirtyRects, const void* buffer, int width, int height)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe void OnPaintImpl(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, UIntPtr dirtyRectsCount, cef_rect_t* dirtyRects, void* buffer, int width, int height)
+		private static unsafe void OnPaintImpl(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, nuint dirtyRectsCount, cef_rect_t* dirtyRects, void* buffer, int width, int height)
 		{
 			var instance = GetInstance((IntPtr)self) as CefRenderHandler;
 			if (instance == null || ((ICefRenderHandlerPrivate)instance).AvoidOnPaint())
@@ -405,14 +405,14 @@ namespace CefNet
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnAcceleratedPaintDelegate(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, UIntPtr dirtyRectsCount, cef_rect_t* dirtyRects, void* shared_handle);
+		private unsafe delegate void OnAcceleratedPaintDelegate(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, nuint dirtyRectsCount, cef_rect_t* dirtyRects, void* shared_handle);
 
 #endif // NET_LESS_5_0
 		// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, cef_paint_element_type_t type, size_t dirtyRectsCount, const cef_rect_t* dirtyRects, void* shared_handle)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe void OnAcceleratedPaintImpl(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, UIntPtr dirtyRectsCount, cef_rect_t* dirtyRects, void* shared_handle)
+		private static unsafe void OnAcceleratedPaintImpl(cef_render_handler_t* self, cef_browser_t* browser, CefPaintElementType type, nuint dirtyRectsCount, cef_rect_t* dirtyRects, void* shared_handle)
 		{
 			var instance = GetInstance((IntPtr)self) as CefRenderHandler;
 			if (instance == null || ((ICefRenderHandlerPrivate)instance).AvoidOnAcceleratedPaint())
@@ -608,14 +608,14 @@ namespace CefNet
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnImeCompositionRangeChangedDelegate(cef_render_handler_t* self, cef_browser_t* browser, cef_range_t* selected_range, UIntPtr character_boundsCount, cef_rect_t* character_bounds);
+		private unsafe delegate void OnImeCompositionRangeChangedDelegate(cef_render_handler_t* self, cef_browser_t* browser, cef_range_t* selected_range, nuint character_boundsCount, cef_rect_t* character_bounds);
 
 #endif // NET_LESS_5_0
 		// void (*)(_cef_render_handler_t* self, _cef_browser_t* browser, const cef_range_t* selected_range, size_t character_boundsCount, const cef_rect_t* character_bounds)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe void OnImeCompositionRangeChangedImpl(cef_render_handler_t* self, cef_browser_t* browser, cef_range_t* selected_range, UIntPtr character_boundsCount, cef_rect_t* character_bounds)
+		private static unsafe void OnImeCompositionRangeChangedImpl(cef_render_handler_t* self, cef_browser_t* browser, cef_range_t* selected_range, nuint character_boundsCount, cef_rect_t* character_bounds)
 		{
 			var instance = GetInstance((IntPtr)self) as CefRenderHandler;
 			if (instance == null || ((ICefRenderHandlerPrivate)instance).AvoidOnImeCompositionRangeChanged())
@@ -668,9 +668,9 @@ namespace CefNet
 
 		/// <summary>
 		/// Called when an on-screen keyboard should be shown or hidden for the
-		/// specified |browser|. |input_mode| specifies what kind of keyboard should be
-		/// opened. If |input_mode| is CEF_TEXT_INPUT_MODE_NONE, any existing keyboard
-		/// for this browser should be hidden.
+		/// specified |browser|. |input_mode| specifies what kind of keyboard should
+		/// be opened. If |input_mode| is CEF_TEXT_INPUT_MODE_NONE, any existing
+		/// keyboard for this browser should be hidden.
 		/// </summary>
 		protected internal unsafe virtual void OnVirtualKeyboardRequested(CefBrowser browser, CefTextInputMode inputMode)
 		{

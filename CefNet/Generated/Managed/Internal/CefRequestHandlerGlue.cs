@@ -69,16 +69,6 @@ namespace CefNet.Internal
 			return _implementation.GetAuthCredentials(browser, originUrl, isProxy, host, port, realm, scheme, callback);
 		}
 
-		bool ICefRequestHandlerPrivate.AvoidOnQuotaRequest()
-		{
-			return _implementation.AvoidOnQuotaRequest();
-		}
-
-		protected internal unsafe override bool OnQuotaRequest(CefBrowser browser, string originUrl, long newSize, CefCallback callback)
-		{
-			return _implementation.OnQuotaRequest(browser, originUrl, newSize, callback);
-		}
-
 		bool ICefRequestHandlerPrivate.AvoidOnCertificateError()
 		{
 			return _implementation.AvoidOnCertificateError();

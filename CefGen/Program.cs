@@ -54,9 +54,10 @@ namespace CefGen
 					cefPath = arg;
 				}
 			}
-
+			var osPath = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
+				RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "linux" : "osx";
 			if (string.IsNullOrWhiteSpace(cefPath))
-				cefPath = Path.Combine(projectPath, "..", "cef");
+				cefPath = Path.Combine(projectPath, "..", "cef",osPath);
 			else
 				cefPath = cefPath.Trim();
 			if (!Directory.Exists(cefPath))
@@ -77,39 +78,55 @@ namespace CefGen
 				return;
 			}
 
+			try
+			{
 
-			Clean(outDirPath);
+				Clean(outDirPath);
 
-			Console.WriteLine("Generate CefWrapperType.cs");
-			GenerateCefWrapperTypes(cefPath, outDirPath);
+				Console.WriteLine("Generate CefWrapperType.cs");
+				GenerateCefWrapperTypes(cefPath, outDirPath);
 
-			Console.WriteLine("Generate unsafe types...");
-			GenerateFromCHeaders(cefPath, outDirPath, onlyStdCall);
+				Console.WriteLine("Generate unsafe types...");
+				GenerateFromCHeaders(cefPath, outDirPath, onlyStdCall);
 
-			Console.WriteLine("Compile unsafe types...");
-			var nativeTypes = new NativeCefApiTypes(outDirPath);
-			nativeTypes.Build();
+				Console.WriteLine("Compile unsafe types...");
+				var nativeTypes = new NativeCefApiTypes(outDirPath);
+				nativeTypes.Build();
 
-			Console.WriteLine("Generate wrappers...");
-			var managedApiBuilder = new ManagedCefApiBuilder(outDirPath);
-			managedApiBuilder.Imports.Add("CefNet.CApi");
-			managedApiBuilder.Imports.Add("CefNet.Internal");
-			managedApiBuilder.EnableCallbackOverrideCheck = true;
-			managedApiBuilder.GenerateFrom(nativeTypes);
+				Console.WriteLine("Generate wrappers...");
+				var managedApiBuilder = new ManagedCefApiBuilder(outDirPath);
+				managedApiBuilder.Imports.Add("CefNet.CApi");
+				managedApiBuilder.Imports.Add("CefNet.Internal");
+				managedApiBuilder.EnableCallbackOverrideCheck = true;
+				managedApiBuilder.GenerateFrom(nativeTypes);
 
-			Console.WriteLine("Generate glue classes...");
-			var cefnetGen = new CefNetCodeGen(outDirPath);
-			cefnetGen.Generate();
+				Console.WriteLine("Generate glue classes...");
+				var cefnetGen = new CefNetCodeGen(outDirPath);
+				cefnetGen.Generate();
 
-			Console.WriteLine("Compile wrappers...");
-			var managedTypes = new ManagedCefApiTypes(outDirPath);
-			managedTypes.Build();
+				Console.WriteLine("Compile wrappers...");
+				var managedTypes = new ManagedCefApiTypes(outDirPath);
+				managedTypes.Build();
 
-			Console.WriteLine("Generate MSIL for wrappers...");
-			var msilGen = new ManagedCefApiMsilCodeGen(outDirPath);
-			msilGen.GenerateFrom(managedTypes);
+				Console.WriteLine("Generate MSIL for wrappers...");
+				var msilGen = new ManagedCefApiMsilCodeGen(outDirPath);
+				msilGen.GenerateFrom(managedTypes);
 
-			Console.WriteLine("Complete.");
+				Console.WriteLine("Complete.");
+			}
+			catch(SEHException e)
+			{
+				Console.WriteLine("Error");
+				Console.WriteLine($"Error: {e.Message}");
+				Console.WriteLine($"ErrorCode: {e.ErrorCode}");
+				throw;
+			}
+			catch(Exception e2)
+			{
+				Console.WriteLine("Error");
+				Console.WriteLine($"Error: {e2.Message}");
+				throw;
+			}
 		}
 
 		private static string GetProjectPath()
@@ -200,7 +217,7 @@ namespace CefGen
 
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			{
-				options.IncludeFolders.Add("/usr/include/clang/8/include");
+				options.IncludeFolders.Add("/usr/lib/clang/14/include");
 				options.TargetAbi = "gnu";
 				options.TargetCpu = CppTargetCpu.X86_64;
 				options.TargetSystem = "linux";
@@ -251,7 +268,7 @@ namespace CefGen
 			foreach (CppClass @class in compilation.Classes)
 			{
 				string source = @class.Span.Start.File;
-				if (!source.Contains("capi") && !source.Contains("internal"))
+				if (source?.Contains("capi") != true && source?.Contains("internal") != true)
 					continue;
 
 				if (IgnoreClasses.Contains(@class.Name))

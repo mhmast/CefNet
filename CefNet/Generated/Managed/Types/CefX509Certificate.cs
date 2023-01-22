@@ -39,9 +39,9 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets the subject of the X.509 certificate. For HTTPS server certificates
-		/// this represents the web server.  The common name of the subject should
-		/// match the host name of the web server.
+		/// Gets the subject of the X.509 certificate. For HTTPS server
+		/// certificates this represents the web server.  The common name of the
+		/// subject should match the host name of the web server.
 		/// </summary>
 		public unsafe virtual CefX509CertPrincipal Subject
 		{
@@ -133,52 +133,36 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Returns the DER encoded data for the certificate issuer chain. If we failed
-		/// to encode a certificate in the chain it is still present in the array but
-		/// is an NULL string.
+		/// Returns the DER encoded data for the certificate issuer chain. If we
+		/// failed to encode a certificate in the chain it is still present in the
+		/// array but is an NULL string.
 		/// </summary>
-		public unsafe virtual void GetDEREncodedIssuerChain(ref long chainCount, ref CefBinaryValue[] chain)
+		public unsafe virtual void GetDEREncodedIssuerChain(ref long chainCount, ref CefBinaryValue chain)
 		{
-			
-			var c1 = new UIntPtr((uint)chain.Length);
-			cef_binary_value_t** arr1 = (cef_binary_value_t**)Marshal.AllocHGlobal(sizeof(cef_binary_value_t*) * chain.Length);
-			for (int i = 0; i < chain.Length; i++)
+			fixed (long* p0 = &chainCount)
 			{
-				var e1 = chain[i];
-				*(arr1 + i) = e1 != null ? e1.GetNativeInstance() : null;
+				cef_binary_value_t* p1 = (chain != null) ? chain.GetNativeInstance() : null;
+				cef_binary_value_t** pp1 = &p1;
+				NativeInstance->GetDEREncodedIssuerChain(p0, pp1);
+				chain = CefBinaryValue.Wrap(CefBinaryValue.Create, p1);
 			}
-			NativeInstance->GetDEREncodedIssuerChain(&c1, arr1);
-			chainCount = (long)c1;
-			for (int i = (int)c1; i >= 0; i--)
-			{
-				chain[i] = CefBinaryValue.Wrap(CefBinaryValue.Create, *(arr1 + i)); 
-			}
-			Marshal.FreeHGlobal((IntPtr)arr1);
 			GC.KeepAlive(this);
 		}
 
 		/// <summary>
-		/// Returns the PEM encoded data for the certificate issuer chain. If we failed
-		/// to encode a certificate in the chain it is still present in the array but
-		/// is an NULL string.
+		/// Returns the PEM encoded data for the certificate issuer chain. If we
+		/// failed to encode a certificate in the chain it is still present in the
+		/// array but is an NULL string.
 		/// </summary>
-		public unsafe virtual void GetPEMEncodedIssuerChain(ref long chainCount, ref CefBinaryValue[] chain)
+		public unsafe virtual void GetPEMEncodedIssuerChain(ref long chainCount, ref CefBinaryValue chain)
 		{
-			
-			var c1 = new UIntPtr((uint)chain.Length);
-			cef_binary_value_t** arr1 = (cef_binary_value_t**)Marshal.AllocHGlobal(sizeof(cef_binary_value_t*) * chain.Length);
-			for (int i = 0; i < chain.Length; i++)
+			fixed (long* p0 = &chainCount)
 			{
-				var e1 = chain[i];
-				*(arr1 + i) = e1 != null ? e1.GetNativeInstance() : null;
+				cef_binary_value_t* p1 = (chain != null) ? chain.GetNativeInstance() : null;
+				cef_binary_value_t** pp1 = &p1;
+				NativeInstance->GetPEMEncodedIssuerChain(p0, pp1);
+				chain = CefBinaryValue.Wrap(CefBinaryValue.Create, p1);
 			}
-			NativeInstance->GetPEMEncodedIssuerChain(&c1, arr1);
-			chainCount = (long)c1;
-			for (int i = (int)c1; i >= 0; i--)
-			{
-				chain[i] = CefBinaryValue.Wrap(CefBinaryValue.Create, *(arr1 + i)); 
-			}
-			Marshal.FreeHGlobal((IntPtr)arr1);
 			GC.KeepAlive(this);
 		}
 	}

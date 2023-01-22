@@ -49,13 +49,13 @@ namespace CefNet
 		FileExe = 4,
 
 		/// <summary>
-		/// Path and filename of the module containing the CEF code (usually the libcef
-		/// module).
+		/// Path and filename of the module containing the CEF code (usually the
+		/// libcef module).
 		/// </summary>
 		FileModule = 5,
 
 		/// <summary>
-		/// &quot;Local Settings@Application Data&quot; directory under the user profile
+		/// &quot;Local Settings\Application Data&quot; directory under the user profile
 		/// directory on Windows.
 		/// </summary>
 		LocalAppData = 6,

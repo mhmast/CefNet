@@ -21,12 +21,12 @@ using CefNet.Internal;
 namespace CefNet
 {
 	/// <summary>
-	/// Implement this structure to handle HTTP server requests. A new thread will be
-	/// created for each cef_server_t::CreateServer call (the &quot;dedicated server
+	/// Implement this structure to handle HTTP server requests. A new thread will
+	/// be created for each cef_server_t::CreateServer call (the &quot;dedicated server
 	/// thread&quot;), and the functions of this structure will be called on that thread.
 	/// It is therefore recommended to use a different cef_server_handler_t instance
-	/// for each cef_server_t::CreateServer call to avoid thread safety issues in the
-	/// cef_server_handler_t implementation.
+	/// for each cef_server_t::CreateServer call to avoid thread safety issues in
+	/// the cef_server_handler_t implementation.
 	/// </summary>
 	/// <remarks>
 	/// Role: Handler
@@ -76,7 +76,7 @@ namespace CefNet
 			self->on_http_request = (delegate* unmanaged[Stdcall]<cef_server_handler_t*, cef_server_t*, int, cef_string_t*, cef_request_t*, void>)&OnHttpRequestImpl;
 			self->on_web_socket_request = (delegate* unmanaged[Stdcall]<cef_server_handler_t*, cef_server_t*, int, cef_string_t*, cef_request_t*, cef_callback_t*, void>)&OnWebSocketRequestImpl;
 			self->on_web_socket_connected = (delegate* unmanaged[Stdcall]<cef_server_handler_t*, cef_server_t*, int, void>)&OnWebSocketConnectedImpl;
-			self->on_web_socket_message = (delegate* unmanaged[Stdcall]<cef_server_handler_t*, cef_server_t*, int, void*, UIntPtr, void>)&OnWebSocketMessageImpl;
+			self->on_web_socket_message = (delegate* unmanaged[Stdcall]<cef_server_handler_t*, cef_server_t*, int, void*, nuint, void>)&OnWebSocketMessageImpl;
 			#endif
 		}
 
@@ -90,8 +90,8 @@ namespace CefNet
 
 		/// <summary>
 		/// Called when |server| is created. If the server was started successfully
-		/// then cef_server_t::IsRunning will return true (1). The server will continue
-		/// running until cef_server_t::Shutdown is called, after which time
+		/// then cef_server_t::IsRunning will return true (1). The server will
+		/// continue running until cef_server_t::Shutdown is called, after which time
 		/// OnServerDestroyed will be called. If the server failed to start then
 		/// OnServerDestroyed will be called immediately after this function returns.
 		/// </summary>
@@ -124,9 +124,9 @@ namespace CefNet
 
 		/// <summary>
 		/// Called when |server| is destroyed. The server thread will be stopped after
-		/// this function returns. The client should release any references to |server|
-		/// when this function is called. See OnServerCreated documentation for a
-		/// description of server lifespan.
+		/// this function returns. The client should release any references to
+		/// |server| when this function is called. See OnServerCreated documentation
+		/// for a description of server lifespan.
 		/// </summary>
 		protected internal unsafe virtual void OnServerDestroyed(CefServer server)
 		{
@@ -227,8 +227,9 @@ namespace CefNet
 		/// Called when |server| receives an HTTP request. |connection_id| uniquely
 		/// identifies the connection, |client_address| is the requesting IPv4 or IPv6
 		/// client address including port number, and |request| contains the request
-		/// contents (URL, function, headers and optional POST data). Call cef_server_t
-		/// functions either synchronously or asynchronusly to send a response.
+		/// contents (URL, function, headers and optional POST data). Call
+		/// cef_server_t functions either synchronously or asynchronusly to send a
+		/// response.
 		/// </summary>
 		protected internal unsafe virtual void OnHttpRequest(CefServer server, int connectionId, string clientAddress, CefRequest request)
 		{
@@ -259,18 +260,18 @@ namespace CefNet
 		extern bool ICefServerHandlerPrivate.AvoidOnWebSocketRequest();
 
 		/// <summary>
-		/// Called when |server| receives a WebSocket request. |connection_id| uniquely
-		/// identifies the connection, |client_address| is the requesting IPv4 or IPv6
-		/// client address including port number, and |request| contains the request
-		/// contents (URL, function, headers and optional POST data). Execute
-		/// |callback| either synchronously or asynchronously to accept or decline the
-		/// WebSocket connection. If the request is accepted then OnWebSocketConnected
-		/// will be called after the WebSocket has connected and incoming messages will
-		/// be delivered to the OnWebSocketMessage callback. If the request is declined
-		/// then the client will be disconnected and OnClientDisconnected will be
-		/// called. Call the cef_server_t::SendWebSocketMessage function after
-		/// receiving the OnWebSocketConnected callback to respond with WebSocket
-		/// messages.
+		/// Called when |server| receives a WebSocket request. |connection_id|
+		/// uniquely identifies the connection, |client_address| is the requesting
+		/// IPv4 or IPv6 client address including port number, and |request| contains
+		/// the request contents (URL, function, headers and optional POST data).
+		/// Execute |callback| either synchronously or asynchronously to accept or
+		/// decline the WebSocket connection. If the request is accepted then
+		/// OnWebSocketConnected will be called after the WebSocket has connected and
+		/// incoming messages will be delivered to the OnWebSocketMessage callback. If
+		/// the request is declined then the client will be disconnected and
+		/// OnClientDisconnected will be called. Call the
+		/// cef_server_t::SendWebSocketMessage function after receiving the
+		/// OnWebSocketConnected callback to respond with WebSocket messages.
 		/// </summary>
 		protected internal unsafe virtual void OnWebSocketRequest(CefServer server, int connectionId, string clientAddress, CefRequest request, CefCallback callback)
 		{
@@ -346,14 +347,14 @@ namespace CefNet
 
 #if NET_LESS_5_0
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		private unsafe delegate void OnWebSocketMessageDelegate(cef_server_handler_t* self, cef_server_t* server, int connection_id, void* data, UIntPtr data_size);
+		private unsafe delegate void OnWebSocketMessageDelegate(cef_server_handler_t* self, cef_server_t* server, int connection_id, void* data, nuint data_size);
 
 #endif // NET_LESS_5_0
 		// void (*)(_cef_server_handler_t* self, _cef_server_t* server, int connection_id, const void* data, size_t data_size)*
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe void OnWebSocketMessageImpl(cef_server_handler_t* self, cef_server_t* server, int connection_id, void* data, UIntPtr data_size)
+		private static unsafe void OnWebSocketMessageImpl(cef_server_handler_t* self, cef_server_t* server, int connection_id, void* data, nuint data_size)
 		{
 			var instance = GetInstance((IntPtr)self) as CefServerHandler;
 			if (instance == null || ((ICefServerHandlerPrivate)instance).AvoidOnWebSocketMessage())

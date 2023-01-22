@@ -184,6 +184,10 @@ namespace CefNet.Unsafe
 
 		PostDataElement,
 
+		PreferenceManager,
+
+		PreferenceRegistrar,
+
 		PrintDialogCallback,
 
 		PrintHandler,

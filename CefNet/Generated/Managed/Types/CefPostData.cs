@@ -51,10 +51,10 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether the underlying POST data includes elements that are not
-		/// represented by this cef_post_data_t object (for example, multi-part file
-		/// upload data). Modifying cef_post_data_t objects with excluded elements may
-		/// result in the request failing.
+		/// Gets a value indicating whether the underlying POST data includes elements that are
+		/// not represented by this cef_post_data_t object (for example, multi-part
+		/// file upload data). Modifying cef_post_data_t objects with excluded
+		/// elements may result in the request failing.
 		/// </summary>
 		public unsafe virtual bool HasExcludedElements
 		{
@@ -78,23 +78,15 @@ namespace CefNet
 		/// <summary>
 		/// Retrieve the post data elements.
 		/// </summary>
-		public unsafe virtual void GetElements(ref long elementsCount, ref CefPostDataElement[] elements)
+		public unsafe virtual void GetElements(ref long elementsCount, ref CefPostDataElement elements)
 		{
-			
-			var c1 = new UIntPtr((uint)elements.Length);
-			cef_post_data_element_t** arr1 = (cef_post_data_element_t**)Marshal.AllocHGlobal(sizeof(cef_post_data_element_t*) * elements.Length);
-			for (int i = 0; i < elements.Length; i++)
+			fixed (long* p0 = &elementsCount)
 			{
-				var e1 = elements[i];
-				*(arr1 + i) = e1 != null ? e1.GetNativeInstance() : null;
+				cef_post_data_element_t* p1 = (elements != null) ? elements.GetNativeInstance() : null;
+				cef_post_data_element_t** pp1 = &p1;
+				NativeInstance->GetElements(p0, pp1);
+				elements = CefPostDataElement.Wrap(CefPostDataElement.Create, p1);
 			}
-			NativeInstance->GetElements(&c1, arr1);
-			elementsCount = (long)c1;
-			for (int i = (int)c1; i >= 0; i--)
-			{
-				elements[i] = CefPostDataElement.Wrap(CefPostDataElement.Create, *(arr1 + i)); 
-			}
-			Marshal.FreeHGlobal((IntPtr)arr1);
 			GC.KeepAlive(this);
 		}
 
@@ -108,7 +100,8 @@ namespace CefNet
 		}
 
 		/// <summary>
-		/// Add the specified post data element.  Returns true (1) if the add succeeds.
+		/// Add the specified post data element.  Returns true (1) if the add
+		/// succeeds.
 		/// </summary>
 		public unsafe virtual bool AddElement(CefPostDataElement element)
 		{

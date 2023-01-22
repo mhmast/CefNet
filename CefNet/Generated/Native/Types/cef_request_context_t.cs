@@ -40,7 +40,7 @@ namespace CefNet.CApi
 		/// <summary>
 		/// Base structure.
 		/// </summary>
-		public cef_base_ref_counted_t @base;
+		public cef_preference_manager_t @base;
 
 		/// <summary>
 		/// int (*)(_cef_request_context_t* self, _cef_request_context_t* other)*
@@ -167,8 +167,8 @@ namespace CefNet.CApi
 		/// you must also implement the cef_app_t::on_register_custom_schemes()
 		/// function in all processes. This function may be called multiple times to
 		/// change or remove the factory that matches the specified |scheme_name| and
-		/// optional |domain_name|. Returns false (0) if an error occurs. This function
-		/// may be called on any thread in the browser process.
+		/// optional |domain_name|. Returns false (0) if an error occurs. This
+		/// function may be called on any thread in the browser process.
 		/// </summary>
 		[NativeName("register_scheme_handler_factory")]
 		public unsafe int RegisterSchemeHandlerFactory([Immutable]cef_string_t* scheme_name, [Immutable]cef_string_t* domain_name, cef_scheme_handler_factory_t* factory)
@@ -194,108 +194,6 @@ namespace CefNet.CApi
 			fixed (cef_request_context_t* self = &this)
 			{
 				return ((delegate* unmanaged[Stdcall]<cef_request_context_t*, int>)clear_scheme_handler_factories)(self);
-			}
-		}
-
-		/// <summary>
-		/// int (*)(_cef_request_context_t* self, const cef_string_t* name)*
-		/// </summary>
-		public void* has_preference;
-
-		/// <summary>
-		/// Returns true (1) if a preference with the specified |name| exists. This
-		/// function must be called on the browser process UI thread.
-		/// </summary>
-		[NativeName("has_preference")]
-		public unsafe int HasPreference([Immutable]cef_string_t* name)
-		{
-			fixed (cef_request_context_t* self = &this)
-			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_context_t*, cef_string_t*, int>)has_preference)(self, name);
-			}
-		}
-
-		/// <summary>
-		/// _cef_value_t* (*)(_cef_request_context_t* self, const cef_string_t* name)*
-		/// </summary>
-		public void* get_preference;
-
-		/// <summary>
-		/// Returns the value for the preference with the specified |name|. Returns
-		/// NULL if the preference does not exist. The returned object contains a copy
-		/// of the underlying preference value and modifications to the returned object
-		/// will not modify the underlying preference value. This function must be
-		/// called on the browser process UI thread.
-		/// </summary>
-		[NativeName("get_preference")]
-		public unsafe cef_value_t* GetPreference([Immutable]cef_string_t* name)
-		{
-			fixed (cef_request_context_t* self = &this)
-			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_context_t*, cef_string_t*, cef_value_t*>)get_preference)(self, name);
-			}
-		}
-
-		/// <summary>
-		/// _cef_dictionary_value_t* (*)(_cef_request_context_t* self, int include_defaults)*
-		/// </summary>
-		public void* get_all_preferences;
-
-		/// <summary>
-		/// Returns all preferences as a dictionary. If |include_defaults| is true (1)
-		/// then preferences currently at their default value will be included. The
-		/// returned object contains a copy of the underlying preference values and
-		/// modifications to the returned object will not modify the underlying
-		/// preference values. This function must be called on the browser process UI
-		/// thread.
-		/// </summary>
-		[NativeName("get_all_preferences")]
-		public unsafe cef_dictionary_value_t* GetAllPreferences(int include_defaults)
-		{
-			fixed (cef_request_context_t* self = &this)
-			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_context_t*, int, cef_dictionary_value_t*>)get_all_preferences)(self, include_defaults);
-			}
-		}
-
-		/// <summary>
-		/// int (*)(_cef_request_context_t* self, const cef_string_t* name)*
-		/// </summary>
-		public void* can_set_preference;
-
-		/// <summary>
-		/// Returns true (1) if the preference with the specified |name| can be
-		/// modified using SetPreference. As one example preferences set via the
-		/// command-line usually cannot be modified. This function must be called on
-		/// the browser process UI thread.
-		/// </summary>
-		[NativeName("can_set_preference")]
-		public unsafe int CanSetPreference([Immutable]cef_string_t* name)
-		{
-			fixed (cef_request_context_t* self = &this)
-			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_context_t*, cef_string_t*, int>)can_set_preference)(self, name);
-			}
-		}
-
-		/// <summary>
-		/// int (*)(_cef_request_context_t* self, const cef_string_t* name, _cef_value_t* value, cef_string_t* error)*
-		/// </summary>
-		public void* set_preference;
-
-		/// <summary>
-		/// Set the |value| associated with preference |name|. Returns true (1) if the
-		/// value is set successfully and false (0) otherwise. If |value| is NULL the
-		/// preference will be restored to its default value. If setting the preference
-		/// fails then |error| will be populated with a detailed description of the
-		/// problem. This function must be called on the browser process UI thread.
-		/// </summary>
-		[NativeName("set_preference")]
-		public unsafe int SetPreference([Immutable]cef_string_t* name, cef_value_t* value, cef_string_t* error)
-		{
-			fixed (cef_request_context_t* self = &this)
-			{
-				return ((delegate* unmanaged[Stdcall]<cef_request_context_t*, cef_string_t*, cef_value_t*, cef_string_t*, int>)set_preference)(self, name, value, error);
 			}
 		}
 
@@ -346,10 +244,10 @@ namespace CefNet.CApi
 		public void* close_all_connections;
 
 		/// <summary>
-		/// Clears all active and idle connections that Chromium currently has. This is
-		/// only recommended if you have released all other CEF objects but don&apos;t yet
-		/// want to call cef_shutdown(). If |callback| is non-NULL it will be executed
-		/// on the UI thread after completion.
+		/// Clears all active and idle connections that Chromium currently has. This
+		/// is only recommended if you have released all other CEF objects but don&apos;t
+		/// yet want to call cef_shutdown(). If |callback| is non-NULL it will be
+		/// executed on the UI thread after completion.
 		/// </summary>
 		[NativeName("close_all_connections")]
 		public unsafe void CloseAllConnections(cef_completion_callback_t* callback)
@@ -395,10 +293,10 @@ namespace CefNet.CApi
 		/// contents that would otherwise be read from the &quot;manifest.json&quot; file on
 		/// disk.
 		/// The loaded extension will be accessible in all contexts sharing the same
-		/// storage (HasExtension returns true (1)). However, only the context on which
-		/// this function was called is considered the loader (DidLoadExtension returns
-		/// true (1)) and only the loader will receive cef_request_context_handler_t
-		/// callbacks for the extension.
+		/// storage (HasExtension returns true (1)). However, only the context on
+		/// which this function was called is considered the loader (DidLoadExtension
+		/// returns true (1)) and only the loader will receive
+		/// cef_request_context_handler_t callbacks for the extension.
 		/// cef_extension_handler_t::OnExtensionLoaded will be called on load success
 		/// or cef_extension_handler_t::OnExtensionLoadFailed will be called on load
 		/// failure.
@@ -412,11 +310,7 @@ namespace CefNet.CApi
 		/// has loaded. For example, the client can look for the &quot;browser_action&quot;
 		/// manifest key as documented at
 		/// https://developer.chrome.com/extensions/browserAction. Extension URLs take
-		/// the form &quot;chrome-extension://
-		/// &lt;extension
-		/// _id&gt;/
-		/// &lt;path
-		/// &gt;&quot;.
+		/// the form &quot;chrome-extension://&lt;extension_id&gt;/&lt;path&gt;&quot;.
 		/// Browsers that host extensions differ from normal browsers as follows:
 		/// - Can access chrome.* JavaScript APIs if allowed by the manifest. Visit
 		/// chrome://extensions-support for the list of extension APIs currently
@@ -445,8 +339,8 @@ namespace CefNet.CApi
 		/// <summary>
 		/// Returns true (1) if this context was used to load the extension identified
 		/// by |extension_id|. Other contexts sharing the same storage will also have
-		/// access to the extension (see HasExtension). This function must be called on
-		/// the browser process UI thread.
+		/// access to the extension (see HasExtension). This function must be called
+		/// on the browser process UI thread.
 		/// </summary>
 		[NativeName("did_load_extension")]
 		public unsafe int DidLoadExtension([Immutable]cef_string_t* extension_id)
@@ -484,9 +378,9 @@ namespace CefNet.CApi
 
 		/// <summary>
 		/// Retrieve the list of all extensions that this context has access to (see
-		/// HasExtension). |extension_ids| will be populated with the list of extension
-		/// ID values. Returns true (1) on success. This function must be called on the
-		/// browser process UI thread.
+		/// HasExtension). |extension_ids| will be populated with the list of
+		/// extension ID values. Returns true (1) on success. This function must be
+		/// called on the browser process UI thread.
 		/// </summary>
 		[NativeName("get_extensions")]
 		public unsafe int GetExtensions(cef_string_list_t extension_ids)
@@ -522,9 +416,9 @@ namespace CefNet.CApi
 		public void* get_media_router;
 
 		/// <summary>
-		/// Returns the MediaRouter object associated with this context.  If |callback|
-		/// is non-NULL it will be executed asnychronously on the UI thread after the
-		/// manager&apos;s context has been initialized.
+		/// Returns the MediaRouter object associated with this context.  If
+		/// |callback| is non-NULL it will be executed asnychronously on the UI thread
+		/// after the manager&apos;s context has been initialized.
 		/// </summary>
 		[NativeName("get_media_router")]
 		public unsafe cef_media_router_t* GetMediaRouter(cef_completion_callback_t* callback)
