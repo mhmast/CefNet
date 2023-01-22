@@ -536,7 +536,7 @@ namespace CefNet
 		/// Returns NULL if this function is called incorrectly or an exception is
 		/// thrown.
 		/// </summary>
-		public unsafe virtual CefV8Value ExecuteFunction(CefV8Value @object, long argumentsCount, ref CefV8Value arguments)
+		public unsafe virtual CefV8Value ExecuteFunction(CefV8Value @object, UIntPtr argumentsCount, ref CefV8Value arguments)
 		{
 			
 			cef_v8value_t* p2 = (arguments != null) ? arguments.GetNativeInstance() : null;
@@ -555,7 +555,7 @@ namespace CefNet
 		/// value on success. Returns NULL if this function is called incorrectly or
 		/// an exception is thrown.
 		/// </summary>
-		public unsafe virtual CefV8Value ExecuteFunctionWithContext(CefV8Context context, CefV8Value @object, long argumentsCount, ref CefV8Value arguments)
+		public unsafe virtual CefV8Value ExecuteFunctionWithContext(CefV8Context context, CefV8Value @object, UIntPtr argumentsCount, ref CefV8Value arguments)
 		{
 			
 			cef_v8value_t* p3 = (arguments != null) ? arguments.GetNativeInstance() : null;

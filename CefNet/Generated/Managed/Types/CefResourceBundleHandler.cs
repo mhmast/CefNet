@@ -125,7 +125,7 @@ namespace CefNet
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe int GetDataResourceImpl(cef_resource_bundle_handler_t* self, int resource_id, void** data, nuint* data_size)
+		private static unsafe int GetDataResourceImpl(cef_resource_bundle_handler_t* self, int resource_id, void** data, long* data_size)
 		{
 			var instance = GetInstance((IntPtr)self) as CefResourceBundleHandler;
 			if (instance == null || ((ICefResourceBundleHandlerPrivate)instance).AvoidGetDataResource())
@@ -160,7 +160,7 @@ namespace CefNet
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe int GetDataResourceForScaleImpl(cef_resource_bundle_handler_t* self, int resource_id, CefScaleFactor scale_factor, void** data, nuint* data_size)
+		private static unsafe int GetDataResourceForScaleImpl(cef_resource_bundle_handler_t* self, int resource_id, CefScaleFactor scale_factor, void** data, long* data_size)
 		{
 			var instance = GetInstance((IntPtr)self) as CefResourceBundleHandler;
 			if (instance == null || ((ICefResourceBundleHandlerPrivate)instance).AvoidGetDataResourceForScale())

@@ -34,9 +34,9 @@ namespace CefNet.Internal
 			return _implementation.AvoidOnRequestContextInitialized();
 		}
 
-		protected internal unsafe override void OnRequestContextInitialized(ref CefRequestContext requestContext)
+		protected internal unsafe override void OnRequestContextInitialized(CefRequestContext requestContext)
 		{
-			_implementation.OnRequestContextInitialized(ref requestContext);
+			_implementation.OnRequestContextInitialized(requestContext);
 		}
 
 		bool ICefRequestContextHandlerPrivate.AvoidGetResourceRequestHandler()

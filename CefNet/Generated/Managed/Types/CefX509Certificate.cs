@@ -137,9 +137,9 @@ namespace CefNet
 		/// failed to encode a certificate in the chain it is still present in the
 		/// array but is an NULL string.
 		/// </summary>
-		public unsafe virtual void GetDEREncodedIssuerChain(ref long chainCount, ref CefBinaryValue chain)
+		public unsafe virtual void GetDEREncodedIssuerChain(ref UIntPtr chainCount, ref CefBinaryValue chain)
 		{
-			fixed (long* p0 = &chainCount)
+			fixed (UIntPtr* p0 = &chainCount)
 			{
 				cef_binary_value_t* p1 = (chain != null) ? chain.GetNativeInstance() : null;
 				cef_binary_value_t** pp1 = &p1;
@@ -154,9 +154,9 @@ namespace CefNet
 		/// failed to encode a certificate in the chain it is still present in the
 		/// array but is an NULL string.
 		/// </summary>
-		public unsafe virtual void GetPEMEncodedIssuerChain(ref long chainCount, ref CefBinaryValue chain)
+		public unsafe virtual void GetPEMEncodedIssuerChain(ref UIntPtr chainCount, ref CefBinaryValue chain)
 		{
-			fixed (long* p0 = &chainCount)
+			fixed (UIntPtr* p0 = &chainCount)
 			{
 				cef_binary_value_t* p1 = (chain != null) ? chain.GetNativeInstance() : null;
 				cef_binary_value_t** pp1 = &p1;

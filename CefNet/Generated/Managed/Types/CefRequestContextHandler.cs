@@ -65,7 +65,7 @@ namespace CefNet
 		/// Called on the browser process UI thread immediately after the request
 		/// context has been initialized.
 		/// </summary>
-		protected internal unsafe virtual void OnRequestContextInitialized(ref CefRequestContext requestContext)
+		protected internal unsafe virtual void OnRequestContextInitialized(CefRequestContext requestContext)
 		{
 		}
 
@@ -83,9 +83,10 @@ namespace CefNet
 			var instance = GetInstance((IntPtr)self) as CefRequestContextHandler;
 			if (instance == null || ((ICefRequestContextHandlerPrivate)instance).AvoidOnRequestContextInitialized())
 			{
+				ReleaseIfNonNull((cef_base_ref_counted_t*)request_context);
 				return;
 			}
-			instance.OnRequestContextInitialized(ref *(CefRequestContext*)request_context);
+			instance.OnRequestContextInitialized(CefRequestContext.Wrap(CefRequestContext.Create, request_context));
 		}
 
 		[MethodImpl(MethodImplOptions.ForwardRef)]

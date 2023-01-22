@@ -102,7 +102,7 @@ namespace CefNet
 		{
 			get
 			{
-				return SafeCall(NativeInstance->GetLoaderContext());
+				return SafeCall(CefRequestContext.Wrap(CefRequestContext.Create, NativeInstance->GetLoaderContext()));
 			}
 		}
 

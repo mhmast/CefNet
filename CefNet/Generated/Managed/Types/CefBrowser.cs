@@ -248,9 +248,9 @@ namespace CefNet
 		/// <summary>
 		/// Returns the identifiers of all existing frames.
 		/// </summary>
-		public unsafe virtual void GetFrameIdentifiers(ref long identifiersCount, ref long identifiers)
+		public unsafe virtual void GetFrameIdentifiers(ref UIntPtr identifiersCount, ref long identifiers)
 		{
-			fixed (long* p0 = &identifiersCount)
+			fixed (UIntPtr* p0 = &identifiersCount)
 			fixed (long* p1 = &identifiers)
 			{
 				NativeInstance->GetFrameIdentifiers(p0, p1);

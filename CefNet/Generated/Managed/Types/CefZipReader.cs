@@ -142,7 +142,7 @@ namespace CefNet
 		/// 0 if
 		/// an error occurred, 0 if at the end of file, or the number of bytes read.
 		/// </summary>
-		public unsafe virtual int ReadFile(IntPtr buffer, long bufferSize)
+		public unsafe virtual int ReadFile(IntPtr buffer, UIntPtr bufferSize)
 		{
 			return SafeCall(NativeInstance->ReadFile((void*)buffer, bufferSize));
 		}

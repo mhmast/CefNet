@@ -106,7 +106,7 @@ namespace CefNet
 		/// Read up to |buffer_size| number of bytes into |buffer|. Reading begins at
 		/// the specified byte |data_offset|. Returns the number of bytes read.
 		/// </summary>
-		public unsafe virtual long GetData(IntPtr buffer, long bufferSize, long dataOffset)
+		public unsafe virtual long GetData(IntPtr buffer, UIntPtr bufferSize, UIntPtr dataOffset)
 		{
 			return SafeCall((long)NativeInstance->GetData((void*)buffer, bufferSize, dataOffset));
 		}

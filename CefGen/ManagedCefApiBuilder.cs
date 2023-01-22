@@ -522,7 +522,8 @@ namespace CefGen
 						methods.Add(method);
 					}
 					else if (field.Type.Name != "cef_base_ref_counted_t"
-						&& field.Type.Name != "cef_base_scoped_t")
+						&& field.Type.Name != "cef_base_scoped_t"
+						&& field.Type.Name != "cef_preference_manager_t")
 					{
 						throw new NotImplementedException();
 					}
@@ -1014,8 +1015,7 @@ namespace CefGen
 				throw new NotImplementedException();
 			if (returnSymbolInfo.IsPointedType)
 			{
-				if (typeKind != CefTypeKind.RefCounted && typeKind != CefTypeKind.Scoped
-					&& !returnSymbolInfo.AsClrTypeName().StartsWith("Cef"))
+				if (typeKind != CefTypeKind.RefCounted && typeKind != CefTypeKind.Scoped)
 				{
 					throw new NotImplementedException();
 				}

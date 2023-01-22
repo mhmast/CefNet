@@ -77,7 +77,10 @@ namespace CefGen
 		{
 			if (symbol.TypeKind != TypeKind.Struct)
 				return false;
-
+			if(symbol.Name == "cef_request_context_t")
+			{
+				return true;
+			}
 			ImmutableArray<ISymbol> members = symbol.GetMembers();
 			if (members.Length > 0)
 			{

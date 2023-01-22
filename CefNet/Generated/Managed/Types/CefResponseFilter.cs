@@ -48,7 +48,7 @@ namespace CefNet
 			self->filter = (void*)Marshal.GetFunctionPointerForDelegate(fnFilter);
 			#else
 			self->init_filter = (delegate* unmanaged[Stdcall]<cef_response_filter_t*, int>)&InitFilterImpl;
-			self->filter = (delegate* unmanaged[Stdcall]<cef_response_filter_t*, void*, nuint, nuint*, void*, nuint, nuint*, CefResponseFilterStatus>)&FilterImpl;
+			self->filter = (delegate* unmanaged[Stdcall]<cef_response_filter_t*, void*, UIntPtr, UIntPtr*, void*, UIntPtr, UIntPtr*, CefResponseFilterStatus>)&FilterImpl;
 			#endif
 		}
 
@@ -128,7 +128,7 @@ namespace CefNet
 #if !NET_LESS_5_0
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
 #endif
-		private static unsafe CefResponseFilterStatus FilterImpl(cef_response_filter_t* self, void* data_in, nuint data_in_size, nuint* data_in_read, void* data_out, nuint data_out_size, nuint* data_out_written)
+		private static unsafe CefResponseFilterStatus FilterImpl(cef_response_filter_t* self, void* data_in, long data_in_size, long* data_in_read, void* data_out, long data_out_size, long* data_out_written)
 		{
 			var instance = GetInstance((IntPtr)self) as CefResponseFilter;
 			if (instance == null || ((ICefResponseFilterPrivate)instance).AvoidFilter())

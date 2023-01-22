@@ -97,7 +97,7 @@ namespace CefNet
 		/// The post data element will represent bytes.  The bytes passed in will be
 		/// copied.
 		/// </summary>
-		public unsafe virtual void SetToBytes(long size, IntPtr bytes)
+		public unsafe virtual void SetToBytes(UIntPtr size, IntPtr bytes)
 		{
 			NativeInstance->SetToBytes(size, (void*)bytes);
 			GC.KeepAlive(this);
@@ -107,7 +107,7 @@ namespace CefNet
 		/// Read up to |size| bytes into |bytes| and return the number of bytes
 		/// actually read.
 		/// </summary>
-		public unsafe virtual long GetBytes(long size, IntPtr bytes)
+		public unsafe virtual long GetBytes(UIntPtr size, IntPtr bytes)
 		{
 			return SafeCall((long)NativeInstance->GetBytes(size, (void*)bytes));
 		}

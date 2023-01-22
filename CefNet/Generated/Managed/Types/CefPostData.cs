@@ -78,9 +78,9 @@ namespace CefNet
 		/// <summary>
 		/// Retrieve the post data elements.
 		/// </summary>
-		public unsafe virtual void GetElements(ref long elementsCount, ref CefPostDataElement elements)
+		public unsafe virtual void GetElements(ref UIntPtr elementsCount, ref CefPostDataElement elements)
 		{
-			fixed (long* p0 = &elementsCount)
+			fixed (UIntPtr* p0 = &elementsCount)
 			{
 				cef_post_data_element_t* p1 = (elements != null) ? elements.GetNativeInstance() : null;
 				cef_post_data_element_t** pp1 = &p1;

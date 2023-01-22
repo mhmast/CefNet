@@ -109,7 +109,7 @@ namespace CefNet
 		{
 			get
 			{
-				return SafeCall(NativeInstance->GetRequestContext());
+				return SafeCall(CefRequestContext.Wrap(CefRequestContext.Create, NativeInstance->GetRequestContext()));
 			}
 		}
 
